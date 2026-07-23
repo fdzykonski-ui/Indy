@@ -1,0 +1,16 @@
+{
+  "archive_name": "binance_holdout_20260623_20260722.tar.gz",
+  "archive_bytes": 21133640,
+  "archive_sha256": "0f4962de73aec7fd9bf46d332ef5a0fce3fb0ca85ffbc77785e8099abe4dff1c",
+  "part_size": 83886080,
+  "parts": [
+    {
+      "name": "binance_holdout_20260623_20260722.tar.gz.part000",
+      "bytes": 21133640,
+      "sha256": "0f4962de73aec7fd9bf46d332ef5a0fce3fb0ca85ffbc77785e8099abe4dff1c"
+    }
+  ],
+  "downloaded_files": 930,
+  "missing_files": 0,
+  "integrity_failures": 0
+}
