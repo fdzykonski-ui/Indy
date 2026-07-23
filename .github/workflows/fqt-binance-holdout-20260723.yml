@@ -1,0 +1,192 @@
+name: FQT Binance holdout bridge 20260723
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fqt-binance-holdout-20260723.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  download-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download and verify official Binance daily 1m files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p bridge
+          cat > bridge/download_holdout.py <<'PY'
+          from __future__ import annotations
+          import concurrent.futures as cf
+          import csv
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import re
+          import shutil
+          import tarfile
+          import time
+          import urllib.error
+          import urllib.request
+          import zipfile
+          from datetime import date, timedelta
+
+          PAIRS = [
+              'BTCUSDC','LINKUSDC','SEIUSDC','ALGOUSDC','ENAUSDC','ZKUSDC','AVAXUSDC',
+              'LUNCUSDC','THEUSDC','SYRUPUSDC','PIXELUSDC','PARTIUSDC','DOLOUSDC',
+              'EIGENUSDC','MINAUSDC','SAHARAUSDC','BERAUSDC','FORMUSDC','SNXUSDC',
+              'FILUSDC','CGPTUSDC','VANRYUSDC','SYNUSDC','PNUTUSDC','ACHUSDC',
+              'DOGSUSDC','COMPUSDC','ZAMAUSDC','TRXUSDC','HOLOUSDC','BIOUSDC',
+          ]
+          START = date(2026, 6, 23)
+          END = date(2026, 7, 22)
+          ROOT = pathlib.Path('bridge/holdout')
+          RAW = ROOT / 'raw'
+          EXTRACTED = ROOT / 'csv'
+          RAW.mkdir(parents=True, exist_ok=True)
+          EXTRACTED.mkdir(parents=True, exist_ok=True)
+          BASE = 'https://data.binance.vision/data/spot/daily/klines/{symbol}/1m/{symbol}-1m-{day}.zip'
+          UA = 'FQT-holdout-audit/1.0'
+
+          def days():
+              d = START
+              while d <= END:
+                  yield d.isoformat()
+                  d += timedelta(days=1)
+
+          def fetch(url: str, dest: pathlib.Path, attempts: int = 5) -> tuple[bool, str]:
+              last = ''
+              for n in range(attempts):
+                  try:
+                      req = urllib.request.Request(url, headers={'User-Agent': UA})
+                      with urllib.request.urlopen(req, timeout=60) as r, open(dest, 'wb') as f:
+                          shutil.copyfileobj(r, f)
+                      return True, ''
+                  except urllib.error.HTTPError as e:
+                      last = f'HTTP {e.code}'
+                      if e.code == 404:
+                          return False, last
+                  except Exception as e:
+                      last = f'{type(e).__name__}: {e}'
+                  time.sleep(min(10, 1.5 ** n))
+              return False, last
+
+          def one(task: tuple[str, str]) -> dict:
+              symbol, day = task
+              pair_raw = RAW / symbol
+              pair_csv = EXTRACTED / symbol
+              pair_raw.mkdir(parents=True, exist_ok=True)
+              pair_csv.mkdir(parents=True, exist_ok=True)
+              name = f'{symbol}-1m-{day}.zip'
+              zpath = pair_raw / name
+              cpath = pair_raw / f'{name}.CHECKSUM'
+              url = BASE.format(symbol=symbol, day=day)
+              ok, err = fetch(url, zpath)
+              rec = {'symbol': symbol, 'day': day, 'url': url, 'status': 'missing', 'error': err,
+                     'bytes': 0, 'sha256': '', 'expected_sha256': '', 'rows': 0}
+              if not ok:
+                  return rec
+              okc, errc = fetch(url + '.CHECKSUM', cpath)
+              if not okc:
+                  rec.update(status='checksum_missing', error=errc, bytes=zpath.stat().st_size)
+                  return rec
+              text = cpath.read_text(encoding='utf-8', errors='replace').strip()
+              m = re.search(r'([0-9a-fA-F]{64})', text)
+              if not m:
+                  rec.update(status='checksum_parse_fail', error=text[:200], bytes=zpath.stat().st_size)
+                  return rec
+              expected = m.group(1).lower()
+              actual = hashlib.sha256(zpath.read_bytes()).hexdigest()
+              rec.update(bytes=zpath.stat().st_size, sha256=actual, expected_sha256=expected)
+              if actual != expected:
+                  rec.update(status='checksum_fail', error='sha256 mismatch')
+                  return rec
+              try:
+                  with zipfile.ZipFile(zpath) as zf:
+                      bad = zf.testzip()
+                      if bad:
+                          rec.update(status='zip_crc_fail', error=bad)
+                          return rec
+                      members = [n for n in zf.namelist() if n.lower().endswith('.csv')]
+                      if len(members) != 1:
+                          rec.update(status='zip_shape_fail', error=f'csv members={members}')
+                          return rec
+                      out = pair_csv / pathlib.Path(members[0]).name
+                      with zf.open(members[0]) as src, open(out, 'wb') as dst:
+                          shutil.copyfileobj(src, dst)
+                  with open(out, 'rb') as f:
+                      rows = sum(1 for _ in f)
+                  rec.update(status='ok', rows=rows)
+                  return rec
+              except Exception as e:
+                  rec.update(status='extract_fail', error=f'{type(e).__name__}: {e}')
+                  return rec
+
+          tasks = [(s, d) for s in PAIRS for d in days()]
+          records = []
+          with cf.ThreadPoolExecutor(max_workers=16) as ex:
+              for i, rec in enumerate(ex.map(one, tasks), 1):
+                  records.append(rec)
+                  if i % 50 == 0 or rec['status'] != 'ok':
+                      print(f'{i}/{len(tasks)} {rec["symbol"]} {rec["day"]} {rec["status"]}', flush=True)
+
+          records.sort(key=lambda r: (r['symbol'], r['day']))
+          ROOT.mkdir(parents=True, exist_ok=True)
+          (ROOT / 'manifest.json').write_text(json.dumps({
+              'source': 'Binance Public Data',
+              'base': 'https://data.binance.vision',
+              'dataset': 'spot/daily/klines/1m',
+              'start': START.isoformat(),
+              'end': END.isoformat(),
+              'pairs': PAIRS,
+              'records': records,
+          }, indent=2), encoding='utf-8')
+          with open(ROOT / 'manifest.csv', 'w', newline='', encoding='utf-8') as f:
+              w = csv.DictWriter(f, fieldnames=list(records[0].keys()))
+              w.writeheader(); w.writerows(records)
+
+          summary = {}
+          for s in PAIRS:
+              rs = [r for r in records if r['symbol'] == s]
+              summary[s] = {
+                  'requested_days': len(rs),
+                  'ok_days': sum(r['status'] == 'ok' for r in rs),
+                  'rows': sum(int(r['rows']) for r in rs if r['status'] == 'ok'),
+                  'missing': [r['day'] for r in rs if r['status'] != 'ok'],
+              }
+          (ROOT / 'summary.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
+          with tarfile.open('bridge/binance_holdout_20260623_20260722.tar.gz', 'w:gz') as tf:
+              tf.add(ROOT, arcname='binance_holdout_20260623_20260722')
+          digest = hashlib.sha256(pathlib.Path('bridge/binance_holdout_20260623_20260722.tar.gz').read_bytes()).hexdigest()
+          pathlib.Path('bridge/binance_holdout_20260623_20260722.tar.gz.sha256').write_text(
+              f'{digest}  binance_holdout_20260623_20260722.tar.gz\n', encoding='utf-8')
+          failures = [r for r in records if r['status'] not in {'ok', 'missing'}]
+          print(json.dumps({'pairs': len(PAIRS), 'files': len(records), 'ok': sum(r['status']=='ok' for r in records),
+                            'missing': sum(r['status']=='missing' for r in records), 'failures': len(failures),
+                            'tar_sha256': digest}, indent=2))
+          if failures:
+              raise SystemExit(f'integrity failures: {len(failures)}')
+          PY
+          python bridge/download_holdout.py
+
+      - name: Upload verified holdout
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-binance-holdout-20260623-20260722
+          path: |
+            bridge/binance_holdout_20260623_20260722.tar.gz
+            bridge/binance_holdout_20260623_20260722.tar.gz.sha256
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
