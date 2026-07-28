@@ -7,13 +7,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   fetch-holdout:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Fetch and verify official Binance archives
         shell: bash
         run: |
@@ -46,7 +49,7 @@ jobs:
             done
           done
           python - <<'PY'
-          import csv, hashlib, json, pathlib
+          import hashlib, json, pathlib
           root = pathlib.Path('fqt_fresh_holdout_20260723_20260727')
           def rows(name):
               p=root/name
@@ -82,3 +85,22 @@ jobs:
             fqt-binance-fresh-holdout-20260723-20260727.tar.gz.sha256
           retention-days: 1
           if-no-files-found: error
+
+      - name: Publish run pointer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_bridge
+          cat > fqt_bridge/fresh_holdout_20260728_run.json <<EOF
+          {
+            "run_id": ${GITHUB_RUN_ID},
+            "run_attempt": ${GITHUB_RUN_ATTEMPT},
+            "workflow_sha": "${GITHUB_SHA}",
+            "artifact_name": "fqt-binance-fresh-holdout-20260723-20260727"
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fqt_bridge/fresh_holdout_20260728_run.json
+          git commit -m "FQT: publish fresh holdout run ${GITHUB_RUN_ID}"
+          git push
