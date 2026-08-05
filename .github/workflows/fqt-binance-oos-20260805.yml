@@ -22,8 +22,8 @@ jobs:
         run: |
           set -euo pipefail
           PAIRS=(BTCUSDC LINKUSDC SEIUSDC ALGOUSDC ENAUSDC ZKUSDC AVAXUSDC LUNCUSDC THEUSDC SYRUPUSDC PIXELUSDC PARTIUSDC DOLOUSDC EIGENUSDC MINAUSDC SAHARAUSDC BERAUSDC FORMUSDC SNXUSDC FILUSDC CGPTUSDC VANRYUSDC SYNUSDC PNUTUSDC ACHUSDC DOGSUSDC COMPUSDC ZAMAUSDC TRXUSDC HOLOUSDC SXTUSDC)
-          DATES=(2026-07-28 2026-07-29 2026-07-30 2026-07-31 2026-08-01 2026-08-02 2026-08-03 2026-08-04)
-          ROOT="$PWD/fqt_binance_oos_20260728_20260804"
+          DATES=(2026-07-28 2026-07-29 2026-07-30 2026-07-31 2026-08-01 2026-08-02 2026-08-03)
+          ROOT="$PWD/fqt_binance_oos_20260728_20260803"
           mkdir -p "$ROOT/zips" "$ROOT/csv"
           : > "$ROOT/downloaded.tsv"
           : > "$ROOT/missing.tsv"
@@ -50,7 +50,7 @@ jobs:
           done
           python - <<'PY'
           import hashlib, json, pathlib
-          root = pathlib.Path('fqt_binance_oos_20260728_20260804')
+          root = pathlib.Path('fqt_binance_oos_20260728_20260803')
           def rows(name):
               p = root / name
               if not p.exists():
@@ -59,9 +59,9 @@ jobs:
           csv_files = sorted((root / 'csv').glob('*/*.csv'))
           manifest = {
               'source': 'https://data.binance.vision/data/spot/daily/klines',
-              'dates': ['2026-07-28','2026-07-29','2026-07-30','2026-07-31','2026-08-01','2026-08-02','2026-08-03','2026-08-04'],
+              'dates': ['2026-07-28','2026-07-29','2026-07-30','2026-07-31','2026-08-01','2026-08-02','2026-08-03'],
               'pair_count': 31,
-              'expected_files': 248,
+              'expected_files': 217,
               'downloaded_files': len(rows('downloaded.tsv')),
               'missing_files': len(rows('missing.tsv')),
               'integrity_failures': len(rows('integrity_failures.tsv')),
@@ -79,15 +79,15 @@ jobs:
           if manifest['missing_files'] or manifest['integrity_failures'] or manifest['csv_files'] != manifest['expected_files']:
               raise SystemExit('OOS archive set incomplete')
           PY
-          tar -czf fqt-binance-oos-20260728-20260804.tar.gz "$ROOT"
-          sha256sum fqt-binance-oos-20260728-20260804.tar.gz > fqt-binance-oos-20260728-20260804.tar.gz.sha256
+          tar -czf fqt-binance-oos-20260728-20260803.tar.gz "$ROOT"
+          sha256sum fqt-binance-oos-20260728-20260803.tar.gz > fqt-binance-oos-20260728-20260803.tar.gz.sha256
 
       - name: Upload verified OOS artifact
         uses: actions/upload-artifact@v4
         with:
-          name: fqt-binance-oos-20260728-20260804
+          name: fqt-binance-oos-20260728-20260803
           path: |
-            fqt-binance-oos-20260728-20260804.tar.gz
-            fqt-binance-oos-20260728-20260804.tar.gz.sha256
+            fqt-binance-oos-20260728-20260803.tar.gz
+            fqt-binance-oos-20260728-20260803.tar.gz.sha256
           retention-days: 1
           if-no-files-found: error
