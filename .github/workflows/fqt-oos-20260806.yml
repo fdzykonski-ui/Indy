@@ -1,0 +1,96 @@
+name: FQT Sealed OOS 20260806
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fqt-oos-20260806.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  fetch-oos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Download and verify official Binance daily 1m archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          PAIRS=(BTCUSDC LINKUSDC SEIUSDC ALGOUSDC ENAUSDC ZKUSDC AVAXUSDC LUNCUSDC THEUSDC SYRUPUSDC PIXELUSDC PARTIUSDC DOLOUSDC EIGENUSDC MINAUSDC SAHARAUSDC BERAUSDC FORMUSDC SNXUSDC FILUSDC CGPTUSDC VANRYUSDC SYNUSDC PNUTUSDC ACHUSDC DOGSUSDC COMPUSDC ZAMAUSDC TRXUSDC HOLOUSDC SXTUSDC BIOUSDC)
+          DATES=(2026-08-04 2026-08-05)
+          ROOT="$PWD/fqt_sealed_oos_20260804_20260805"
+          mkdir -p "$ROOT/zips" "$ROOT/csv"
+          : > "$ROOT/downloaded.tsv"
+          : > "$ROOT/missing.tsv"
+          : > "$ROOT/integrity_failures.tsv"
+          for pair in "${PAIRS[@]}"; do
+            mkdir -p "$ROOT/zips/$pair" "$ROOT/csv/$pair"
+            for day in "${DATES[@]}"; do
+              name="${pair}-1m-${day}.zip"
+              base="https://data.binance.vision/data/spot/daily/klines/${pair}/1m/${name}"
+              if curl -fsSL --retry 3 --retry-delay 2 --connect-timeout 20 -o "$ROOT/zips/$pair/$name" "$base" && \
+                 curl -fsSL --retry 3 --retry-delay 2 --connect-timeout 20 -o "$ROOT/zips/$pair/$name.CHECKSUM" "$base.CHECKSUM"; then
+                if (cd "$ROOT/zips/$pair" && sha256sum -c "$name.CHECKSUM"); then
+                  unzip -q -p "$ROOT/zips/$pair/$name" > "$ROOT/csv/$pair/${pair}-1m-${day}.csv"
+                  printf '%s\t%s\t%s\n' "$pair" "$day" "$name" >> "$ROOT/downloaded.tsv"
+                else
+                  printf '%s\t%s\t%s\n' "$pair" "$day" "$name" >> "$ROOT/integrity_failures.tsv"
+                  rm -f "$ROOT/csv/$pair/${pair}-1m-${day}.csv"
+                fi
+              else
+                printf '%s\t%s\t%s\n' "$pair" "$day" "$name" >> "$ROOT/missing.tsv"
+                rm -f "$ROOT/zips/$pair/$name" "$ROOT/zips/$pair/$name.CHECKSUM"
+              fi
+            done
+          done
+          python - <<'PY'
+          import hashlib, json, pathlib
+          root = pathlib.Path('fqt_sealed_oos_20260804_20260805')
+          def rows(name):
+              p = root / name
+              if not p.exists(): return []
+              return [line.rstrip('\n').split('\t') for line in p.read_text().splitlines() if line.strip()]
+          csv_files = sorted((root/'csv').glob('*/*.csv'))
+          pairs = ['BTCUSDC','LINKUSDC','SEIUSDC','ALGOUSDC','ENAUSDC','ZKUSDC','AVAXUSDC','LUNCUSDC','THEUSDC','SYRUPUSDC','PIXELUSDC','PARTIUSDC','DOLOUSDC','EIGENUSDC','MINAUSDC','SAHARAUSDC','BERAUSDC','FORMUSDC','SNXUSDC','FILUSDC','CGPTUSDC','VANRYUSDC','SYNUSDC','PNUTUSDC','ACHUSDC','DOGSUSDC','COMPUSDC','ZAMAUSDC','TRXUSDC','HOLOUSDC','SXTUSDC','BIOUSDC']
+          dates = ['2026-08-04','2026-08-05']
+          available = {d: all((root/'csv'/p/f'{p}-1m-{d}.csv').exists() for p in pairs) for d in dates}
+          manifest = {
+              'source':'https://data.binance.vision/data/spot/daily/klines',
+              'created_for':'FQT OOS Custodian sealed-window evaluation',
+              'pair_count':len(pairs),
+              'pairs':pairs,
+              'dates':dates,
+              'expected_files':len(pairs)*len(dates),
+              'downloaded_files':len(rows('downloaded.tsv')),
+              'missing_files':len(rows('missing.tsv')),
+              'integrity_failures':len(rows('integrity_failures.tsv')),
+              'csv_files':len(csv_files),
+              'complete_dates':available,
+              'files':[]
+          }
+          for p in csv_files:
+              manifest['files'].append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          (root/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          print(json.dumps({k:manifest[k] for k in ('expected_files','downloaded_files','missing_files','integrity_failures','csv_files','complete_dates')},indent=2))
+          if manifest['integrity_failures']:
+              raise SystemExit('Integrity failure detected')
+          if not any(available.values()):
+              raise SystemExit('No complete date available across all pairs')
+          PY
+          tar -czf fqt-sealed-oos-20260804-20260805.tar.gz "$ROOT"
+          sha256sum fqt-sealed-oos-20260804-20260805.tar.gz > fqt-sealed-oos-20260804-20260805.tar.gz.sha256
+
+      - name: Upload verified OOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-sealed-oos-20260804-20260805
+          path: |
+            fqt-sealed-oos-20260804-20260805.tar.gz
+            fqt-sealed-oos-20260804-20260805.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
