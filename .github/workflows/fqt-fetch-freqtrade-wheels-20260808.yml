@@ -12,12 +12,12 @@ permissions:
 jobs:
   wheelhouse:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Download exact runtime wheels
+      - name: Build exact runtime wheelhouse
         shell: bash
         run: |
           set -euo pipefail
@@ -25,9 +25,9 @@ jobs:
           curl -fsSL --retry 4 --retry-delay 2 -o src.tar.gz "https://github.com/freqtrade/freqtrade/archive/${COMMIT}.tar.gz"
           tar -xzf src.tar.gz
           cd freqtrade-${COMMIT}
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip wheel setuptools
           mkdir -p ../wheelhouse
-          python -m pip download --only-binary=:all: --dest ../wheelhouse -r requirements.txt
+          python -m pip wheel --wheel-dir ../wheelhouse -r requirements.txt
           cd ..
           tar -czf freqtrade-wheelhouse-cp312.tar.gz wheelhouse
           sha256sum freqtrade-wheelhouse-cp312.tar.gz > freqtrade-wheelhouse-cp312.tar.gz.sha256
@@ -40,4 +40,4 @@ jobs:
             freqtrade-wheelhouse-cp312.tar.gz.sha256
           retention-days: 1
           if-no-files-found: error
-# trigger 2
+# trigger 3
