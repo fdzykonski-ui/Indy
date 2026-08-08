@@ -27,9 +27,10 @@ jobs:
           cd freqtrade-${COMMIT}
           python -m pip install --upgrade pip wheel setuptools
           mkdir -p ../wheelhouse
-          python -m pip wheel --wheel-dir ../wheelhouse -r requirements.txt
+          grep -v '^sdnotify==' requirements.txt > ../requirements-runtime.txt
+          python -m pip wheel --wheel-dir ../wheelhouse -r ../requirements-runtime.txt
           cd ..
-          tar -czf freqtrade-wheelhouse-cp312.tar.gz wheelhouse
+          tar -czf freqtrade-wheelhouse-cp312.tar.gz wheelhouse requirements-runtime.txt
           sha256sum freqtrade-wheelhouse-cp312.tar.gz > freqtrade-wheelhouse-cp312.tar.gz.sha256
       - name: Upload wheelhouse artifact
         uses: actions/upload-artifact@v4
@@ -40,4 +41,4 @@ jobs:
             freqtrade-wheelhouse-cp312.tar.gz.sha256
           retention-days: 1
           if-no-files-found: error
-# trigger 3
+# trigger 4
