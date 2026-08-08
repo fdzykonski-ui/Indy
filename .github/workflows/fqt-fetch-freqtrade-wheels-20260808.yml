@@ -40,3 +40,4 @@ jobs:
             freqtrade-wheelhouse-cp312.tar.gz.sha256
           retention-days: 1
           if-no-files-found: error
+# trigger 2
