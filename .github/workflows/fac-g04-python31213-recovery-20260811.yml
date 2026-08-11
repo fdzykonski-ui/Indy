@@ -1,0 +1,56 @@
+name: FAC-G04 Python 3.12.13 Recovery
+
+on:
+  push:
+    branches:
+      - agent/fac-g04-python31213-recovery-20260811
+    paths:
+      - '.github/workflows/fac-g04-python31213-recovery-20260811.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  materialize-python31213:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Verify and package exact interpreter
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -VV
+          python - <<'PY'
+          import json, platform, sys, sysconfig
+          info = {
+              'python_version': platform.python_version(),
+              'python_full': sys.version,
+              'executable': sys.executable,
+              'prefix': sys.prefix,
+              'base_prefix': sys.base_prefix,
+              'stdlib': sysconfig.get_paths()['stdlib'],
+              'platform': platform.platform(),
+          }
+          assert info['python_version'] == '3.12.13', info
+          with open('python-runtime-info.json', 'w', encoding='utf-8') as f:
+              json.dump(info, f, indent=2, sort_keys=True)
+              f.write('\n')
+          print(json.dumps(info, indent=2, sort_keys=True))
+          PY
+          PREFIX="$(python -c 'import sys; print(sys.prefix)')"
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -czf python-3.12.13-linux-x64.tar.gz -C "$PREFIX" .
+          sha256sum python-3.12.13-linux-x64.tar.gz | tee python-3.12.13-linux-x64.tar.gz.sha256
+      - name: Upload exact Python runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: fac-g04-python-3.12.13-linux-x64
+          path: |
+            python-3.12.13-linux-x64.tar.gz
+            python-3.12.13-linux-x64.tar.gz.sha256
+            python-runtime-info.json
+          retention-days: 1
+          if-no-files-found: error
