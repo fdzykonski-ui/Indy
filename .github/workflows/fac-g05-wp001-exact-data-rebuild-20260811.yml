@@ -1,0 +1,57 @@
+name: FAC-G05 WP001 Exact Data Rebuild
+
+on:
+  push:
+    branches:
+      - agent/fac-g04-python31213-recovery-20260811
+    paths:
+      - '.github/workflows/fac-g05-wp001-exact-data-rebuild-20260811.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rebuild-wp001:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Materialize exact parquet runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --only-binary=:all: 'numpy==2.4.4' 'pandas==3.0.2' 'pyarrow==24.0.0'
+          python -VV | tee FAC_G05_PYTHON_VERSION.txt
+          python - <<'PY'
+          import json, numpy, pandas, pyarrow, platform
+          d={'python':platform.python_version(),'numpy':numpy.__version__,'pandas':pandas.__version__,'pyarrow':pyarrow.__version__}
+          assert d=={'python':'3.12.13','numpy':'2.4.4','pandas':'3.0.2','pyarrow':'24.0.0'},d
+          open('FAC_G05_RUNTIME.json','w').write(json.dumps(d,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(d,sort_keys=True))
+          PY
+          python -m pip freeze > FAC_G05_PIP_FREEZE.txt
+      - name: Rebuild and byte-verify all 51 WP001 parquets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fqt_tmp/fac_g05_rebuild_wp001.py | tee FAC_G05_REBUILD.log
+      - name: Package verified canonical data
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find fac_g05_wp001_rebuild/binance -maxdepth 1 -type f -name '*-1m.parquet' | wc -l)" -eq 51
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -czf FAC_G05_WP001_EXACT_51PAIR_PARQUETS.tar.gz fac_g05_wp001_rebuild FAC_G05_RUNTIME.json FAC_G05_PIP_FREEZE.txt FAC_G05_PYTHON_VERSION.txt FAC_G05_REBUILD.log
+          sha256sum FAC_G05_WP001_EXACT_51PAIR_PARQUETS.tar.gz > FAC_G05_WP001_EXACT_51PAIR_PARQUETS.tar.gz.sha256
+      - name: Upload verified canonical data
+        uses: actions/upload-artifact@v4
+        with:
+          name: fac-g05-wp001-exact-51pair-parquets
+          path: |
+            FAC_G05_WP001_EXACT_51PAIR_PARQUETS.tar.gz
+            FAC_G05_WP001_EXACT_51PAIR_PARQUETS.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
