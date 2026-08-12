@@ -48,7 +48,7 @@ cp fqt_ip04a/seed/M4PioneerStableExposureV10.py user_data/strategies/
 cp fqt_ip04a/seed/config_ip04_v10_continuous.json config_ip04.json
 python - <<'PY'
 import json,pathlib
-p=pathlib.Path('config_ip04.json'); c=json.loads(p.read_text()); c['datadir']='user_data/data/binance'; c['user_data_dir']='user_data'; c['evidence_status']='IP04A_EXTERNAL_HIGH_MEMORY_CONTINUOUS_PARITY_V2'; p.write_text(json.dumps(c,indent=2)+'\n')
+p=pathlib.Path('config_ip04.json'); c=json.loads(p.read_text()); c['datadir']='user_data/data/binance'; c['user_data_dir']='user_data'; c['evidence_status']='IP04A_EXTERNAL_DETERMINISTIC_CONTINUOUS_PARITY'; p.write_text(json.dumps(c,indent=2)+'\n')
 PY
 sha256sum user_data/strategies/M4PioneerStableExposureV10.py config_ip04.json > evidence/strategy_config_hashes.sha256
 
@@ -58,10 +58,76 @@ python -m py_compile user_data/strategies/M4PioneerStableExposureV10.py
 python fqt_ip04a/seed/freqtrade_offline.py list-strategies --userdir user_data --strategy-path user_data/strategies | tee evidence/list_strategies.log
 python fqt_ip04a/seed/freqtrade_offline.py show-config -c config_ip04.json | tee evidence/show_config.log
 
-/usr/bin/time -v -o evidence/time_continuous.txt \
-python fqt_ip04a/seed/freqtrade_offline.py backtesting -c config_ip04.json --strategy-path user_data/strategies -s M4PioneerStableExposureV10 -i 1m --timerange 20260101-20260501 --fee 0.001 --export trades --export-filename user_data/backtest_results/ip04a_continuous --breakdown month --cache none 2>&1 | tee evidence/continuous_backtest.log
-RESULT=$(find user_data/backtest_results -maxdepth 1 -type f -name 'ip04a_continuous*.zip' -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)
-test -n "$RESULT"
-cp "$RESULT" evidence/IP04A_CONTINUOUS_RESULT.zip
-python fqt_ip04a/summarize_ip04a.py --result evidence/IP04A_CONTINUOUS_RESULT.zip --out evidence/IP04A_CONTINUOUS_SUMMARY.json
-python fqt_ip04a/seed/compare_trade_ledgers.py fqt_ip04a/seed/V10_REFERENCE_LEDGER.csv evidence/IP04A_CONTINUOUS_RESULT.zip | tee evidence/IP04A_SCHEDULE_PARITY.json
+run_bt() {
+  local label="$1"
+  local before
+  before=$(find user_data/backtest_results -maxdepth 1 -type f -name 'backtest-result-*.zip' | wc -l)
+  /usr/bin/time -v -o "evidence/time_${label}.txt" \
+  python fqt_ip04a/seed/freqtrade_offline.py backtesting -c config_ip04.json --strategy-path user_data/strategies -s M4PioneerStableExposureV10 -i 1m --timerange 20260101-20260501 --fee 0.001 --export trades --breakdown month --cache none 2>&1 | tee "evidence/continuous_${label}.log"
+  local result
+  result=$(find user_data/backtest_results -maxdepth 1 -type f -name 'backtest-result-*.zip' -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)
+  test -n "$result"
+  cp "$result" "evidence/IP04A_CONTINUOUS_${label^^}.zip"
+  python fqt_ip04a/summarize_ip04a.py --result "evidence/IP04A_CONTINUOUS_${label^^}.zip" --out "evidence/IP04A_CONTINUOUS_${label^^}_SUMMARY.json"
+  echo "$before" > "evidence/result_count_before_${label}.txt"
+}
+
+run_bt run1
+sleep 2
+run_bt run2
+
+python - <<'PY'
+import hashlib,json,math,pathlib,zipfile
+A=pathlib.Path('evidence/IP04A_CONTINUOUS_RUN1.zip'); B=pathlib.Path('evidence/IP04A_CONTINUOUS_RUN2.zip')
+
+def load(path):
+    with zipfile.ZipFile(path) as z:
+        names=[n for n in z.namelist() if n.endswith('.json') and not n.endswith('_config.json')]
+        if len(names)!=1: raise SystemExit(f'{path}: result json count {len(names)}')
+        obj=json.loads(z.read(names[0]))
+    if len(obj['strategy'])!=1: raise SystemExit(f'{path}: strategy count')
+    return next(iter(obj['strategy'].values()))
+
+def trade_norm(t):
+    keys=['pair','open_timestamp','close_timestamp','enter_tag','exit_reason','is_short','leverage','stake_amount','amount','open_rate','close_rate','profit_ratio','profit_abs','fee_open','fee_close','trade_duration','min_rate','max_rate']
+    return {k:t.get(k) for k in keys}
+
+def eq(a,b):
+    if isinstance(a,float) or isinstance(b,float):
+        try:return math.isclose(float(a),float(b),rel_tol=0,abs_tol=1e-12)
+        except:return False
+    return a==b
+
+a,b=load(A),load(B)
+ta=[trade_norm(x) for x in a['trades']]; tb=[trade_norm(x) for x in b['trades']]
+diffs=[]
+if len(ta)!=len(tb): diffs.append({'field':'trade_count','run1':len(ta),'run2':len(tb)})
+for i,(x,y) in enumerate(zip(ta,tb)):
+    for k in x:
+        if not eq(x[k],y[k]):
+            diffs.append({'trade_index':i,'field':k,'run1':x[k],'run2':y[k]})
+            if len(diffs)>=100: break
+    if len(diffs)>=100: break
+summary_keys=['total_trades','wins','draws','losses','winrate','profit_total','profit_total_abs','final_balance','profit_factor','max_drawdown_account','max_drawdown_abs','rejected_signals','market_change']
+summary_diffs=[]
+for k in summary_keys:
+    if not eq(a.get(k),b.get(k)): summary_diffs.append({'field':k,'run1':a.get(k),'run2':b.get(k)})
+canon=lambda x: hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+out={'contract':'FQT_OSV4_IP04A_CONTINUOUS_DETERMINISM_V1','run1_zip_sha256':hashlib.sha256(A.read_bytes()).hexdigest(),'run2_zip_sha256':hashlib.sha256(B.read_bytes()).hexdigest(),'run1_trade_ledger_sha256':canon(ta),'run2_trade_ledger_sha256':canon(tb),'trade_count_run1':len(ta),'trade_count_run2':len(tb),'semantic_trade_differences':diffs,'summary_differences':summary_diffs,'deterministic_pass':not diffs and not summary_diffs}
+pathlib.Path('evidence/IP04A_CONTINUOUS_DETERMINISM.json').write_text(json.dumps(out,indent=2)+'\n')
+print(json.dumps(out,indent=2))
+if not out['deterministic_pass']: raise SystemExit(2)
+PY
+
+python - <<'PY'
+import csv,json,pathlib,zipfile
+ref=pathlib.Path('fqt_ip04a/seed/V10_REFERENCE_LEDGER.csv')
+with ref.open(newline='') as f: rr=list(csv.DictReader(f))
+with zipfile.ZipFile('evidence/IP04A_CONTINUOUS_RUN1.zip') as z:
+    n=[n for n in z.namelist() if n.endswith('.json') and not n.endswith('_config.json')][0]
+    o=json.loads(z.read(n)); s=next(iter(o['strategy'].values())); tr=s['trades']
+forced=[r for r in rr if (r.get('exit_reason') or r.get('exit_reason_full'))=='force_exit']
+out={'contract':'FQT_OSV4_IP04A_MONTHLY_RESET_BOUNDARY_AUDIT_V1','reference_monthly_reset_trade_count':len(rr),'continuous_trade_count':len(tr),'trade_count_delta':len(tr)-len(rr),'reference_force_exit_count':len(forced),'reference_force_exit_rows':[{'pair':r.get('pair'),'open_date':r.get('open_date'),'close_date':r.get('close_date'),'enter_tag':r.get('enter_tag')} for r in forced],'strict_ledger_parity_applicable':False,'reason':'Monthly reference resets wallet and force-closes at month boundaries; continuous run preserves cross-month positions, compounding and slot state.'}
+pathlib.Path('evidence/IP04A_MONTHLY_RESET_BOUNDARY_AUDIT.json').write_text(json.dumps(out,indent=2)+'\n')
+print(json.dumps(out,indent=2))
+PY
