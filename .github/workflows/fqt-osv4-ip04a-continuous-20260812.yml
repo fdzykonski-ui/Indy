@@ -29,8 +29,38 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p evidence fqt_ip04a/seed
-          cat fqt_ip04a/payload.b64.* | tr -d '\r\n ' | base64 -d > fqt_ip04a/FQT_G05_SEED.reconstructed.zip
+          mkdir -p evidence fqt_ip04a/seed fqt_ip04a/normalized
+          python - <<'PY'
+          import hashlib,pathlib
+          expected={
+            '00':'ecc251174a150348a925e50d2f04980a1ad93a478708f655e4824a2eaba3f377',
+            '01':'041b6711e2778ffc4adbe20c7bcc81a07d983ac87709f1b60496d3b3e46376b3',
+            '02':'4f7abb0865a4ab4e909255b2eea1c1c6248542d984d4e1f4a866d1763ca78990',
+            '03':'18290818f25e441d6acf4fe5d8d2b8a875b3be772fa9abccbe2954217bbfe4f4',
+            '04':'93cbe43e53472b1b728b2a8c778c1ef4522f262c6542c1e5602c72ab92b9c140',
+            '05':'52857c3bc29f3d7d872e4c0d29d331e2dc811135f1951b58abf752d48213e8c6',
+            '06':'81cb1d0d642a6318ba435752e8a401b5cdab684d0e99418353e0309a643f3304',
+          }
+          report=[]
+          for n,want in expected.items():
+              p=pathlib.Path(f'fqt_ip04a/payload.b64.{n}')
+              s=''.join(p.read_text().split())
+              got=hashlib.sha256(s.encode()).hexdigest()
+              repair='none'
+              if got!=want and len(s)>12000:
+                  t=s[:12000]
+                  if hashlib.sha256(t.encode()).hexdigest()==want:
+                      s=t; got=want; repair='trimmed_trailing_transport_byte'
+              report.append(f'{n}\tchars={len(s)}\tsha256={got}\texpected={want}\trepair={repair}')
+              if got!=want:
+                  pathlib.Path('evidence/payload_chunk_hashes.tsv').write_text('\n'.join(report)+'\n')
+                  raise SystemExit(f'chunk {n} hash mismatch: {got} != {want}')
+              pathlib.Path(f'fqt_ip04a/normalized/{n}').write_text(s)
+          pathlib.Path('evidence/payload_chunk_hashes.tsv').write_text('\n'.join(report)+'\n')
+          out=b''.join(pathlib.Path(f'fqt_ip04a/normalized/{n}').read_bytes() for n in expected)
+          import base64
+          pathlib.Path('fqt_ip04a/FQT_G05_SEED.reconstructed.zip').write_bytes(base64.b64decode(out,validate=True))
+          PY
           echo '8dc2804e3aca7cd616b3c0ce6839b0c58c6bfcd18b5962fe0e454e33d1b8ed3f  fqt_ip04a/FQT_G05_SEED.reconstructed.zip' | sha256sum -c -
           unzip -t fqt_ip04a/FQT_G05_SEED.reconstructed.zip | tee evidence/seed_zip_test.log
           unzip -q -o fqt_ip04a/FQT_G05_SEED.reconstructed.zip -d fqt_ip04a/seed
@@ -117,7 +147,7 @@ jobs:
           rows=[]
           for p in sorted(set(paths)):
             rows.append({'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
-          out={'contract':'FQT_OSV4_IP04A_EXTERNAL_RETURN_V2','files':rows,'file_count':len(rows)}
+          out={'contract':'FQT_OSV4_IP04A_EXTERNAL_RETURN_V3','files':rows,'file_count':len(rows)}
           pathlib.Path('evidence/RETURN_MANIFEST.json').write_text(json.dumps(out,indent=2)+'\n')
           PY
           paths=(evidence fqt_ip04a/FREQTRADE_PROJECT_SOURCE_RECEIPT.json)
