@@ -1,0 +1,172 @@
+{
+  "$schema": "https://schema.freqtrade.io/schema.json",
+  "api_server": {
+    "enabled": false,
+    "jwt_secret_key": "",
+    "listen_ip_address": "127.0.0.1",
+    "listen_port": 8080,
+    "password": "",
+    "username": "",
+    "ws_token": ""
+  },
+  "bot_name": "fqt-v10-unlimited-baseline-20260723",
+  "cancel_open_orders_on_exit": false,
+  "datadir": "data/main_with_warmup",
+  "dataformat_ohlcv": "parquet",
+  "dry_run": true,
+  "dry_run_wallet": 1000,
+  "entry_pricing": {
+    "check_depth_of_market": {
+      "bids_to_ask_delta": 1,
+      "enabled": false
+    },
+    "price_last_balance": 0.0,
+    "price_side": "same",
+    "use_order_book": false
+  },
+  "evidence_status": "IP04_TECHNICAL_PARITY_ONLY",
+  "exchange": {
+    "ccxt_async_config": {
+      "enableRateLimit": false
+    },
+    "ccxt_config": {
+      "enableRateLimit": false
+    },
+    "enable_ws": false,
+    "key": "",
+    "name": "binance",
+    "pair_blacklist": [],
+    "pair_whitelist": [
+      "2Z/USDC",
+      "AAVE/USDC",
+      "ALGO/USDC",
+      "ARB/USDC",
+      "ASTER/USDC",
+      "ATOM/USDC",
+      "AVAX/USDC",
+      "BCH/USDC",
+      "BNB/USDC",
+      "BTC/USDC",
+      "DASH/USDC",
+      "DOGE/USDC",
+      "DOT/USDC",
+      "ENA/USDC",
+      "ETH/USDC",
+      "FIL/USDC",
+      "HBAR/USDC",
+      "LINK/USDC",
+      "LTC/USDC",
+      "PENDLE/USDC",
+      "PUMP/USDC",
+      "SEI/USDC",
+      "SHIB/USDC",
+      "SOL/USDC",
+      "SYRUP/USDC",
+      "TRX/USDC",
+      "UNI/USDC",
+      "WLFI/USDC",
+      "XPL/USDC",
+      "XRP/USDC",
+      "ZK/USDC"
+    ],
+    "secret": ""
+  },
+  "exit_pricing": {
+    "price_last_balance": 0.0,
+    "price_side": "same",
+    "use_order_book": false
+  },
+  "fee": 0.001,
+  "fiat_display_currency": "USD",
+  "force_entry_enable": false,
+  "governance": {
+    "alpha_frozen": true,
+    "checkpoint_parent": "FQT-OSV4-IP02-PASS-20260812T034238Z",
+    "current_metadata_snapshot_sha256": "64d3fcea807ac8cea679162c2dadc814a02ce5f2648df6018e71a21cba51f2d1",
+    "dataset_root_sha256": "f73fe4ce98da5b500c8d074f3b1c51bf3b5474b5cb76066ffd5321128170376c",
+    "dry_run_allowed": false,
+    "dry_run_requires": "IP09_PASS_AND_INDEPENDENT_REVIEW",
+    "warmup_evidence_sha256": "09b94721da93112c8e67cf925d24b593ba4d38cc8b4960e414e8d5ebb07b74bb"
+  },
+  "initial_state": "stopped",
+  "internals": {
+    "process_throttle_secs": 5
+  },
+  "max_open_trades": 2,
+  "pairlists": [
+    {
+      "method": "StaticPairList"
+    }
+  ],
+  "portfolio_research": {
+    "all_pairs_retained": true,
+    "baseline_pair_winrate_threshold_pct": 70.0,
+    "btc_stake_factor": 1.0,
+    "candidate_pair_tag_keys": [
+      "ASTER/USDC|trend_pullback|clean_uptrend|trend_pullback|68",
+      "ATOM/USDC|trend_pullback|clean_uptrend|trend_pullback|72",
+      "AVAX/USDC|trend_pullback|clean_uptrend|trend_pullback|70",
+      "AVAX/USDC|trend_pullback|clean_uptrend|trend_pullback|71",
+      "BCH/USDC|trend_pullback|clean_uptrend|trend_pullback|69",
+      "BCH/USDC|trend_pullback|clean_uptrend|trend_pullback|73",
+      "BCH/USDC|trend_pullback|recovery_reclaim|trend_pullback|70",
+      "BTC/USDC|trend_pullback|clean_uptrend|trend_pullback|68",
+      "BTC/USDC|trend_pullback|recovery_reclaim|trend_pullback|69",
+      "DOT/USDC|trend_pullback|momentum_burst|trend_pullback|72",
+      "DOT/USDC|trend_pullback|recovery_reclaim|trend_pullback|71",
+      "LINK/USDC|trend_pullback|clean_uptrend|trend_pullback|73",
+      "LINK/USDC|trend_pullback|momentum_burst|trend_pullback|70",
+      "LTC/USDC|trend_pullback|clean_uptrend|trend_pullback|69",
+      "PENDLE/USDC|vwap_reclaim|recovery_reclaim|vwap_reclaim|69",
+      "PUMP/USDC|trend_pullback|clean_uptrend|trend_pullback|69",
+      "PUMP/USDC|trend_pullback|clean_uptrend|trend_pullback|72",
+      "TRX/USDC|trend_pullback|clean_uptrend|trend_pullback|68",
+      "XPL/USDC|trend_pullback|clean_uptrend|trend_pullback|70",
+      "ZK/USDC|momentum_continuation|momentum_burst|trend_pullback|74",
+      "ZK/USDC|trend_pullback|clean_uptrend|trend_pullback|69"
+    ],
+    "chronological_validation": "20260501-20260623",
+    "default_alt_stake_factor": 0.025,
+    "development": "20260101-20260301",
+    "holdout": "20260401-20260501",
+    "latest_version": "M4PioneerExecutionMarginV13",
+    "main_timerange": "20260101-20260501",
+    "oos_truth_note": "No pristine OOS remains inside 2025-01-01..2026-06-22 because these windows were repeatedly inspected in prior iterations.",
+    "pair_count": 31,
+    "proven_pair_tag_keys": [
+      "2Z/USDC|trend_pullback|clean_uptrend|trend_pullback|69",
+      "ASTER/USDC|trend_pullback|clean_uptrend|trend_pullback|70",
+      "DASH/USDC|trend_pullback|clean_uptrend|trend_pullback|71",
+      "DOT/USDC|trend_pullback|clean_uptrend|trend_pullback|69",
+      "ETH/USDC|trend_pullback|clean_uptrend|trend_pullback|69",
+      "PENDLE/USDC|trend_pullback|clean_uptrend|trend_pullback|73",
+      "SHIB/USDC|trend_pullback|clean_uptrend|trend_pullback|69",
+      "XPL/USDC|trend_pullback|recovery_reclaim|trend_pullback|69",
+      "XRP/USDC|trend_pullback|clean_uptrend|trend_pullback|68"
+    ],
+    "selection_rule_candidate": "Jan-Feb combined positive, n>=2, WR>=70%, PF>=1.1, worst>-8%",
+    "selection_rule_proven": "both Jan and Feb nonnegative, combined positive, n>=3, WR>=75%",
+    "stake_mode": "unlimited_split_by_max_open_trades_then_custom_stake_scaled",
+    "status": "RESEARCH_ONLY_NOT_PROMOTED",
+    "validation": "20260301-20260401",
+    "validation_selected_factor": 1.0
+  },
+  "stake_amount": "unlimited",
+  "stake_currency": "USDC",
+  "strategy": "M4PioneerStableExposureV10",
+  "telegram": {
+    "chat_id": "",
+    "enabled": false,
+    "token": ""
+  },
+  "timeframe": "1m",
+  "tradable_balance_ratio": 1.0,
+  "trading_mode": "spot",
+  "unfilledtimeout": {
+    "entry": 10,
+    "exit": 10,
+    "exit_timeout_count": 0,
+    "unit": "minutes"
+  },
+  "user_data_dir": "user_data"
+}

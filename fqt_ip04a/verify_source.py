@@ -1,0 +1,3 @@
+#!/usr/bin/env python3
+import json,pathlib,subprocess,sys
+r=json.loads(pathlib.Path(sys.argv[1]).read_text());root=pathlib.Path(sys.argv[2]);head=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip();out={'contract':'FQT_PROJECT_SOURCE_COMMIT_PARITY_V1','local_archive_develop_ref':r['develop_ref'],'expected_commit':r['expected_commit'],'external_clone_head':head,'archive_parts':r['parts'],'status':'PASS' if head==r['develop_ref']==r['expected_commit'] else 'FAIL'};pathlib.Path('evidence').mkdir(exist_ok=True);pathlib.Path('evidence/SOURCE_PARITY.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2));raise SystemExit(0 if out['status']=='PASS' else 2)

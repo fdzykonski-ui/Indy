@@ -1,0 +1,35 @@
+{
+  "contract": "FQT_PROJECT_SOURCE_COMMIT_FREEZE_V1",
+  "source": "local freqtrade_backup.7z.001..005",
+  "parts": [
+    {
+      "path": "freqtrade_backup.7z.001",
+      "bytes": 314572800,
+      "sha256": "127fa2215b3f86d2cd58b542ac2cc360b51a7b2695cb14a15b13deb27d1ab2de"
+    },
+    {
+      "path": "freqtrade_backup.7z.002",
+      "bytes": 314572800,
+      "sha256": "1563629351f85bb36bb795e8a8a58efe6fc11c7e9253a10065141befdd544ef3"
+    },
+    {
+      "path": "freqtrade_backup.7z.003",
+      "bytes": 314572800,
+      "sha256": "4acba65c3065ca97297f2b249dc538cece89a510fb49e7e3782e4b1c0a56d988"
+    },
+    {
+      "path": "freqtrade_backup.7z.004",
+      "bytes": 314572800,
+      "sha256": "62da958738686f93d65bc53ff633aaf5689fb4250e9a49d07a494c5d7b95282f"
+    },
+    {
+      "path": "freqtrade_backup.7z.005",
+      "bytes": 141216289,
+      "sha256": "f1f10fac29253c78a7480b556e689629036b6108942aa4a98c4d183fa10dcb0e"
+    }
+  ],
+  "git_head": "ref: refs/heads/develop",
+  "develop_ref": "77cabd291fa656ec6a1d237cfa524ee792133d89",
+  "expected_commit": "77cabd291fa656ec6a1d237cfa524ee792133d89",
+  "status": "PASS"
+}
