@@ -1,0 +1,61 @@
+name: FQT OSV4 IP02 External Acquisition Resume 20260812
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/fqt-osv4-ip02-external-resume-20260812.yml'
+      - 'fqt_ip02_external_20260812/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute frozen fail-closed acquisition contract
+        id: acquire
+        shell: bash
+        run: |
+          set +e
+          ROOT="$PWD/fqt_ip02_external_20260812/work"
+          mkdir -p "$ROOT/scripts" "$ROOT/external_runner"
+          cp fqt_ip02_external_20260812/scripts/acquire_fresh_oos.py "$ROOT/scripts/"
+          cp fqt_ip02_external_20260812/external_runner/run_ip02_external.sh "$ROOT/external_runner/"
+          chmod +x "$ROOT/external_runner/run_ip02_external.sh" "$ROOT/scripts/acquire_fresh_oos.py"
+          "$ROOT/external_runner/run_ip02_external.sh" "$ROOT" 2>&1 | tee "$ROOT/ip02_console.log"
+          rc=${PIPESTATUS[0]}
+          echo "runner_rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package return evidence and verified raw archives
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$PWD/fqt_ip02_external_20260812/work"
+          python - <<'PY'
+          import hashlib,json,pathlib
+          r=pathlib.Path('fqt_ip02_external_20260812/work')
+          files=[]
+          for p in sorted(x for x in r.rglob('*') if x.is_file()):
+              h=hashlib.sha256(p.read_bytes()).hexdigest(); files.append({'path':str(p.relative_to(r)),'bytes':p.stat().st_size,'sha256':h})
+          out={'contract':'FQT_OSV4_IP02_EXTERNAL_RETURN_MANIFEST_V1','files':files,'file_count':len(files)}
+          (r/'evidence').mkdir(exist_ok=True); (r/'evidence/RETURN_MANIFEST.json').write_text(json.dumps(out,indent=2)+'\n')
+          PY
+          tar -C "$ROOT" -czf FQT_OSV4_IP02_EXTERNAL_RETURN_20260812.tar.gz .
+          sha256sum FQT_OSV4_IP02_EXTERNAL_RETURN_20260812.tar.gz > FQT_OSV4_IP02_EXTERNAL_RETURN_20260812.tar.gz.sha256
+      - name: Upload acquisition return artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-osv4-ip02-external-return-20260812
+          path: |
+            FQT_OSV4_IP02_EXTERNAL_RETURN_20260812.tar.gz
+            FQT_OSV4_IP02_EXTERNAL_RETURN_20260812.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
+      - name: Enforce runner outcome
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.acquire.outputs.runner_rc }}" = "0"
