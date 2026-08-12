@@ -1,0 +1,57 @@
+name: FQT OSV4 IP04B Continuous Stress Exact 20260813
+on:
+  push:
+    branches:
+      - fqt-ip04b-stress-exact-20260813
+    paths:
+      - '.github/workflows/fqt-osv4-ip04b-stress-exact-20260813.yml'
+      - 'fqt_ip04b/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  stress:
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        scenario: [fee002, fee003, delay1, delay2, protections_on, mot1, mot3, stake200, wallet500, wallet2000]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Run exact continuous scenario
+        id: run
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_ip04b/run_scenario.sh
+          fqt_ip04b/run_scenario.sh '${{ matrix.scenario }}' 2>&1 | tee 'scenario_${{ matrix.scenario }}_console.log'
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package scenario evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          cp -f 'scenario_${{ matrix.scenario }}_console.log' evidence/ 2>/dev/null || true
+          tar -czf 'FQT_IP04B_${{ matrix.scenario }}_20260813.tar.gz' evidence
+          sha256sum 'FQT_IP04B_${{ matrix.scenario }}_20260813.tar.gz' > 'FQT_IP04B_${{ matrix.scenario }}_20260813.tar.gz.sha256'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 'fqt-ip04b-${{ matrix.scenario }}-20260813'
+          path: |
+            FQT_IP04B_${{ matrix.scenario }}_20260813.tar.gz
+            FQT_IP04B_${{ matrix.scenario }}_20260813.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
+      - name: Enforce scenario outcome
+        if: always()
+        shell: bash
+        run: test "${{ steps.run.outputs.rc }}" = "0"
