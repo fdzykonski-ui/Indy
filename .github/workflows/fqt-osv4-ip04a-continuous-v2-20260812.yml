@@ -1,0 +1,60 @@
+name: FQT OSV4 IP04A Continuous Parity V2 20260812
+on:
+  push:
+    branches:
+      - fqt-ip04a-continuous-20260812
+    paths:
+      - '.github/workflows/fqt-osv4-ip04a-continuous-v2-20260812.yml'
+      - 'fqt_ip04a/run_ip04a_v2.sh'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Execute fail-closed IP04A continuous parity runner
+        id: run
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_ip04a/run_ip04a_v2.sh
+          fqt_ip04a/run_ip04a_v2.sh 2>&1 | tee ip04a_console.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package immutable evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          cp -f ip04a_console.log evidence/ 2>/dev/null || true
+          python - <<'PY'
+          import hashlib,json,pathlib
+          files=[]
+          for p in sorted(x for x in pathlib.Path('evidence').rglob('*') if x.is_file()):
+              files.append({'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          pathlib.Path('evidence/RETURN_MANIFEST.json').write_text(json.dumps({'contract':'FQT_OSV4_IP04A_EXTERNAL_RETURN_V2','files':files},indent=2)+'\n')
+          PY
+          tar -czf FQT_OSV4_IP04A_EXTERNAL_RETURN_V2_20260812.tar.gz evidence
+          sha256sum FQT_OSV4_IP04A_EXTERNAL_RETURN_V2_20260812.tar.gz > FQT_OSV4_IP04A_EXTERNAL_RETURN_V2_20260812.tar.gz.sha256
+      - name: Upload IP04A evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-osv4-ip04a-external-return-v2-20260812
+          path: |
+            FQT_OSV4_IP04A_EXTERNAL_RETURN_V2_20260812.tar.gz
+            FQT_OSV4_IP04A_EXTERNAL_RETURN_V2_20260812.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
+      - name: Enforce runner outcome
+        if: always()
+        shell: bash
+        run: test "${{ steps.run.outputs.rc }}" = "0"
