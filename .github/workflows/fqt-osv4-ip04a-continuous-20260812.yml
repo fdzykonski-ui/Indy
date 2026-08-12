@@ -1,10 +1,137 @@
 name: FQT OSV4 IP04A Continuous Parity 20260812
 on:
+  push:
+    branches:
+      - fqt-ip04a-continuous-20260812
+    paths:
+      - '.github/workflows/fqt-osv4-ip04a-continuous-20260812.yml'
+      - 'fqt_ip04a/**'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  staging:
+  parity:
     runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      PYTHONHASHSEED: '0'
+      PIP_DISABLE_PIP_VERSION_CHECK: '1'
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
     steps:
-      - run: echo "Payload staging only; no execution on push."
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Reconstruct and verify frozen project seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence fqt_ip04a/seed
+          cat fqt_ip04a/payload.b64.* | tr -d '\r\n ' | base64 -d > fqt_ip04a/FQT_G05_SEED.reconstructed.zip
+          echo '8dc2804e3aca7cd616b3c0ce6839b0c58c6bfcd18b5962fe0e454e33d1b8ed3f  fqt_ip04a/FQT_G05_SEED.reconstructed.zip' | sha256sum -c -
+          unzip -t fqt_ip04a/FQT_G05_SEED.reconstructed.zip | tee evidence/seed_zip_test.log
+          unzip -q -o fqt_ip04a/FQT_G05_SEED.reconstructed.zip -d fqt_ip04a/seed
+          find fqt_ip04a/seed -maxdepth 1 -type f -printf '%f\t%s\n' | sort | tee evidence/seed_file_inventory.tsv
+      - name: Install exact project-source commit and memory patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence user_data/strategies user_data/data/binance user_data/backtest_results raw
+          git clone --filter=blob:none https://github.com/freqtrade/freqtrade.git freqtrade_src
+          git -C freqtrade_src checkout --detach 77cabd291fa656ec6a1d237cfa524ee792133d89
+          python fqt_ip04a/verify_source.py fqt_ip04a/FREQTRADE_PROJECT_SOURCE_RECEIPT.json freqtrade_src
+          {
+            echo '--- a/freqtrade/optimize/backtesting.py'
+            echo '+++ b/freqtrade/optimize/backtesting.py'
+            tail -n +3 fqt_ip04a/seed/backtesting_memory_patch_v3.diff
+          } > evidence/backtesting_memory_patch_v3.relative.diff
+          patch -d freqtrade_src -p1 < evidence/backtesting_memory_patch_v3.relative.diff
+          git -C freqtrade_src diff --check
+          git -C freqtrade_src diff -- freqtrade/optimize/backtesting.py > evidence/backtesting_memory_patch_v3.applied.diff
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install --no-cache-dir -e ./freqtrade_src
+          python fqt_ip04a/seed/freqtrade_offline.py --version | tee evidence/freqtrade_version.log
+          cp fqt_ip04a/seed/M4PioneerStableExposureV10.py user_data/strategies/
+          cp fqt_ip04a/seed/config_ip04_v10_continuous.json config_ip04.json
+          python - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('config_ip04.json')
+          c=json.loads(p.read_text())
+          c['datadir']='user_data/data/binance'
+          c['user_data_dir']='user_data'
+          c['evidence_status']='IP04A_EXTERNAL_HIGH_MEMORY_CONTINUOUS_PARITY'
+          p.write_text(json.dumps(c,indent=2)+'\n')
+          PY
+          sha256sum user_data/strategies/M4PioneerStableExposureV10.py config_ip04.json > evidence/strategy_config_hashes.sha256
+      - name: Acquire and materialize exact 31-pair main data
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fqt_ip04a/prepare_main_data.py --config config_ip04.json --datadir user_data/data/binance --raw raw --manifest evidence/MAIN_DATA_MANIFEST.json | tee evidence/data_materialization.log
+          python fqt_ip04a/seed/freqtrade_offline.py list-data --userdir user_data --datadir user_data/data/binance --data-format-ohlcv parquet | tee evidence/list_data.log
+      - name: Static strategy and configuration checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile user_data/strategies/M4PioneerStableExposureV10.py
+          python fqt_ip04a/seed/freqtrade_offline.py list-strategies --userdir user_data --strategy-path user_data/strategies | tee evidence/list_strategies.log
+          python fqt_ip04a/seed/freqtrade_offline.py show-config -c config_ip04.json | tee evidence/show_config.log
+      - name: Run one-process 31-pair continuous backtest
+        shell: bash
+        run: |
+          set -euo pipefail
+          /usr/bin/time -v -o evidence/time_continuous.txt \
+          python fqt_ip04a/seed/freqtrade_offline.py backtesting \
+            -c config_ip04.json \
+            --strategy-path user_data/strategies \
+            -s M4PioneerStableExposureV10 \
+            -i 1m \
+            --timerange 20260101-20260501 \
+            --fee 0.001 \
+            --export trades \
+            --export-filename user_data/backtest_results/ip04a_continuous \
+            --breakdown month \
+            --cache none 2>&1 | tee evidence/continuous_backtest.log
+          RESULT=$(find user_data/backtest_results -maxdepth 1 -type f -name 'ip04a_continuous*.zip' -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)
+          test -n "$RESULT"
+          cp "$RESULT" evidence/IP04A_CONTINUOUS_RESULT.zip
+          python fqt_ip04a/summarize_ip04a.py --result evidence/IP04A_CONTINUOUS_RESULT.zip --out evidence/IP04A_CONTINUOUS_SUMMARY.json
+          python fqt_ip04a/seed/compare_trade_ledgers.py fqt_ip04a/seed/V10_REFERENCE_LEDGER.csv evidence/IP04A_CONTINUOUS_RESULT.zip | tee evidence/IP04A_SCHEDULE_PARITY.json
+      - name: Create immutable return bundle
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('.')
+          paths=[]
+          for base in ['evidence','config_ip04.json','user_data/strategies/M4PioneerStableExposureV10.py','fqt_ip04a/FREQTRADE_PROJECT_SOURCE_RECEIPT.json']:
+            p=root/base
+            if p.is_file(): paths.append(p)
+            elif p.exists(): paths.extend(x for x in p.rglob('*') if x.is_file())
+          rows=[]
+          for p in sorted(set(paths)):
+            rows.append({'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          out={'contract':'FQT_OSV4_IP04A_EXTERNAL_RETURN_V2','files':rows,'file_count':len(rows)}
+          pathlib.Path('evidence/RETURN_MANIFEST.json').write_text(json.dumps(out,indent=2)+'\n')
+          PY
+          paths=(evidence fqt_ip04a/FREQTRADE_PROJECT_SOURCE_RECEIPT.json)
+          [[ -f config_ip04.json ]] && paths+=(config_ip04.json)
+          [[ -f user_data/strategies/M4PioneerStableExposureV10.py ]] && paths+=(user_data/strategies/M4PioneerStableExposureV10.py)
+          tar -czf FQT_OSV4_IP04A_EXTERNAL_RETURN_20260812.tar.gz "${paths[@]}"
+          sha256sum FQT_OSV4_IP04A_EXTERNAL_RETURN_20260812.tar.gz > FQT_OSV4_IP04A_EXTERNAL_RETURN_20260812.tar.gz.sha256
+      - name: Upload IP04A evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-osv4-ip04a-external-return-20260812
+          path: |
+            FQT_OSV4_IP04A_EXTERNAL_RETURN_20260812.tar.gz
+            FQT_OSV4_IP04A_EXTERNAL_RETURN_20260812.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
