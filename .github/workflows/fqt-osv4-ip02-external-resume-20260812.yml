@@ -1,5 +1,11 @@
 name: FQT OSV4 IP02 External Acquisition Resume 20260812
 on:
+  push:
+    branches:
+      - fqt-ip02-external-resume-20260812-0302
+    paths:
+      - '.github/workflows/fqt-osv4-ip02-external-resume-20260812.yml'
+      - 'fqt_ip02_external_20260812/**'
   pull_request:
     paths:
       - '.github/workflows/fqt-osv4-ip02-external-resume-20260812.yml'
