@@ -1,0 +1,38 @@
+name: FQT IP04A Dump Payload Chunks
+on:
+  push:
+    branches:
+      - fqt-ip04a-continuous-20260812
+    paths:
+      - '.github/workflows/fqt-ip04a-dump-payload-chunks.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normalize and inventory chunks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dump
+          python - <<'PY'
+          import hashlib, json, pathlib
+          rows=[]
+          for p in sorted(pathlib.Path('fqt_ip04a').glob('payload.b64.*')):
+              s=''.join(p.read_text().split())
+              out=pathlib.Path('dump')/(p.name+'.normalized.txt')
+              out.write_text(s)
+              rows.append({'path':str(p),'normalized_path':str(out),'chars':len(s),'sha256':hashlib.sha256(s.encode()).hexdigest()})
+          pathlib.Path('dump/manifest.json').write_text(json.dumps(rows,indent=2)+'\n')
+          print(json.dumps(rows,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fqt-ip04a-payload-chunks-dump
+          path: dump/**
+          retention-days: 1
+          if-no-files-found: error
