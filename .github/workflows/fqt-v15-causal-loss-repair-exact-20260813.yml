@@ -1,0 +1,90 @@
+name: FQT V15 Exact Causal Loss Repair Matrix 20260813
+on:
+  push:
+    branches: [fqt-v15-causal-loss-repair-exact-20260813]
+    paths:
+      - 'fqt_v15_loss/**'
+      - '.github/workflows/fqt-v15-causal-loss-repair-exact-20260813.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  loss:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        scenario:
+          - no_vwap_fee001
+          - no_vwap_fee002
+          - no_vwap_delay1_fee001
+          - timeout360_fee001
+          - timeout720_fee001
+          - timeoutcombo_fee001
+          - timeout1440_fee001
+          - timeoutcombo_fee002
+          - no_vwap_combo_fee001
+          - no_vwap_combo_delay1_fee001
+    env:
+      PYTHONHASHSEED: '0'
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Execute exact continuous causal-loss candidate
+        id: execute
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_v15_loss/run_loss_scenario.sh
+          fqt_v15_loss/run_loss_scenario.sh '${{ matrix.scenario }}' 2>&1 | tee ip15l_console.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > runner_rc.txt
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package immutable scenario evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          cp ip15l_console.log evidence/ 2>/dev/null || true
+          cp runner_rc.txt evidence/ 2>/dev/null || true
+          python - <<'PY'
+          import hashlib,json,pathlib
+          paths=[]
+          for base in ['evidence','config_loss.json','user_data/strategies/V15CausalLossRepair.py']:
+              p=pathlib.Path(base)
+              if p.is_file(): paths.append(p)
+              elif p.exists(): paths.extend(x for x in p.rglob('*') if x.is_file())
+          rows=[{'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(set(paths))]
+          pathlib.Path('evidence/RETURN_MANIFEST.json').write_text(json.dumps({'contract':'FQT_V15_CAUSAL_LOSS_REPAIR_RETURN_V1','scenario':'${{ matrix.scenario }}','files':rows},indent=2)+'\n')
+          PY
+          paths=(evidence)
+          [[ -f config_loss.json ]] && paths+=(config_loss.json)
+          [[ -f user_data/strategies/V15CausalLossRepair.py ]] && paths+=(user_data/strategies/V15CausalLossRepair.py)
+          tar -czf 'FQT_V15_LOSS_${{ matrix.scenario }}_20260813.tar.gz' "${paths[@]}"
+          sha256sum 'FQT_V15_LOSS_${{ matrix.scenario }}_20260813.tar.gz' > 'FQT_V15_LOSS_${{ matrix.scenario }}_20260813.tar.gz.sha256'
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v15-loss-${{ matrix.scenario }}-20260813
+          path: |
+            FQT_V15_LOSS_${{ matrix.scenario }}_20260813.tar.gz
+            FQT_V15_LOSS_${{ matrix.scenario }}_20260813.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
+      - name: Enforce candidate outcome
+        if: always()
+        shell: bash
+        run: |
+          test -f runner_rc.txt
+          test "$(cat runner_rc.txt)" = '0'
+          test -f 'evidence/${{ matrix.scenario }}_SUMMARY.json'
