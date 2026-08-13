@@ -34,6 +34,7 @@ jobs:
               raise SystemExit('duplicate strategy path repair incomplete')
           PY
           bash -n fqt_rnd_v23/run_v23.sh
+          echo "PYTHONPATH=$GITHUB_WORKSPACE/user_data/strategies${PYTHONPATH:+:$PYTHONPATH}" >> "$GITHUB_ENV"
       - name: Execute frozen R&D V2.3 pipeline
         id: run
         shell: bash
