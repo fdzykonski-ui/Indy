@@ -1,0 +1,56 @@
+name: FQT R&D V2.3 Contract Clean 20260813
+on:
+  push:
+    branches:
+      - fqt-rnd-v23-contract-clean-20260813
+    paths:
+      - '.github/workflows/fqt-rnd-v23-contract-clean-20260813.yml'
+      - 'fqt_rnd_v23/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Execute frozen R&D V2.3 pipeline
+        id: run
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_rnd_v23/run_v23.sh
+          fqt_rnd_v23/run_v23.sh 2>&1 | tee fqt_rnd_v23_console.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package evidence even on hard-gate failure
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/v23
+          cp -f fqt_rnd_v23_console.log evidence/v23/ 2>/dev/null || true
+          if [ ! -f FQT_RND_V23_CONTRACT_CLEAN_RETURN_20260813.tar.gz ]; then
+            tar -czf FQT_RND_V23_CONTRACT_CLEAN_RETURN_20260813.tar.gz evidence/v23 fqt_rnd_v23 2>/dev/null || \
+            tar -czf FQT_RND_V23_CONTRACT_CLEAN_RETURN_20260813.tar.gz fqt_rnd_v23
+            sha256sum FQT_RND_V23_CONTRACT_CLEAN_RETURN_20260813.tar.gz > FQT_RND_V23_CONTRACT_CLEAN_RETURN_20260813.tar.gz.sha256
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fqt-rnd-v23-contract-clean-return-20260813
+          path: |
+            FQT_RND_V23_CONTRACT_CLEAN_RETURN_20260813.tar.gz
+            FQT_RND_V23_CONTRACT_CLEAN_RETURN_20260813.tar.gz.sha256
+            fqt_rnd_v23_console.log
+          retention-days: 1
+          if-no-files-found: error
+      - name: Enforce pipeline verdict
+        if: always()
+        shell: bash
+        run: test "${{ steps.run.outputs.rc }}" = "0"
