@@ -1,0 +1,90 @@
+name: FQT V15 Exact Protection Repair Matrix 20260813
+on:
+  push:
+    branches: [fqt-v15-protection-repair-exact-20260813]
+    paths:
+      - 'fqt_v15_protect/**'
+      - '.github/workflows/fqt-v15-protection-repair-exact-20260813.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  protection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        scenario:
+          - v10_cd60_fee001
+          - v10_cd180_fee001
+          - v10_cd360_fee001
+          - v10_sg2_fee001
+          - v10_sg6_fee001
+          - v10_combo_fee001
+          - v10_cd180_delay1_fee001
+          - v10_cd180_fee002
+          - sl25_cd360_fee001
+          - sl25_sg6_fee001
+    env:
+      PYTHONHASHSEED: '0'
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Execute exact continuous protection candidate
+        id: execute
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_v15_protect/run_protection_scenario.sh
+          fqt_v15_protect/run_protection_scenario.sh '${{ matrix.scenario }}' 2>&1 | tee ip15p_console.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > runner_rc.txt
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package immutable scenario evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          cp ip15p_console.log evidence/ 2>/dev/null || true
+          cp runner_rc.txt evidence/ 2>/dev/null || true
+          python - <<'PY'
+          import hashlib,json,pathlib
+          paths=[]
+          for base in ['evidence','config_protection.json','user_data/strategies/V15ProtectionRepair.py']:
+              p=pathlib.Path(base)
+              if p.is_file(): paths.append(p)
+              elif p.exists(): paths.extend(x for x in p.rglob('*') if x.is_file())
+          rows=[{'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(set(paths))]
+          pathlib.Path('evidence/RETURN_MANIFEST.json').write_text(json.dumps({'contract':'FQT_V15_PROTECTION_REPAIR_RETURN_V1','scenario':'${{ matrix.scenario }}','files':rows},indent=2)+'\n')
+          PY
+          paths=(evidence)
+          [[ -f config_protection.json ]] && paths+=(config_protection.json)
+          [[ -f user_data/strategies/V15ProtectionRepair.py ]] && paths+=(user_data/strategies/V15ProtectionRepair.py)
+          tar -czf 'FQT_V15_PROTECTION_${{ matrix.scenario }}_20260813.tar.gz' "${paths[@]}"
+          sha256sum 'FQT_V15_PROTECTION_${{ matrix.scenario }}_20260813.tar.gz' > 'FQT_V15_PROTECTION_${{ matrix.scenario }}_20260813.tar.gz.sha256'
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v15-protection-${{ matrix.scenario }}-20260813
+          path: |
+            FQT_V15_PROTECTION_${{ matrix.scenario }}_20260813.tar.gz
+            FQT_V15_PROTECTION_${{ matrix.scenario }}_20260813.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
+      - name: Enforce candidate outcome
+        if: always()
+        shell: bash
+        run: |
+          test -f runner_rc.txt
+          test "$(cat runner_rc.txt)" = '0'
+          test -f 'evidence/${{ matrix.scenario }}_SUMMARY.json'
