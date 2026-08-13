@@ -18,6 +18,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12.13'
+      - name: Repair duplicate strategy discovery in execution harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('fqt_rnd_v23/run_v23.sh')
+          s = p.read_text()
+          s = s.replace('--userdir user_data --strategy-path user_data/strategies', '--userdir user_data')
+          s = s.replace('  --strategy-path user_data/strategies \\\n', '')
+          s = s.replace('-c "$config" --strategy-path user_data/strategies -s "$strategy"', '-c "$config" -s "$strategy"')
+          p.write_text(s)
+          if '--strategy-path user_data/strategies' in s:
+              raise SystemExit('duplicate strategy path repair incomplete')
+          PY
+          bash -n fqt_rnd_v23/run_v23.sh
       - name: Execute frozen R&D V2.3 pipeline
         id: run
         shell: bash
