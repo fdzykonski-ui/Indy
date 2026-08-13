@@ -3,12 +3,16 @@ set -euo pipefail
 export PYTHONHASHSEED=0 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 chmod +x fqt_ip04a/run_ip04a_v2.sh
 fqt_ip04a/run_ip04a_v2.sh
-# The strategy is defined and validated with limit entry/exit orders.  Freqtrade's
-# default lookahead helper forces market orders, which changed the baseline from
-# 663 trades to zero completed trades.  Use the documented limit-order mode so
-# the bias test audits the actual strategy execution contract.  Any limit-order
-# false-positive risk is retained explicitly in the evidence and must be paired
-# with the static/recursive audits already executed.
+# The offline wrapper intentionally forwards only an audited argument subset.
+# Set the canonical Freqtrade config key directly so lookahead-analysis audits
+# the strategy's real limit-order contract instead of silently forcing markets.
+python - <<'PY'
+import json,pathlib
+p=pathlib.Path('config_ip04.json')
+c=json.loads(p.read_text())
+c['lookahead_allow_limit_orders']=True
+p.write_text(json.dumps(c,indent=2)+'\n')
+PY
 python fqt_ip04a/seed/freqtrade_offline.py show-config -c config_ip04.json | tee evidence/lookahead_show_config.log
 python fqt_ip04a/seed/freqtrade_offline.py lookahead-analysis \
   -c config_ip04.json \
@@ -19,17 +23,19 @@ python fqt_ip04a/seed/freqtrade_offline.py lookahead-analysis \
   --fee 0.001 \
   --minimum-trade-amount 10 \
   --targeted-trade-amount 50 \
-  --allow-limit-orders \
   --lookahead-analysis-exportfilename evidence/lookahead_full_31pair.csv \
   --no-color 2>&1 | tee evidence/lookahead_full_31pair.log
 python - <<'PY'
-import csv,json,pathlib
+import csv,json,pathlib,re
 p=pathlib.Path('evidence/lookahead_full_31pair.csv')
+logp=pathlib.Path('evidence/lookahead_full_31pair.log')
 rows=list(csv.DictReader(p.open())) if p.exists() else []
+log=logp.read_text(errors='replace') if logp.exists() else ''
 out={
-    'contract':'FQT_OSV4_IP05_LOOKAHEAD_FULL_V4_LIMIT_ORDER_CONTRACT',
-    'execution_contract':'configured limit orders; --allow-limit-orders',
-    'known_tool_risk':'Freqtrade warns limit orders can create false positives; verdict is interpreted with static and recursive audits',
+    'contract':'FQT_OSV4_IP05_LOOKAHEAD_FULL_V5_LIMIT_ORDER_CONFIG_KEY',
+    'execution_contract':'configured limit orders; lookahead_allow_limit_orders=true',
+    'known_tool_risk':'Freqtrade warns limit orders can create false positives; verdict must be triangulated with static and recursive audits',
+    'helper_confirmed_limit_contract':'Using configured order_types, skipping order_types override.' in log,
     'csv_exists':p.exists(),
     'rows':rows,
     'row_count':len(rows),
@@ -42,7 +48,7 @@ if rows:
         v=str(r.get('has_bias','')).strip().lower()
         if v in ('yes','true','1'): vals.append(True)
         elif v in ('no','false','0'): vals.append(False)
-    if vals:
+    if vals and out['helper_confirmed_limit_contract']:
         out['valid_verdict']=True
         out['has_bias']=any(vals)
 pathlib.Path('evidence/IP05_LOOKAHEAD_SUMMARY.json').write_text(json.dumps(out,indent=2)+'\n')
