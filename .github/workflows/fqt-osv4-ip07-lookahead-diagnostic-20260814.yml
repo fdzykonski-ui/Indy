@@ -1,0 +1,61 @@
+name: FQT OSV4 IP07 Diagnostic Lookahead 20260814
+
+on:
+  push:
+    branches:
+      - fqt-rnd-v23-next-20260814
+    paths:
+      - '.github/workflows/fqt-osv4-ip07-lookahead-diagnostic-20260814.yml'
+      - 'fqt_ip07/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic-lookahead:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+
+      - name: Execute exact setup and execution-neutral 31-pair correctness harness
+        id: run
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_ip07/run_ip07.sh
+          fqt_ip07/run_ip07.sh 2>&1 | tee ip07_console.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Package IP07 evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          cp -f ip07_console.log evidence/ 2>/dev/null || true
+          tar -czf FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz evidence
+          sha256sum FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz \
+            > FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz.sha256
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fqt-osv4-ip07-diagnostic-lookahead-return-20260814
+          path: |
+            FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz
+            FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz.sha256
+          retention-days: 3
+          if-no-files-found: error
+
+      - name: Enforce IP07 signal-generation correctness verdict
+        if: always()
+        shell: bash
+        run: test "${{ steps.run.outputs.rc }}" = "0"
