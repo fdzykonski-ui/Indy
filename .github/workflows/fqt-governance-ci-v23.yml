@@ -1,0 +1,100 @@
+name: FQT Governance CI V23
+
+on:
+  push:
+    branches:
+      - fqt-rnd-v23-next-20260814
+    paths:
+      - '.github/workflows/fqt-governance-ci-v23.yml'
+      - 'fqt_governance/**'
+      - 'fqt_ip07/*.py'
+      - 'fqt_ip07/*.sh'
+      - 'fqt_ip07/README.md'
+      - '!fqt_ip07/results/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  governance-ci:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-rnd-v23-next-20260814
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+
+      - name: Install governance parser
+        run: python -m pip install --disable-pip-version-check pyyaml==6.0.2
+
+      - name: Parse governance contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import pathlib
+          import yaml
+
+          for path in pathlib.Path('fqt_governance').glob('*.json'):
+              json.loads(path.read_text())
+              print('JSON PASS', path)
+          for path in pathlib.Path('fqt_governance').glob('*.yaml'):
+              obj = yaml.safe_load(path.read_text())
+              if not isinstance(obj, dict):
+                  raise SystemExit(f'{path}: expected mapping')
+              print('YAML PASS', path)
+          PY
+
+      - name: Compile diagnostic Python and validate shell syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile fqt_ip07/*.py
+          bash -n fqt_ip07/*.sh
+
+      - name: Enforce fail-closed safety invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import pathlib
+          import re
+
+          roots = [pathlib.Path('fqt_governance'), pathlib.Path('fqt_ip07')]
+          forbidden = [
+              re.compile(r'live_trading_allowed\s*[:=]\s*true', re.I),
+              re.compile(r'live_authorized\s*[:=]\s*true', re.I),
+              re.compile(r'dry_run_authorized\s*[:=]\s*true', re.I),
+              re.compile(r'promotion_authorized\s*[:=]\s*true', re.I),
+          ]
+          secret_assignment = re.compile(
+              r'(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*["\']([^"\']+)["\']'
+          )
+          allowed = {'', 'redacted', '***', 'none', 'null', 'placeholder'}
+          findings = []
+          for root in roots:
+              for path in root.rglob('*'):
+                  if not path.is_file() or path.suffix.lower() not in {
+                      '.py', '.sh', '.md', '.json', '.yaml', '.yml'
+                  }:
+                      continue
+                  text = path.read_text(errors='replace')
+                  for pattern in forbidden:
+                      if pattern.search(text):
+                          findings.append(f'{path}: forbidden authorization')
+                  for match in secret_assignment.finditer(text):
+                      value = match.group(2).strip().lower()
+                      if value not in allowed and not value.startswith('${'):
+                          findings.append(
+                              f'{path}: nonempty secret-like value for {match.group(1)}'
+                          )
+          if findings:
+              raise SystemExit('\n'.join(findings))
+          print('SAFETY PASS')
+          PY
