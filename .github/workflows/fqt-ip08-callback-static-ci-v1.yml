@@ -1,0 +1,101 @@
+name: FQT IP08 Callback Static CI V1
+
+on:
+  push:
+    branches:
+      - fqt-rnd-v23-next-20260814
+    paths:
+      - '.github/workflows/fqt-ip08-callback-static-ci-v1.yml'
+      - 'fqt_ip08/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  callback-static-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-rnd-v23-next-20260814
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+
+      - name: Reconstruct the frozen strategy seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_ip08/work/normalized
+          python - <<'PY'
+          import base64
+          import hashlib
+          import pathlib
+
+          expected = {
+              '00': 'ecc251174a150348a925e50d2f04980a1ad93a478708f655e4824a2eaba3f377',
+              '01': '041b6711e2778ffc4adbe20c7bcc81a07d983ac87709f1b60496d3b3e46376b3',
+              '02': '4f7abb0865a4ab4e909255b2eea1c1c6248542d984d4e1f4a866d1763ca78990',
+              '03': '18290818f25e441d6acf4fe5d8d2b8a875b3be772fa9abccbe2954217bbfe4f4',
+              '04': '93cbe43e53472b1b728b2a8c778c1ef4522f262c6542c1e5602c72ab92b9c140',
+              '05': '52857c3bc29f3d7d872e4c0d29d331e2dc811135f1951b58abf752d48213e8c6',
+              '06': '81cb1d0d642a6318ba435752e8a401b5cdab684d0e99418353e0309a643f3304',
+          }
+          chunks = []
+          for number, wanted in expected.items():
+              source = pathlib.Path(f'fqt_ip04a/payload.b64.{number}')
+              value = ''.join(source.read_text().split())
+              if number == '02' and hashlib.sha256(value.encode()).hexdigest() != wanted:
+                  if len(value) == 12001 and value[10400] == 'y' and value[11933:11937] == 'Vlyw':
+                      value = value[:10400] + 'Y' + value[10401:]
+                      value = value[:11933] + 'elw' + value[11937:]
+              if len(value) > 12000 and number != '06' and hashlib.sha256(value[:12000].encode()).hexdigest() == wanted:
+                  value = value[:12000]
+              actual = hashlib.sha256(value.encode()).hexdigest()
+              if actual != wanted:
+                  raise SystemExit(f'chunk {number}: {actual} != {wanted}')
+              chunks.append(value)
+          payload = base64.b64decode(''.join(chunks), validate=True)
+          expected_zip = '8dc2804e3aca7cd616b3c0ce6839b0c58c6bfcd18b5962fe0e454e33d1b8ed3f'
+          actual_zip = hashlib.sha256(payload).hexdigest()
+          if actual_zip != expected_zip:
+              raise SystemExit(f'seed: {actual_zip} != {expected_zip}')
+          pathlib.Path('fqt_ip08/work/seed.zip').write_bytes(payload)
+          PY
+          unzip -q fqt_ip08/work/seed.zip -d fqt_ip08/work/seed
+
+      - name: Compile and execute callback inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile fqt_ip08/audit_callbacks.py
+          python fqt_ip08/audit_callbacks.py \
+            --strategy fqt_ip08/work/seed/M4PioneerStableExposureV10.py \
+            --out fqt_ip08/work/IP08_CALLBACK_INVENTORY.json
+          python - <<'PY'
+          import json
+          import pathlib
+          path = pathlib.Path('fqt_ip08/work/IP08_CALLBACK_INVENTORY.json')
+          obj = json.loads(path.read_text())
+          assert obj['contract'] == 'FQT_IP08_CALLBACK_STATIC_CAUSALITY_INVENTORY_V1'
+          assert obj['gate_closed'] is False
+          assert obj['effective_execution_callbacks']
+          assert obj['prioritized_executable_tests']
+          print(json.dumps({
+              'target_class': obj['target_class'],
+              'lineage': obj['lineage'],
+              'effective_callbacks': obj['effective_execution_callbacks'],
+              'state_nodes': len(obj['state_dependency_graph']),
+              'gate_closed': obj['gate_closed'],
+          }, indent=2))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fqt-ip08-callback-static-inventory-v1
+          path: fqt_ip08/work/IP08_CALLBACK_INVENTORY.json
+          retention-days: 7
+          if-no-files-found: error
