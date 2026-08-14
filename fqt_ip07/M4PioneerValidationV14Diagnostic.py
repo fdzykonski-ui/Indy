@@ -22,6 +22,12 @@ class M4PioneerValidationV14(M4PioneerStableExposureV10):
     timestamp_replay = False
     fresh_oos_opened = False
 
+    def __init__(self, config: dict[str, Any] | None = None) -> None:
+        # Freqtrade supplies the resolved config. Direct metamorphic tests may
+        # instantiate the class without one; populate_* methods do not alter or
+        # depend on execution configuration.
+        super().__init__(config or {})
+
     @staticmethod
     def version() -> str:
         return "14.0-validation-parity"
