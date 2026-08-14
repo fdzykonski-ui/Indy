@@ -23,6 +23,9 @@ jobs:
         shell: bash
         run: |
           set +e
+          # Remove a no-op self-copy left in the registered driver. This is an
+          # execution-driver repair only; it changes no test, strategy or data.
+          sed -i '/^cp evidence\/IP04A_CONTINUOUS_RUN1\.zip evidence\/IP04A_CONTINUOUS_RUN1\.zip$/d' fqt_v24/run_iteration3.sh
           chmod +x fqt_v24/run_iteration3.sh
           /usr/bin/time -v -o iteration3_job_time.txt \
             fqt_v24/run_iteration3.sh 2>&1 | tee iteration3_console.log
