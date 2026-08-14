@@ -5,11 +5,11 @@ import hashlib
 import json
 from pathlib import Path
 
-path = Path("freqtrade_src/freqtrade/optimize/analysis/lookahead_helpers.py")
-text = path.read_text(encoding="utf-8")
-original = text
+helper_path = Path("freqtrade_src/freqtrade/optimize/analysis/lookahead_helpers.py")
+helper_text = helper_path.read_text(encoding="utf-8")
+helper_original = helper_text
 
-old = '''        config["max_open_trades"] = -1
+helper_old = '''        config["max_open_trades"] = -1
         logger.info("Forced max_open_trades to -1 (same amount as there are pairs)")
 
         min_dry_run_wallet = 1000000000
@@ -33,7 +33,7 @@ old = '''        config["max_open_trades"] = -1
         logger.info("fixing stake_amount to 10k")
         config["stake_amount"] = 10000
 '''
-new = '''        preserve_contract = bool(config.get("lookahead_preserve_portfolio_contract", False))
+helper_new = '''        preserve_contract = bool(config.get("lookahead_preserve_portfolio_contract", False))
         if preserve_contract:
             logger.info(
                 "FQT diagnostic: preserving production portfolio contract "
@@ -66,19 +66,70 @@ new = '''        preserve_contract = bool(config.get("lookahead_preserve_portfol
                 "Usually a few months are enough depending on your needs and strategy."
             )
 '''
-if old not in text:
+if helper_old not in helper_text:
     raise SystemExit("Expected lookahead override block was not found; refusing to patch.")
-text = text.replace(old, new, 1)
-path.write_text(text, encoding="utf-8")
+helper_text = helper_text.replace(helper_old, helper_new, 1)
+helper_path.write_text(helper_text, encoding="utf-8")
+
+# Freqtrade's lookahead prepare_data() pre-populates entry/exit signals for
+# indicator comparison and then passed the already-signalled frames into
+# Backtesting.backtest(). Backtesting calls ft_advise_signals() again. This is
+# harmless for idempotent strategies, but V14 deliberately compacts its frame in
+# populate_exit_trend(). The second signal pass therefore receives a compacted
+# frame without the indicator columns and produces zero entries. Normal
+# backtesting applies signals once and yields 663 trades. Keep the signalled copy
+# for comparison, but run the baseline backtest from indicator-only frames so the
+# normal single signal pass is preserved.
+lookahead_path = Path("freqtrade_src/freqtrade/optimize/analysis/lookahead.py")
+lookahead_text = lookahead_path.read_text(encoding="utf-8")
+lookahead_original = lookahead_text
+lookahead_old = '''        temp_indicators = backtesting.strategy.advise_all_indicators(varholder.data)
+        filled_indicators = dict()
+        for pair, dataframe in temp_indicators.items():
+            filled_indicators[pair] = backtesting.strategy.ft_advise_signals(
+                dataframe, {"pair": pair}
+            )
+        varholder.indicators = filled_indicators
+        varholder.result = self.get_result(backtesting, varholder.indicators)
+'''
+lookahead_new = '''        temp_indicators = backtesting.strategy.advise_all_indicators(varholder.data)
+        filled_indicators = dict()
+        for pair, dataframe in temp_indicators.items():
+            filled_indicators[pair] = backtesting.strategy.ft_advise_signals(
+                dataframe.copy(), {"pair": pair}
+            )
+        varholder.indicators = filled_indicators
+        logger.info(
+            "FQT repair: indicator comparison retains signalled frames, while "
+            "the baseline backtest receives indicator-only frames to avoid a "
+            "second ft_advise_signals pass on compacted data."
+        )
+        varholder.result = self.get_result(backtesting, temp_indicators)
+'''
+if lookahead_old not in lookahead_text:
+    raise SystemExit("Expected lookahead prepare_data block was not found; refusing to patch.")
+lookahead_text = lookahead_text.replace(lookahead_old, lookahead_new, 1)
+lookahead_path.write_text(lookahead_text, encoding="utf-8")
 
 receipt = {
-    "contract": "FQT_V24_LOOKAHEAD_PORTFOLIO_CONTRACT_PATCH_V1",
-    "path": str(path),
-    "before_sha256": hashlib.sha256(original.encode()).hexdigest(),
-    "after_sha256": hashlib.sha256(text.encode()).hexdigest(),
+    "contract": "FQT_V24_LOOKAHEAD_EXECUTION_AND_DOUBLE_SIGNAL_PATCH_V2",
+    "helper_path": str(helper_path),
+    "lookahead_path": str(lookahead_path),
+    "helper_before_sha256": hashlib.sha256(helper_original.encode()).hexdigest(),
+    "helper_after_sha256": hashlib.sha256(helper_text.encode()).hexdigest(),
+    "lookahead_before_sha256": hashlib.sha256(lookahead_original.encode()).hexdigest(),
+    "lookahead_after_sha256": hashlib.sha256(lookahead_text.encode()).hexdigest(),
+    "root_cause": {
+        "normal_backtest": "advise indicators, then ft_advise_signals once inside backtest",
+        "old_lookahead": "ft_advise_signals in prepare_data, then ft_advise_signals again inside backtest",
+        "strategy_interaction": "populate_exit_trend compacts the frame, so the second pass lacks required indicator columns and emits zero entries",
+        "observed_symptom": "native lookahead baseline found zero result trades while the identical normal portfolio run had 663 trades",
+    },
     "semantic_change": {
         "generic_lane": "replace -1 max_open_trades sentinel with positive pair count; retain 1B wallet and 10k stake overrides",
         "production_lane": "optional config flag preserves max_open_trades=2, wallet=1000 and stake_amount=unlimited",
+        "lookahead_baseline": "apply strategy signals exactly once, matching normal Backtesting.backtest semantics",
+        "indicator_comparison": "retain independently signalled frames for full-vs-cut indicator/signal comparison",
         "strategy_alpha": "unchanged",
     },
 }
