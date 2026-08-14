@@ -1,0 +1,56 @@
+name: FQT Gate Orchestrator V23
+
+on:
+  push:
+    branches:
+      - fqt-rnd-v23-next-20260814
+    paths:
+      - '.github/workflows/fqt-gate-orchestrator-v23.yml'
+      - 'fqt_governance/**'
+      - 'fqt_ip07/results/latest/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  orchestrate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-rnd-v23-next-20260814
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+
+      - name: Validate and select the next fail-closed work package
+        shell: bash
+        run: |
+          set -euo pipefail
+          status_args=()
+          if [[ -f fqt_ip07/results/latest/IP07_WORKFLOW_STATUS.json ]]; then
+            status_args=(--ip07-status fqt_ip07/results/latest/IP07_WORKFLOW_STATUS.json)
+          fi
+          python fqt_governance/gate_orchestrator.py \
+            --registry fqt_governance/GATE_REGISTRY_V23.json \
+            "${status_args[@]}" \
+            --out FQT_GATE_ORCHESTRATOR_DECISION.json
+          python - <<'PY'
+          import json
+          obj=json.load(open('FQT_GATE_ORCHESTRATOR_DECISION.json'))
+          assert obj['valid'] is True
+          assert obj['live_trading_authorized'] is False
+          assert obj['decision'] == 'KEEP_CHAMPION'
+          print('active_gate=', obj['active_gate'])
+          print('active_work_package=', obj['active_work_package'])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fqt-gate-orchestrator-decision-v23
+          path: FQT_GATE_ORCHESTRATOR_DECISION.json
+          retention-days: 14
+          if-no-files-found: error
