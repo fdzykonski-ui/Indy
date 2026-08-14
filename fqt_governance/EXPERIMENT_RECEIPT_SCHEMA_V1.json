@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fqt.local/schemas/experiment-receipt-v1.json",
+  "title": "FQT Universal Experiment Receipt V1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "status",
+    "utc_started",
+    "utc_finished",
+    "inputs",
+    "command",
+    "exit_code",
+    "primary_metrics",
+    "uncertainty_or_tolerance",
+    "evidence",
+    "decision",
+    "blocker_or_next_action"
+  ],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "status": {
+      "type": "string",
+      "enum": [
+        "VERIFIED",
+        "PASS",
+        "PARTIAL",
+        "NOT_RUN",
+        "BLOCKED",
+        "INVALID",
+        "FAIL",
+        "CONTAMINATED",
+        "REOPENED",
+        "CLOSED"
+      ]
+    },
+    "utc_started": {"type": ["string", "null"]},
+    "utc_finished": {"type": ["string", "null"]},
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["artifact_id"],
+        "properties": {
+          "artifact_id": {"type": "string"},
+          "sha256": {
+            "type": ["string", "null"],
+            "pattern": "^[a-fA-F0-9]{64}$"
+          }
+        }
+      }
+    },
+    "command": {},
+    "exit_code": {},
+    "primary_metrics": {"type": "object"},
+    "uncertainty_or_tolerance": {"type": "object"},
+    "evidence": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "KEEP_CHAMPION",
+        "PROMOTE",
+        "REJECT",
+        "QUARANTINE",
+        "REOPENED",
+        "CLOSED",
+        "BLOCKED",
+        "INCONCLUSIVE",
+        "NO_CHANGE_JUSTIFIED"
+      ]
+    },
+    "blocker_or_next_action": {"type": ["string", "object", "array"]},
+    "alpha_change": {"type": "boolean"},
+    "promotion_authorized": {"type": "boolean"},
+    "oos_authorized": {"type": "boolean"},
+    "dry_run_authorized": {"type": "boolean"},
+    "live_authorized": {"type": "boolean"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "decision": {"const": "PROMOTE"}
+        }
+      },
+      "then": {
+        "required": [
+          "promotion_authorized",
+          "oos_authorized"
+        ],
+        "properties": {
+          "promotion_authorized": {"const": true},
+          "oos_authorized": {"const": true}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "live_authorized": {"const": true}
+        }
+      },
+      "then": {
+        "required": ["decision"],
+        "properties": {
+          "decision": {"const": "PROMOTE"}
+        }
+      }
+    }
+  ]
+}
