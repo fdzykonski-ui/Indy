@@ -1,0 +1,62 @@
+name: FQT V23 IP07 Lookahead Diagnostic 20260814
+on:
+  push:
+    branches:
+      - fqt-v23-ip07-diagnostic-20260814
+    paths:
+      - '.github/workflows/fqt-v23-ip07-diagnostic-20260814.yml'
+      - 'fqt_ip07/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ip07:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Execute IP07 correctness and diagnostic-equivalence pipeline
+        id: run
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_ip07/run_ip07_diagnostic.sh
+          fqt_ip07/run_ip07_diagnostic.sh 2>&1 | tee ip07_console.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package IP07 evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/ip07
+          cp -f ip07_console.log evidence/ip07/ 2>/dev/null || true
+          tar -czf FQT_V23_IP07_DIAGNOSTIC_RETURN_20260814.tar.gz fqt_ip07 evidence/ip07
+          sha256sum FQT_V23_IP07_DIAGNOSTIC_RETURN_20260814.tar.gz > FQT_V23_IP07_DIAGNOSTIC_RETURN_20260814.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fqt-v23-ip07-diagnostic-return-20260814
+          path: |
+            FQT_V23_IP07_DIAGNOSTIC_RETURN_20260814.tar.gz
+            FQT_V23_IP07_DIAGNOSTIC_RETURN_20260814.tar.gz.sha256
+          retention-days: 2
+          if-no-files-found: error
+      - name: Enforce fail-closed IP07 verdict
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json,pathlib,sys
+          p=pathlib.Path('evidence/ip07/final/IP07_FINAL_STATUS.json')
+          if not p.exists():
+              print('missing final status')
+              raise SystemExit(2)
+          status=json.loads(p.read_text()).get('status')
+          print('IP07 status:', status)
+          raise SystemExit(0 if status == 'PASS_WITH_EQUIVALENT_HARNESS' else 2)
+          PY
