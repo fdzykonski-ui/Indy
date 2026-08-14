@@ -1,0 +1,18 @@
+===== ip07_console.log =====
+No errors detected in compressed data of fqt_ip04a/FQT_G05_SEED.reconstructed.zip.
+                                                BACKTESTING REPORT                                                
+┃      Month ┃ Trades ┃ Tot Profit USDC ┃ Profit Factor ┃  Win  Draw  Loss  Win% ┃
+│ Total/Daily Avg Trades                 │ 663 / 5.57                                │
+│ Profit factor                          │ 4.24                                      │
+│ Max % of account underwater            │ 0.57%                                     │
+│ Max % of account underwater (balance)  │ 2.89%                                     │
+                                                BACKTESTING REPORT                                                
+┃      Month ┃ Trades ┃ Tot Profit USDC ┃ Profit Factor ┃  Win  Draw  Loss  Win% ┃
+│ Total/Daily Avg Trades                 │ 663 / 5.57                                │
+│ Profit factor                          │ 4.24                                      │
+│ Max % of account underwater            │ 0.57%                                     │
+│ Max % of account underwater (balance)  │ 2.89%                                     │
+freqtrade: error: unrecognized arguments: --no-color
+  "contract": "FQT_IP07_SIGNAL_PARITY_V1",
+  "contract": "FQT_IP07_FULL_31PAIR_RECURSIVE_SIGNAL_MATRIX_V1",
+

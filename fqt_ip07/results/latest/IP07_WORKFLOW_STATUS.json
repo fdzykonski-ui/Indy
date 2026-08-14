@@ -1,0 +1,23 @@
+{
+  "contract": "FQT_IP07_COLLECTED_WORKFLOW_STATUS_V1",
+  "repository": "fdzykonski-ui/Indy",
+  "branch": "fqt-rnd-v23-next-20260814",
+  "target_workflow_run_id": "31785377719",
+  "target_workflow_conclusion": "failure",
+  "summary_exists": false,
+  "parity_exists": true,
+  "recursive_exists": true,
+  "lookahead_csv_exists": false,
+  "artifact_sha256": "362996ac74b3c4333512033e986e806be54fb051ac5aa73e2bbda6abda8c5ebd",
+  "parity": {
+    "pair_count": 31,
+    "pairs_passed": 31,
+    "pass": true
+  },
+  "recursive": {
+    "pair_count": 31,
+    "pairs_passed": 30,
+    "signal_gate_pass": false,
+    "indicator_drift_gate_closed": false
+  }
+}

@@ -1,0 +1,445 @@
+{
+  "contract": "FQT_IP07_SIGNAL_PARITY_V1",
+  "base": "M4PioneerStableExposureV10",
+  "diagnostic": "M4PioneerV10LookaheadDiagnostic",
+  "v14_relationship": "M4PioneerValidationV14 is the alpha-unchanged evidence wrapper around this frozen parent",
+  "pair_count": 31,
+  "pairs_passed": 31,
+  "pass": true,
+  "rows": [
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "2Z/USDC",
+      "rows": 172800,
+      "input_sha256": "f47713b5f63ad91792c834a1437ed38dae13c528c8af5f193823362aeef019ec"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "AAVE/USDC",
+      "rows": 172800,
+      "input_sha256": "90f37272953298a695dadc00acc9a7e7bf2bdd4e32b3a5a3a951d2a690ca21e4"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "ALGO/USDC",
+      "rows": 172800,
+      "input_sha256": "aeffba7f5065ec9900607a3a284a2dfd294255bae06a5466fd6483a05a91ce08"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "ARB/USDC",
+      "rows": 172800,
+      "input_sha256": "0d46228bcd58e771ad2792afe8fda770ff03909cc31961e9aa60d64e0cc12c30"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "ASTER/USDC",
+      "rows": 172800,
+      "input_sha256": "db01a76ebb59cd7d16b96fcd447ab1d3b9af2257be27ed0a914202bac669df18"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "ATOM/USDC",
+      "rows": 172800,
+      "input_sha256": "2c2a5a80870e062581bd7a29c76d05cc1e4898bfa566783634ce835d7f4ce74d"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "AVAX/USDC",
+      "rows": 172800,
+      "input_sha256": "76ea654caea93b181316261914f253c953e5f788671bf3a46d101b0741343438"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "BCH/USDC",
+      "rows": 172800,
+      "input_sha256": "399ff348f1059aeff46efe8ed2e22b067b2d7080c5dfa06e55c0864e85b0b126"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "BNB/USDC",
+      "rows": 172800,
+      "input_sha256": "3f5d3a31c59fa35394a8c699ba98efb97ce0f61f3e1b520e9101339d1717e729"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "BTC/USDC",
+      "rows": 172800,
+      "input_sha256": "493b1e50b111133da3aabd370022b982ca90b752d0b9b49b4e1dd9feeebf4011"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "DASH/USDC",
+      "rows": 172800,
+      "input_sha256": "38a53172efa6a9d8f039581f268cd3eedec4c7c452f6bfd1ef91dd32ad04711e"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "DOGE/USDC",
+      "rows": 172800,
+      "input_sha256": "8df5ac03cddf778756b5ed796b606c48259208c0831b397ed3103bcb9efe92ae"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "DOT/USDC",
+      "rows": 172800,
+      "input_sha256": "4dcc60fa8473af315502a57eaf01cfad69eff57709699ead05b448d27758d6dd"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "ENA/USDC",
+      "rows": 172800,
+      "input_sha256": "430bc46648986332faa3ff255200abb7e07399957b1025a73dffd1b32412082c"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "ETH/USDC",
+      "rows": 172800,
+      "input_sha256": "367b032bda31640d8f6cb1cc8e8103df2d045b2021b81575cd78eb0f1a276848"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "FIL/USDC",
+      "rows": 172800,
+      "input_sha256": "abd77848db3e77e0de906f6367c741a3f8e65ee5bae3951770310f951490ef30"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "HBAR/USDC",
+      "rows": 172800,
+      "input_sha256": "22f0f01a4d0edb0905c8e5d389e12792220582057d9bd581e1b56530acb273ba"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "LINK/USDC",
+      "rows": 172800,
+      "input_sha256": "e46e04e9789746b531d643c28a5fb741ea5558825d2aeec69690ae09b9a53f89"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "LTC/USDC",
+      "rows": 172800,
+      "input_sha256": "48ac13232b3229be501cca28a7c64188ce875ab7cef1195f4089df79bf5a28ef"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "PENDLE/USDC",
+      "rows": 172800,
+      "input_sha256": "5d278772f964077712dab5a36ff75764221ba495992a393ae671c8d2496742f2"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "PUMP/USDC",
+      "rows": 172800,
+      "input_sha256": "455ad7dc7e41dc05a804504d954a213097e49daa2753e12451ba03dfa39ea436"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "SEI/USDC",
+      "rows": 172800,
+      "input_sha256": "0189f714d4c22443612e1d192a9504aac377aaa7e7b410538455f298b3445387"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "SHIB/USDC",
+      "rows": 172800,
+      "input_sha256": "9326b0fba13cddced8eb5839903ab6af42c8b877a607e5ade8ab443ec1d1a35c"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "SOL/USDC",
+      "rows": 172800,
+      "input_sha256": "e5d42474fe19849360034a4f91d78bd5a044d73f42f772eeaccf8955e157ad12"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "SYRUP/USDC",
+      "rows": 172800,
+      "input_sha256": "5510a55e33eea886d35489bb8e7d1c5a538f3ca8892c59a053d90ecd4cab19dd"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "TRX/USDC",
+      "rows": 172800,
+      "input_sha256": "76ac0cad9c651a1b3a59944e2e188c07015e609ef8c1cdc9e57e3b66c078b5aa"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "UNI/USDC",
+      "rows": 172800,
+      "input_sha256": "833a3c893fedc424c6ffdf69a6cd19886e932ae4bac7822513ef2bb43ca65204"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "WLFI/USDC",
+      "rows": 172800,
+      "input_sha256": "7f709b71a7bd271f9cde53028d68b89800901aac3ba3a2b8b4f9d2a6fe95a07b"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "XPL/USDC",
+      "rows": 172800,
+      "input_sha256": "ac83aa1e924bfaf0d654037df64de625a397a87eb0372e67378e15c55be81943"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "XRP/USDC",
+      "rows": 172800,
+      "input_sha256": "5145e5c4fbb4bd7882abfda452dba11cd9d05c1ee8b9779439fdacda0770a595"
+    },
+    {
+      "pass": true,
+      "changed_columns": [],
+      "max_abs_difference": 0.0,
+      "signal_differences": {
+        "enter_long": 0,
+        "enter_tag": 0,
+        "exit_long": 0,
+        "exit_tag": 0
+      },
+      "pair": "ZK/USDC",
+      "rows": 172800,
+      "input_sha256": "0f99c92570d9f4be165a38968bab07132ef08f46f84629bb99a578ac45aea4aa"
+    }
+  ]
+}

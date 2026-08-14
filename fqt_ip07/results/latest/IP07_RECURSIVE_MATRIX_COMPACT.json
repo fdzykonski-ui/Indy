@@ -1,0 +1,329 @@
+{
+  "contract": "FQT_IP07_FULL_31PAIR_RECURSIVE_SIGNAL_MATRIX_V1",
+  "classification": "FULL_UNIVERSE_SIGNAL_GATE_WITH_EXPLICIT_INDICATOR_DRIFT_REPORT",
+  "pair_count": 31,
+  "pairs_passed": 30,
+  "startup_candles": [
+    800,
+    1100,
+    1600,
+    2400
+  ],
+  "anchors_per_pair": 5,
+  "signal_gate_pass": false,
+  "indicator_drift_gate_closed": false,
+  "indicator_drift_gate_reason": "Large drift is reported per column; causal use/dependency and an official Freqtrade recursive-analysis verdict remain separate requirements.",
+  "global_large_indicator_drift_columns": {},
+  "pair_summary": [
+    {
+      "pair": "2Z/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "AAVE/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "ALGO/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "ARB/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "ASTER/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "ATOM/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "AVAX/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "BCH/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "BNB/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "BTC/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "DASH/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "DOGE/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "DOT/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "ENA/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "ETH/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "FIL/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "HBAR/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "LINK/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "LTC/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "PENDLE/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "PUMP/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "SEI/USDC",
+      "rows": 172800,
+      "signal_changes": 2,
+      "max_abs_difference": 1.0,
+      "max_relative_difference": 1.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": false,
+      "reason": null
+    },
+    {
+      "pair": "SHIB/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "SOL/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "SYRUP/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "TRX/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "UNI/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "WLFI/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "XPL/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "XRP/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    },
+    {
+      "pair": "ZK/USDC",
+      "rows": 172800,
+      "signal_changes": 0,
+      "max_abs_difference": 0.0,
+      "max_relative_difference": 0.0,
+      "large_indicator_drift_column_count": 0,
+      "pass": true,
+      "reason": null
+    }
+  ]
+}
