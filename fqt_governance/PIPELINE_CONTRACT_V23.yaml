@@ -1,0 +1,166 @@
+contract: FQT_PIPELINE_CONTRACT_V23
+version: 2.3
+mode: fail_closed
+champion: M4PioneerValidationV14
+alpha_parent: M4PioneerStableExposureV10
+live_trading_allowed: false
+wip:
+  alpha_challengers: 1
+  diagnostics: 1
+states:
+  - VERIFIED
+  - PARTIAL
+  - NOT_RUN
+  - BLOCKED
+  - INVALID
+  - CONTAMINATED
+pipelines:
+  governance_ci:
+    trigger:
+      - fqt_governance/**
+      - fqt_ip07/*.py
+      - fqt_ip07/*.sh
+    stages:
+      - json_yaml_parse
+      - python_compile
+      - shell_syntax
+      - secret_pattern_scan
+      - live_safety_assertions
+    acceptance:
+      - all_exit_codes_zero
+      - no_nonempty_exchange_credentials
+      - dry_run_true_for_release_configs
+      - initial_state_stopped
+      - live_trading_allowed_false
+  correctness_ip07:
+    branch: fqt-rnd-v23-next-20260814
+    stages:
+      - exact_source_and_data_reconstruction
+      - deterministic_champion_reproduction
+      - 31_pair_alpha_dataframe_parity
+      - full_universe_recursive_signal_matrix
+      - official_recursive_analysis_attempt
+      - diagnostic_backtest_trade_coverage
+      - native_lookahead_analysis
+      - fail_closed_summary
+    acceptance:
+      - parity_pairs_passed_equals_31
+      - recursive_signal_pairs_passed_equals_31
+      - lookahead_valid_verdict_true
+      - lookahead_has_bias_false
+      - lookahead_minimum_completed_trades_at_least_10
+    non_claims:
+      - champion_execution_callback_gate_not_closed
+      - no_promotion
+      - no_oos
+      - no_dry_run
+      - no_live
+  champion_execution_causality:
+    predecessor: correctness_ip07
+    stages:
+      - callback_inventory
+      - state_dependency_map
+      - slot_and_capital_ablation
+      - same_candle_entry_exit_audit
+      - order_and_timeout_path_audit
+      - execution_preserving_native_harness
+    acceptance:
+      - explicit_no_bias_verdict
+      - semantic_signal_hash_parity
+      - semantic_trade_ledger_regression_explained
+  funnel_instrumentation:
+    predecessor: champion_execution_causality
+    counters:
+      - raw_entry_signal
+      - hard_gate_reject
+      - soft_gate_reject
+      - pair_policy_reject
+      - capital_reject
+      - slot_reject
+      - order_created
+      - order_filled
+      - order_timeout
+      - exit_reason
+    artifacts:
+      - funnel_counts.csv
+      - gate_kill_ratios.csv
+      - collision_matrix.csv
+      - rejection_attribution.json
+  execution_realism:
+    predecessor: funnel_instrumentation
+    scenarios:
+      fees_each_side: [0.001, 0.0012, 0.0015, 0.002, 0.003]
+      spread_bps: [0, 2, 5, 10, 20]
+      slippage_bps: [0, 2, 5, 10, 20]
+      entry_delay_candles: [0, 1, 2]
+      exit_delay_candles: [0, 1, 2]
+      fill_ratio: [1.0, 0.75, 0.5]
+      timeout_minutes: [1, 5, 10]
+    kill:
+      - profit_factor_le_1_under_required_scenario
+      - net_profit_le_0_under_required_scenario
+      - wallet_mdd_gt_5_percent
+  challenger:
+    predecessors:
+      - champion_execution_causality
+      - funnel_instrumentation
+      - execution_realism
+    rules:
+      - exactly_one_mechanism_change
+      - predeclared_primary_metric
+      - predeclared_kill_criterion
+      - no_pair_or_period_cherry_pick
+      - no_hyperopt_until_baseline_gates_pass
+  nested_walk_forward:
+    predecessor: challenger
+    requirements:
+      - chronological_outer_folds
+      - purging
+      - embargo
+      - inner_only_tuning
+      - paired_champion_comparison
+      - parameter_stability
+  pair_robustness:
+    predecessor: nested_walk_forward
+    requirements:
+      - pair_holdout
+      - leave_one_pair_out
+      - top_1_top_3_top_5_top_10_profit_removal
+      - concentration_hhi
+  final_oos:
+    predecessors:
+      - nested_walk_forward
+      - pair_robustness
+      - execution_realism
+      - statistics
+    policy:
+      - sealed_once
+      - one_execution
+      - no_repair_after_open
+  dry_run:
+    predecessor: final_oos
+    minimum_days: 28
+    minimum_closed_trades: 500
+    minimum_uptime_percent: 99
+    requires:
+      - order_reconciliation
+      - fee_and_slippage_drift
+      - data_gap_monitoring
+      - kill_switch_test
+  canary_live:
+    predecessor: independent_review
+    requires_new_explicit_authorization: true
+receipts:
+  required_fields:
+    - id
+    - status
+    - utc_started
+    - utc_finished
+    - inputs
+    - command
+    - exit_code
+    - primary_metrics
+    - uncertainty_or_tolerance
+    - evidence
+    - decision
+    - blocker_or_next_action
