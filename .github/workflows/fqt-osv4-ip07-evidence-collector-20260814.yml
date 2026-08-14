@@ -1,0 +1,229 @@
+name: FQT OSV4 IP07 Evidence Collector 20260814
+
+on:
+  push:
+    branches:
+      - fqt-rnd-v23-next-20260814
+    paths:
+      - '.github/workflows/fqt-osv4-ip07-evidence-collector-20260814.yml'
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TARGET_BRANCH: fqt-rnd-v23-next-20260814
+      TARGET_WORKFLOW: fqt-osv4-ip07-lookahead-diagnostic-publish-20260814.yml
+      TARGET_ARTIFACT: fqt-osv4-ip07-diagnostic-lookahead-publish-return-20260814
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-rnd-v23-next-20260814
+          fetch-depth: 0
+
+      - name: Wait for the heavy IP07 workflow and download its artifact
+        id: target
+        shell: bash
+        run: |
+          set -euo pipefail
+          target_id=''
+          target_status=''
+          target_conclusion=''
+          for attempt in $(seq 1 350); do
+            row=$(gh run list \
+              --repo "$GITHUB_REPOSITORY" \
+              --workflow "$TARGET_WORKFLOW" \
+              --branch "$TARGET_BRANCH" \
+              --limit 20 \
+              --json databaseId,status,conclusion,createdAt \
+              --jq 'sort_by(.createdAt) | reverse | .[0] | [.databaseId,.status,(.conclusion // "")] | @tsv' \
+              || true)
+            if [[ -n "$row" ]]; then
+              IFS=$'\t' read -r target_id target_status target_conclusion <<< "$row"
+              echo "target run=$target_id status=$target_status conclusion=$target_conclusion"
+              if [[ "$target_status" == 'completed' ]]; then
+                break
+              fi
+            fi
+            sleep 60
+          done
+          test -n "$target_id"
+          test "$target_status" = 'completed'
+          echo "run_id=$target_id" >> "$GITHUB_OUTPUT"
+          echo "conclusion=$target_conclusion" >> "$GITHUB_OUTPUT"
+          mkdir -p downloaded
+          gh run download "$target_id" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "$TARGET_ARTIFACT" \
+            --dir downloaded
+          ls -la downloaded
+
+      - name: Verify, extract and publish compact evidence
+        shell: bash
+        env:
+          TARGET_RUN_ID: ${{ steps.target.outputs.run_id }}
+          TARGET_CONCLUSION: ${{ steps.target.outputs.conclusion }}
+        run: |
+          set -euo pipefail
+          cd downloaded
+          sha256sum -c FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz.sha256
+          mkdir -p extracted
+          tar -xzf FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz -C extracted
+          cd ..
+
+          RESULT_DIR=fqt_ip07/results/latest
+          git fetch origin "$TARGET_BRANCH"
+          git checkout "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          rm -rf "$RESULT_DIR"
+          mkdir -p "$RESULT_DIR"
+
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+
+          source = pathlib.Path('downloaded/extracted/evidence')
+          result = pathlib.Path('fqt_ip07/results/latest')
+
+          def copy_if_exists(name: str) -> None:
+              path = source / name
+              if path.exists():
+                  (result / name).write_bytes(path.read_bytes())
+
+          for name in (
+              'IP07_SUMMARY.json',
+              'IP07_SIGNAL_PARITY.json',
+              'ip07_lookahead.csv',
+              'ip07_official_recursive.rc',
+          ):
+              copy_if_exists(name)
+
+          recursive_path = source / 'IP07_RECURSIVE_MATRIX.json'
+          recursive_compact = None
+          if recursive_path.exists():
+              recursive = json.loads(recursive_path.read_text())
+              recursive_compact = {
+                  key: recursive.get(key)
+                  for key in (
+                      'contract',
+                      'classification',
+                      'pair_count',
+                      'pairs_passed',
+                      'startup_candles',
+                      'anchors_per_pair',
+                      'signal_gate_pass',
+                      'indicator_drift_gate_closed',
+                      'indicator_drift_gate_reason',
+                      'global_large_indicator_drift_columns',
+                  )
+              }
+              recursive_compact['pair_summary'] = [
+                  {
+                      key: row.get(key)
+                      for key in (
+                          'pair',
+                          'rows',
+                          'signal_changes',
+                          'max_abs_difference',
+                          'max_relative_difference',
+                          'large_indicator_drift_column_count',
+                          'pass',
+                          'reason',
+                      )
+                  }
+                  for row in recursive.get('rows', [])
+              ]
+              (result / 'IP07_RECURSIVE_MATRIX_COMPACT.json').write_text(
+                  json.dumps(recursive_compact, indent=2) + '\n'
+              )
+
+          log_patterns = {
+              'ip07_console.log': (
+                  'Using configured order_types', 'too few trades',
+                  'Lookahead Analysis', 'has_bias', 'BACKTESTING REPORT',
+                  'Total/Daily Avg Trades', 'Profit factor',
+                  'Max % of account underwater', 'FQT_IP07',
+                  'Traceback', 'ERROR'
+              ),
+              'ip07_lookahead.log': (
+                  'Using configured order_types', 'too few trades',
+                  'Lookahead Analysis', 'M4PioneerV10LookaheadDiagnostic',
+                  'has_bias', 'ERROR'
+              ),
+              'ip07_diagnostic_backtest.log': (
+                  'TOTAL', 'Total/Daily Avg Trades', 'Absolute profit',
+                  'Total profit %', 'Profit factor',
+                  'Max % of account underwater', 'ERROR'
+              ),
+              'ip07_official_recursive.log': (
+                  'recursive', 'variance', 'ERROR', 'usage:'
+              ),
+          }
+          extracts = []
+          for name, patterns in log_patterns.items():
+              path = source / name
+              if not path.exists():
+                  continue
+              lines = path.read_text(errors='replace').splitlines()
+              selected = [
+                  line for line in lines
+                  if any(pattern.lower() in line.lower() for pattern in patterns)
+              ]
+              extracts.append(f'===== {name} =====')
+              extracts.extend(selected[-500:])
+              extracts.append('')
+          (result / 'KEY_LOG_EXTRACT.txt').write_text('\n'.join(extracts) + '\n')
+
+          archive = pathlib.Path(
+              'downloaded/FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz'
+          )
+          status = {
+              'contract': 'FQT_IP07_COLLECTED_WORKFLOW_STATUS_V1',
+              'repository': os.environ.get('GITHUB_REPOSITORY'),
+              'branch': os.environ.get('TARGET_BRANCH'),
+              'target_workflow_run_id': os.environ.get('TARGET_RUN_ID'),
+              'target_workflow_conclusion': os.environ.get('TARGET_CONCLUSION'),
+              'summary_exists': (source / 'IP07_SUMMARY.json').exists(),
+              'parity_exists': (source / 'IP07_SIGNAL_PARITY.json').exists(),
+              'recursive_exists': recursive_path.exists(),
+              'lookahead_csv_exists': (source / 'ip07_lookahead.csv').exists(),
+              'artifact_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
+          }
+          if (source / 'IP07_SUMMARY.json').exists():
+              status['summary'] = json.loads(
+                  (source / 'IP07_SUMMARY.json').read_text()
+              )
+          if (source / 'IP07_SIGNAL_PARITY.json').exists():
+              parity = json.loads((source / 'IP07_SIGNAL_PARITY.json').read_text())
+              status['parity'] = {
+                  key: parity.get(key)
+                  for key in ('pair_count', 'pairs_passed', 'pass')
+              }
+          if recursive_compact is not None:
+              status['recursive'] = {
+                  key: recursive_compact.get(key)
+                  for key in (
+                      'pair_count', 'pairs_passed', 'signal_gate_pass',
+                      'indicator_drift_gate_closed'
+                  )
+              }
+          (result / 'IP07_WORKFLOW_STATUS.json').write_text(
+              json.dumps(status, indent=2) + '\n'
+          )
+          PY
+
+          sha256sum "$RESULT_DIR"/* > "$RESULT_DIR/SHA256SUMS.txt"
+          git config user.name 'fqt-evidence-bot'
+          git config user.email 'fqt-evidence-bot@users.noreply.github.com'
+          git add "$RESULT_DIR"
+          git commit -m "FQT IP07: collect evidence from run $TARGET_RUN_ID"
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin HEAD:"$TARGET_BRANCH"
