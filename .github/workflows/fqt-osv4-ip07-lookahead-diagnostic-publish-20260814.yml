@@ -1,0 +1,261 @@
+name: FQT OSV4 IP07 Diagnostic Lookahead Publish 20260814
+
+on:
+  push:
+    branches:
+      - fqt-rnd-v23-next-20260814
+    paths:
+      - '.github/workflows/fqt-osv4-ip07-lookahead-diagnostic-publish-20260814.yml'
+      - 'fqt_ip07/*.py'
+      - 'fqt_ip07/*.sh'
+      - 'fqt_ip07/README.md'
+      - '!fqt_ip07/results/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnostic-lookahead-publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-rnd-v23-next-20260814
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+
+      - name: Execute exact setup and execution-neutral 31-pair correctness harness
+        id: run
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_ip07/run_ip07.sh
+          fqt_ip07/run_ip07.sh 2>&1 | tee ip07_console.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Package complete IP07 evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          cp -f ip07_console.log evidence/ 2>/dev/null || true
+          tar -czf FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz evidence
+          sha256sum FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz \
+            > FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz.sha256
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fqt-osv4-ip07-diagnostic-lookahead-publish-return-20260814
+          path: |
+            FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz
+            FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz.sha256
+          retention-days: 3
+          if-no-files-found: error
+
+      - name: Publish compact evidence back to the branch
+        if: always()
+        shell: bash
+        env:
+          IP07_RC: ${{ steps.run.outputs.rc }}
+        run: |
+          set -euo pipefail
+          RESULT_DIR=fqt_ip07/results/latest
+          rm -rf "$RESULT_DIR"
+          mkdir -p "$RESULT_DIR"
+
+          python - <<'PY'
+          import csv
+          import hashlib
+          import json
+          import os
+          import pathlib
+
+          evidence = pathlib.Path('evidence')
+          result = pathlib.Path('fqt_ip07/results/latest')
+          rc_text = os.environ.get('IP07_RC', '')
+          try:
+              rc = int(rc_text)
+          except ValueError:
+              rc = None
+
+          def copy_if_exists(name: str) -> None:
+              source = evidence / name
+              if source.exists():
+                  (result / name).write_bytes(source.read_bytes())
+
+          for name in (
+              'IP07_SUMMARY.json',
+              'IP07_SIGNAL_PARITY.json',
+              'ip07_lookahead.csv',
+              'ip07_official_recursive.rc',
+          ):
+              copy_if_exists(name)
+
+          recursive_path = evidence / 'IP07_RECURSIVE_MATRIX.json'
+          recursive_compact = None
+          if recursive_path.exists():
+              recursive = json.loads(recursive_path.read_text())
+              recursive_compact = {
+                  key: recursive.get(key)
+                  for key in (
+                      'contract',
+                      'classification',
+                      'pair_count',
+                      'pairs_passed',
+                      'startup_candles',
+                      'anchors_per_pair',
+                      'signal_gate_pass',
+                      'indicator_drift_gate_closed',
+                      'indicator_drift_gate_reason',
+                      'global_large_indicator_drift_columns',
+                  )
+              }
+              recursive_compact['pair_summary'] = [
+                  {
+                      key: row.get(key)
+                      for key in (
+                          'pair',
+                          'rows',
+                          'signal_changes',
+                          'max_abs_difference',
+                          'max_relative_difference',
+                          'large_indicator_drift_column_count',
+                          'pass',
+                          'reason',
+                      )
+                  }
+                  for row in recursive.get('rows', [])
+              ]
+              (result / 'IP07_RECURSIVE_MATRIX_COMPACT.json').write_text(
+                  json.dumps(recursive_compact, indent=2) + '\n'
+              )
+
+          log_patterns = {
+              'ip07_console.log': (
+                  'Using configured order_types',
+                  'too few trades',
+                  'Lookahead Analysis',
+                  'has_bias',
+                  'BACKTESTING REPORT',
+                  'Total/Daily Avg Trades',
+                  'Profit factor',
+                  'Max % of account underwater',
+                  'FQT_IP07',
+                  'Traceback',
+                  'ERROR',
+              ),
+              'ip07_lookahead.log': (
+                  'Using configured order_types',
+                  'too few trades',
+                  'Lookahead Analysis',
+                  'M4PioneerV10LookaheadDiagnostic',
+                  'has_bias',
+                  'ERROR',
+              ),
+              'ip07_diagnostic_backtest.log': (
+                  'TOTAL',
+                  'Total/Daily Avg Trades',
+                  'Absolute profit',
+                  'Total profit %',
+                  'Profit factor',
+                  'Max % of account underwater',
+                  'ERROR',
+              ),
+              'ip07_official_recursive.log': (
+                  'recursive',
+                  'variance',
+                  'ERROR',
+                  'usage:',
+              ),
+          }
+          extracts = []
+          for name, patterns in log_patterns.items():
+              path = evidence / name
+              if not path.exists():
+                  continue
+              lines = path.read_text(errors='replace').splitlines()
+              selected = [
+                  line for line in lines
+                  if any(pattern.lower() in line.lower() for pattern in patterns)
+              ]
+              extracts.append(f'===== {name} =====')
+              extracts.extend(selected[-400:])
+              extracts.append('')
+          (result / 'KEY_LOG_EXTRACT.txt').write_text('\n'.join(extracts) + '\n')
+
+          status = {
+              'contract': 'FQT_IP07_PUBLISHED_WORKFLOW_STATUS_V1',
+              'repository': os.environ.get('GITHUB_REPOSITORY'),
+              'branch': os.environ.get('GITHUB_REF_NAME'),
+              'commit_sha': os.environ.get('GITHUB_SHA'),
+              'workflow_run_id': os.environ.get('GITHUB_RUN_ID'),
+              'workflow_run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
+              'run_rc': rc,
+              'run_pass': rc == 0,
+              'summary_exists': (evidence / 'IP07_SUMMARY.json').exists(),
+              'parity_exists': (evidence / 'IP07_SIGNAL_PARITY.json').exists(),
+              'recursive_exists': recursive_path.exists(),
+              'lookahead_csv_exists': (evidence / 'ip07_lookahead.csv').exists(),
+              'artifact_sha256': (
+                  hashlib.sha256(
+                      pathlib.Path(
+                          'FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz'
+                      ).read_bytes()
+                  ).hexdigest()
+                  if pathlib.Path(
+                      'FQT_OSV4_IP07_DIAGNOSTIC_LOOKAHEAD_RETURN_20260814.tar.gz'
+                  ).exists()
+                  else None
+              ),
+          }
+          if (evidence / 'IP07_SUMMARY.json').exists():
+              status['summary'] = json.loads(
+                  (evidence / 'IP07_SUMMARY.json').read_text()
+              )
+          if (evidence / 'IP07_SIGNAL_PARITY.json').exists():
+              parity = json.loads(
+                  (evidence / 'IP07_SIGNAL_PARITY.json').read_text()
+              )
+              status['parity'] = {
+                  key: parity.get(key)
+                  for key in ('pair_count', 'pairs_passed', 'pass')
+              }
+          if recursive_compact is not None:
+              status['recursive'] = {
+                  key: recursive_compact.get(key)
+                  for key in (
+                      'pair_count',
+                      'pairs_passed',
+                      'signal_gate_pass',
+                      'indicator_drift_gate_closed',
+                  )
+              }
+          (result / 'IP07_WORKFLOW_STATUS.json').write_text(
+              json.dumps(status, indent=2) + '\n'
+          )
+          PY
+
+          sha256sum "$RESULT_DIR"/* > "$RESULT_DIR/SHA256SUMS.txt"
+          git config user.name 'fqt-evidence-bot'
+          git config user.email 'fqt-evidence-bot@users.noreply.github.com'
+          git add "$RESULT_DIR"
+          if git diff --cached --quiet; then
+            echo 'No compact evidence change to publish.'
+          else
+            git commit -m "FQT IP07: publish diagnostic evidence run $GITHUB_RUN_ID"
+            git push origin HEAD:fqt-rnd-v23-next-20260814
+          fi
+
+      - name: Enforce IP07 signal-generation correctness verdict
+        if: always()
+        shell: bash
+        run: test "${{ steps.run.outputs.rc }}" = "0"
