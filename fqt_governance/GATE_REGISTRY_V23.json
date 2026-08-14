@@ -1,0 +1,112 @@
+{
+  "contract": "FQT_GATE_REGISTRY_V23",
+  "updated_at_utc": "2026-08-14T05:40:11Z",
+  "champion": "M4PioneerValidationV14",
+  "alpha_parent": "M4PioneerStableExposureV10",
+  "wip_limit_alpha_challengers": 1,
+  "live_trading_allowed": false,
+  "gates": [
+    {
+      "id": "G00_CONTRACT",
+      "status": "VERIFIED",
+      "evidence": ["FQT_Strategy_RnD_Masterprompt_V2.3.md", "TEST_CONTRACT.json"],
+      "blocks": ["G01_PROVENANCE_DATA"]
+    },
+    {
+      "id": "G01_PROVENANCE_DATA",
+      "status": "PARTIAL",
+      "evidence": ["MAIN_DATA_MANIFEST.json", "RUNTIME_SOURCE_RECEIPT.json"],
+      "open": ["historical PIT tradability", "spread/orderbook capacity", "minimum-notional history"],
+      "blocks": ["G08_EXECUTION_REALISM", "G12_FINAL_UNTOUCHED_OOS"]
+    },
+    {
+      "id": "G02_STATIC_CAUSALITY",
+      "status": "VERIFIED",
+      "evidence": ["V14_STATIC_AUDIT_UPDATED.json", "METAMORPHIC_7PAIR_PREFIX_CHECK.json"],
+      "blocks": ["G03_SIGNAL_LOOKAHEAD_NATIVE"]
+    },
+    {
+      "id": "G03_SIGNAL_LOOKAHEAD_NATIVE",
+      "status": "INVALID",
+      "evidence": ["IP05_LOOKAHEAD_SUMMARY.json", "DEF-LOOKAHEAD-001"],
+      "active_work_package": "IP07_EXECUTION_NEUTRAL_SIGNAL_HARNESS",
+      "acceptance": "31-pair alpha parity plus sufficient native trades plus explicit no-bias verdict",
+      "blocks": ["G04_CHAMPION_EXECUTION_CAUSALITY", "G05_RECURSIVE_INDICATORS", "G09_NESTED_WALK_FORWARD"]
+    },
+    {
+      "id": "G04_CHAMPION_EXECUTION_CAUSALITY",
+      "status": "BLOCKED",
+      "open": ["stateful callbacks", "capital/slot path", "custom stake/exit/order behavior"],
+      "blocks": ["G08_EXECUTION_REALISM", "G09_NESTED_WALK_FORWARD"]
+    },
+    {
+      "id": "G05_RECURSIVE_INDICATORS",
+      "status": "PARTIAL",
+      "evidence": ["IP06_RECURSIVE_SUMMARY_CORRECTED.json"],
+      "active_work_package": "IP07_FULL_31PAIR_RECURSIVE_SIGNAL_MATRIX",
+      "open": ["official full-universe indicator convergence"],
+      "blocks": ["G09_NESTED_WALK_FORWARD"]
+    },
+    {
+      "id": "G06_DETERMINISTIC_BASELINE",
+      "status": "VERIFIED",
+      "evidence": ["IP04A_CONTINUOUS_DETERMINISM.json"],
+      "golden_trade_ledger_sha256": "d0e939e9ed87b864782d3f10cd3afc84328092efb8b80e69011c5fe513e03d65"
+    },
+    {
+      "id": "G07_FUNNEL_INSTRUMENTATION",
+      "status": "NOT_RUN",
+      "open": ["raw signal counters", "per-gate kill ratios", "slot/capital rejection attribution", "fill conversion"],
+      "blocks": ["minimal challenger authorization"]
+    },
+    {
+      "id": "G08_EXECUTION_REALISM",
+      "status": "FAIL",
+      "evidence": ["STRESS_MATRIX.csv"],
+      "failures": ["fee 0.20 percent per side", "fee 0.30 percent per side", "entry delay plus one candle"],
+      "blocks": ["G09_NESTED_WALK_FORWARD", "G12_FINAL_UNTOUCHED_OOS"]
+    },
+    {
+      "id": "G09_NESTED_WALK_FORWARD",
+      "status": "NOT_RUN",
+      "open": ["purging", "embargo", "outer folds", "inner-only tuning"],
+      "blocks": ["G10_PAIR_HOLDOUT_LOPO"]
+    },
+    {
+      "id": "G10_PAIR_HOLDOUT_LOPO",
+      "status": "NOT_RUN",
+      "open": ["pair holdout", "leave-one-pair-out", "top-N removal", "concentration kill criteria"],
+      "blocks": ["G11_STATISTICS", "G12_FINAL_UNTOUCHED_OOS"]
+    },
+    {
+      "id": "G11_STATISTICS",
+      "status": "PARTIAL",
+      "evidence": ["CONTINUOUS_STATISTICAL_DIAGNOSTICS.json"],
+      "open": ["outer-fold paired uncertainty", "challenger power", "selection multiplicity ledger"]
+    },
+    {
+      "id": "G12_FINAL_UNTOUCHED_OOS",
+      "status": "BLOCKED",
+      "evidence": ["OOS_AUTHORIZATION.json"],
+      "known_evaluation_status": "CONTAMINATED",
+      "blocks": ["G13_PERSISTENT_DRY_RUN"]
+    },
+    {
+      "id": "G13_PERSISTENT_DRY_RUN",
+      "status": "BLOCKED",
+      "evidence": ["DRY_RUN_RECEIPT.json"],
+      "blocks": ["G14_INDEPENDENT_REVIEW"]
+    },
+    {
+      "id": "G14_INDEPENDENT_REVIEW",
+      "status": "NOT_RUN",
+      "blocks": ["G15_CANARY_LIVE"]
+    },
+    {
+      "id": "G15_CANARY_LIVE",
+      "status": "BLOCKED",
+      "requires_new_explicit_authorization": true,
+      "live_trading_allowed": false
+    }
+  ]
+}
