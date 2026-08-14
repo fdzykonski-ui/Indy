@@ -1,0 +1,74 @@
+name: FQT V2.4 Iteration 3B Double Signal RCA 20260814
+on:
+  push:
+    branches:
+      - fqt-v24-iteration3-lookahead-20260814
+    paths:
+      - '.github/workflows/fqt-v24-iteration3b-double-signal-20260814.yml'
+      - 'fqt_v24/patch_lookahead_contract.py'
+      - 'fqt_v24/run_iteration3b.sh'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  iteration3b:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Execute preregistered double-signal RCA and native rerun
+        id: execute
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_v24/run_iteration3b.sh
+          /usr/bin/time -v -o iteration3b_job_time.txt \
+            fqt_v24/run_iteration3b.sh 2>&1 | tee iteration3b_console.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package raw return evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_v24_i3b_return/meta
+          cp -f iteration3b_console.log iteration3b_job_time.txt fqt_v24_i3b_return/meta/ 2>/dev/null || true
+          cp -a evidence receipts reports logs configs fqt_v24_i3b_return/ 2>/dev/null || true
+          mkdir -p fqt_v24_i3b_return/user_data
+          cp -a user_data/strategies fqt_v24_i3b_return/user_data/ 2>/dev/null || true
+          cp -a fqt_v24 fqt_v24_i3b_return/ 2>/dev/null || true
+          git rev-parse HEAD > fqt_v24_i3b_return/meta/repository_head.txt
+          git diff --no-ext-diff > fqt_v24_i3b_return/meta/runtime_source_diff.patch || true
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('fqt_v24_i3b_return'); rows=[]
+          for p in sorted(x for x in root.rglob('*') if x.is_file()):
+              h=hashlib.sha256()
+              with p.open('rb') as f:
+                  for b in iter(lambda:f.read(1024*1024),b''): h.update(b)
+              rows.append({'path':p.relative_to(root).as_posix(),'bytes':p.stat().st_size,'sha256':h.hexdigest()})
+          (root/'meta/RETURN_MANIFEST.json').write_text(json.dumps({'contract':'FQT_V24_ITERATION3B_RAW_RETURN_V1','files':rows},indent=2)+'\n')
+          PY
+          tar -czf FQT_V24_ITERATION3B_RAW_RETURN_20260814.tar.gz fqt_v24_i3b_return
+          sha256sum FQT_V24_ITERATION3B_RAW_RETURN_20260814.tar.gz > FQT_V24_ITERATION3B_RAW_RETURN_20260814.tar.gz.sha256
+      - name: Upload iteration 3B return
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v24-iteration3b-raw-return-20260814
+          path: |
+            FQT_V24_ITERATION3B_RAW_RETURN_20260814.tar.gz
+            FQT_V24_ITERATION3B_RAW_RETURN_20260814.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
+      - name: Enforce driver integrity
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.execute.outputs.rc }}" = "0"
+          test -f evidence/I3B_FINAL_SUMMARY.json
+          test -f receipts/I3B_EVALUATION_RECEIPT.json
