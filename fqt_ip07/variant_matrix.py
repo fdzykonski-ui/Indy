@@ -112,9 +112,8 @@ def main() -> int:
     base = json.loads(Path(args.base_config).read_text())
     variants = [
         {"label": "champion_contract", "strategy": "M4PioneerValidationV14", "max_open_trades": 2, "dry_run_wallet": 1000, "stake_amount": "unlimited", "order_mode": "limit"},
-        {"label": "max_open_unlimited_only", "strategy": "M4PioneerValidationV14", "max_open_trades": -1, "dry_run_wallet": 1000, "stake_amount": "unlimited", "order_mode": "limit"},
         {"label": "wallet_1b_only", "strategy": "M4PioneerValidationV14", "max_open_trades": 2, "dry_run_wallet": 1_000_000_000, "stake_amount": "unlimited", "order_mode": "limit"},
-        {"label": "stake_10k_only", "strategy": "M4PioneerValidationV14", "max_open_trades": 2, "dry_run_wallet": 1_000_000_000, "stake_amount": 10000, "order_mode": "limit"},
+        {"label": "stake_10k_after_wallet", "strategy": "M4PioneerValidationV14", "max_open_trades": 2, "dry_run_wallet": 1_000_000_000, "stake_amount": 10000, "order_mode": "limit"},
         {"label": "helper_all_limit", "strategy": "M4PioneerValidationV14", "max_open_trades": -1, "dry_run_wallet": 1_000_000_000, "stake_amount": 10000, "order_mode": "limit"},
         {"label": "helper_all_market", "strategy": "M4PioneerValidationV14", "max_open_trades": -1, "dry_run_wallet": 1_000_000_000, "stake_amount": 10000, "order_mode": "market"},
         {"label": "stake_neutral_limit", "strategy": "M4PioneerValidationV14LookaheadStakeNeutral", "max_open_trades": -1, "dry_run_wallet": 1_000_000_000, "stake_amount": 10000, "order_mode": "limit"},
@@ -182,17 +181,34 @@ def main() -> int:
 
     by_label = {row["label"]: row for row in rows}
     baseline = int(by_label["champion_contract"]["trades"])
-    collapsed = [
-        label
-        for label in ["max_open_unlimited_only", "wallet_1b_only", "stake_10k_only"]
-        if int(by_label[label]["trades"]) < 10 <= baseline
+    # Freqtrade rejects max_open_trades=-1 together with stake_amount=unlimited.
+    # Diagnose the helper's overrides as a valid sequential ablation instead:
+    # champion -> wallet 1B -> static stake 10k -> max_open -1 -> market orders.
+    sequence = [
+        ("champion_contract", "baseline"),
+        ("wallet_1b_only", "wallet_1b"),
+        ("stake_10k_after_wallet", "static_stake_10k"),
+        ("helper_all_limit", "max_open_unlimited_pairs"),
+        ("helper_all_market", "market_order_override"),
     ]
-    if collapsed:
-        root_cause = "one_factor:" + ",".join(collapsed)
-    elif int(by_label["helper_all_limit"]["trades"]) < 10 <= baseline:
-        root_cause = "combined_helper_override_interaction"
-    else:
-        root_cause = "not_reproduced_in_matrix_window"
+    root_cause = "not_reproduced_in_matrix_window"
+    stage_deltas = []
+    previous_label, previous_stage = sequence[0]
+    previous_trades = int(by_label[previous_label]["trades"])
+    for label, stage in sequence[1:]:
+        current_trades = int(by_label[label]["trades"])
+        stage_deltas.append({
+            "from": previous_label,
+            "to": label,
+            "stage": stage,
+            "from_trades": previous_trades,
+            "to_trades": current_trades,
+            "delta_trades": current_trades - previous_trades,
+        })
+        if root_cause == "not_reproduced_in_matrix_window" and previous_trades >= 10 > current_trades:
+            root_cause = "sequential_stage:" + stage
+        previous_label = label
+        previous_trades = current_trades
 
     diagnostic_priority = [
         "stake_neutral_market",
@@ -211,6 +227,7 @@ def main() -> int:
         "helper_all_limit_trades": int(by_label["helper_all_limit"]["trades"]),
         "helper_all_market_trades": int(by_label["helper_all_market"]["trades"]),
         "likely_root_cause": root_cause,
+        "sequential_stage_deltas": stage_deltas,
         "selected_diagnostic_variant": selected,
         "selected_strategy": by_label[selected]["strategy"] if selected else None,
         "selected_order_mode": by_label[selected]["order_mode"] if selected else None,
