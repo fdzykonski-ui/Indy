@@ -18,8 +18,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          URL='https://github.com/duckdb/duckdb/releases/download/v1.5.5/duckdb_cli-linux-amd64-musl.zip'
-          EXPECTED='4261fe20bab47d92742d5e21eee979e9e81548442985b9e3327725e1f755c910'
+          URL='https://github.com/duckdb/duckdb/releases/download/v1.5.5/duckdb_cli-linux-amd64.zip'
+          EXPECTED='08c0ca117111fcede14239d0093792352befdc174218c344d232c13279643d05'
           curl -fsSL --retry 4 --retry-delay 2 -o duckdb_cli.zip "$URL"
           echo "$EXPECTED  duckdb_cli.zip" | sha256sum -c -
           unzip -q duckdb_cli.zip -d duckdb_cli
@@ -29,7 +29,7 @@ jobs:
       - name: Upload DuckDB CLI artifact
         uses: actions/upload-artifact@v4
         with:
-          name: fqt-m21-duckdb-cli-v1-5-5
+          name: fqt-m21-duckdb-cli-v1-5-5-glibc
           path: |
             duckdb_cli.zip
             duckdb_cli/duckdb
