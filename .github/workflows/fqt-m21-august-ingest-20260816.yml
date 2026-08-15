@@ -1,0 +1,247 @@
+name: FQT M21 August Data Ingestion 20260816
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fqt-m21-august-ingest-20260816.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TARGET_END_UTC: '2026-08-11T23:59:00+00:00'
+  HOLDOUT_START_UTC: '2026-07-01T00:00:00+00:00'
+
+jobs:
+  ingest:
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [0, 1, 2, 3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GROUP: ${{ matrix.group }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Acquire, verify, normalize, and seal Binance Vision 1m archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$PWD/fqt_m21_group_${GROUP}"
+          mkdir -p "$ROOT/raw" "$ROOT/extracted" "$ROOT/append_preholdout" "$ROOT/sealed_holdout" "$ROOT/manifests" "$ROOT/logs"
+          awk -v g="$GROUP" '((NR-1)%4)==g && NF {print}' fqt_tmp/m21_pairs_20260816.txt > "$ROOT/pairs.txt"
+          cp fqt_tmp/m21_local_cutoffs_20260816.csv "$ROOT/local_cutoffs.csv"
+          printf 'symbol\tperiod\tdate\tstatus\tzip_sha256\tchecksum_expected\tbytes\turl\n' > "$ROOT/archive_ledger.tsv"
+
+          curl -fsSL --retry 3 --retry-delay 2 'https://api.binance.com/api/v3/exchangeInfo' -o "$ROOT/exchangeInfo_current.json" || printf '{"symbols":[]}' > "$ROOT/exchangeInfo_current.json"
+
+          fetch_archive() {
+            local symbol="$1" period="$2" date="$3"
+            local name="${symbol}-1m-${date}.zip"
+            local dir="$ROOT/raw/$symbol"
+            local csvdir="$ROOT/extracted/$symbol"
+            local base="https://data.binance.vision/data/spot/${period}/klines/${symbol}/1m/${name}"
+            mkdir -p "$dir" "$csvdir"
+            local status="MISSING" expected="" actual="" bytes="0"
+            if curl -fsSL --retry 4 --retry-delay 2 --connect-timeout 30 -o "$dir/$name" "$base" && \
+               curl -fsSL --retry 4 --retry-delay 2 --connect-timeout 30 -o "$dir/$name.CHECKSUM" "$base.CHECKSUM"; then
+              expected="$(awk '{print $1}' "$dir/$name.CHECKSUM" | head -1)"
+              actual="$(sha256sum "$dir/$name" | awk '{print $1}')"
+              bytes="$(stat -c '%s' "$dir/$name")"
+              if [[ -n "$expected" && "$expected" == "$actual" ]]; then
+                if unzip -tq "$dir/$name" >/dev/null && unzip -q -o "$dir/$name" -d "$csvdir"; then
+                  status="VERIFIED"
+                else
+                  status="EXTRACTION_FAIL"
+                fi
+              else
+                status="CHECKSUM_FAIL"
+              fi
+            fi
+            printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$symbol" "$period" "$date" "$status" "$actual" "$expected" "$bytes" "$base" >> "$ROOT/archive_ledger.tsv"
+          }
+
+          while read -r symbol; do
+            [[ -n "$symbol" ]] || continue
+            fetch_archive "$symbol" monthly 2026-06
+            fetch_archive "$symbol" monthly 2026-07
+            for day in $(seq -w 1 11); do
+              fetch_archive "$symbol" daily "2026-08-${day}"
+            done
+          done < "$ROOT/pairs.txt"
+
+          python - <<'PY'
+          import csv, datetime as dt, gzip, hashlib, json, math, os, pathlib
+
+          root = pathlib.Path(f"fqt_m21_group_{os.environ['GROUP']}")
+          target_end = dt.datetime.fromisoformat(os.environ['TARGET_END_UTC'])
+          holdout_start = dt.datetime.fromisoformat(os.environ['HOLDOUT_START_UTC'])
+          target_end_ms = int(target_end.timestamp() * 1000)
+          holdout_start_ms = int(holdout_start.timestamp() * 1000)
+          active_final = {'BTCUSDC','DOGEUSDC','PROVEUSDC','SYRUPUSDC'}
+
+          def sha256(path: pathlib.Path) -> str:
+              h=hashlib.sha256()
+              with path.open('rb') as f:
+                  for chunk in iter(lambda:f.read(1024*1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          def norm_ms(raw):
+              x=int(raw)
+              if x > 10**15:
+                  return x//1000
+              if x > 10**12:
+                  return x
+              return x*1000
+
+          cutoffs={}
+          with (root/'local_cutoffs.csv').open(newline='') as f:
+              for r in csv.DictReader(f):
+                  cutoffs[r['symbol']]={
+                      'last_ms':int(r['last_ms']),
+                      'last_utc':r['last_utc'],
+                      'source_parquet_sha256':r['parquet_sha256'],
+                      'source_rows':int(r['rows']),
+                      'source_zero_volume_pct':float(r['zero_volume_pct']),
+                  }
+
+          archive_status={}
+          with (root/'archive_ledger.tsv').open() as f:
+              next(f)
+              for line in f:
+                  symbol,period,date,status,zsha,expected,nbytes,url=line.rstrip('\n').split('\t')
+                  archive_status.setdefault(symbol,[]).append({'period':period,'date':date,'status':status,'zip_sha256':zsha,'checksum_expected':expected,'bytes':int(nbytes or 0),'url':url})
+
+          try:
+              exchange=json.loads((root/'exchangeInfo_current.json').read_text())
+          except Exception:
+              exchange={'symbols':[]}
+          current={x.get('symbol'):x for x in exchange.get('symbols',[])}
+
+          fieldnames=['open_time_ms','open','high','low','close','volume','close_time_ms','quote_asset_volume','trades','taker_buy_base','taker_buy_quote','ignore','source_archive']
+          pair_results=[]
+          gate_fail=False
+
+          for symbol in [x.strip() for x in (root/'pairs.txt').read_text().splitlines() if x.strip()]:
+              cutoff=cutoffs[symbol]['last_ms']
+              extracted=root/'extracted'/symbol
+              rows_by_time={}
+              parse_errors=0
+              source_files=[]
+              for path in sorted(extracted.glob('*.csv')):
+                  source_files.append(path.name)
+                  with path.open(newline='') as f:
+                      for rec in csv.reader(f):
+                          if not rec or len(rec)<6:
+                              continue
+                          try:
+                              ots=norm_ms(rec[0]); cts=norm_ms(rec[6]) if len(rec)>6 else ots+59999
+                              vals=[float(rec[i]) for i in range(1,6)]
+                              if not all(math.isfinite(v) for v in vals):
+                                  raise ValueError('nonfinite')
+                              o,h,l,c,v=vals
+                              if not (o>0 and h>0 and l>0 and c>0 and v>=0 and h>=max(o,c,l) and l<=min(o,c,h)):
+                                  raise ValueError('ohlcv_invariant')
+                              if ots <= cutoff or ots > target_end_ms:
+                                  continue
+                              rows_by_time[ots]=[ots,rec[1],rec[2],rec[3],rec[4],rec[5],cts,
+                                  rec[7] if len(rec)>7 else '', rec[8] if len(rec)>8 else '',
+                                  rec[9] if len(rec)>9 else '', rec[10] if len(rec)>10 else '',
+                                  rec[11] if len(rec)>11 else '', path.name]
+                          except Exception:
+                              parse_errors+=1
+
+              times=sorted(rows_by_time)
+              gaps=[]
+              if times:
+                  for a,b in zip(times,times[1:]):
+                      if b-a != 60000:
+                          gaps.append({'after_ms':a,'next_ms':b,'missing_minutes':max(0,(b-a)//60000-1)})
+              expected_first=cutoff+60000
+              first_ms=times[0] if times else None
+              last_ms=times[-1] if times else None
+              complete_start=(first_ms==expected_first)
+              complete_end=(last_ms==target_end_ms)
+              zero_volume=sum(float(rows_by_time[t][5])==0 for t in times)
+              pre=[rows_by_time[t] for t in times if t < holdout_start_ms]
+              sealed=[rows_by_time[t] for t in times if t >= holdout_start_ms]
+
+              def write_gz(path, data):
+                  path.parent.mkdir(parents=True,exist_ok=True)
+                  with gzip.open(path,'wt',newline='') as f:
+                      w=csv.writer(f); w.writerow(fieldnames); w.writerows(data)
+
+              pre_path=root/'append_preholdout'/f'{symbol}-1m-append-preholdout.csv.gz'
+              hold_path=root/'sealed_holdout'/f'{symbol}-1m-20260701-20260811-SEALED.csv.gz'
+              write_gz(pre_path,pre); write_gz(hold_path,sealed)
+
+              arc=archive_status.get(symbol,[])
+              archive_ok=(len(arc)==13 and all(x['status']=='VERIFIED' for x in arc))
+              data_ok=bool(archive_ok and times and complete_start and complete_end and not gaps and parse_errors==0)
+              final_pair=(symbol in active_final)
+              if final_pair and not data_ok:
+                  gate_fail=True
+              info=current.get(symbol,{})
+              result={
+                  'symbol':symbol,'final_active_pair':final_pair,
+                  'local_cutoff_ms':cutoff,'expected_first_ms':expected_first,'first_append_ms':first_ms,'last_append_ms':last_ms,
+                  'target_end_ms':target_end_ms,'append_rows_total':len(times),'preholdout_rows':len(pre),'sealed_holdout_rows':len(sealed),
+                  'zero_volume_rows':zero_volume,'zero_volume_pct':(zero_volume/len(times)*100 if times else None),
+                  'gap_count':len(gaps),'missing_minutes':sum(g['missing_minutes'] for g in gaps),
+                  'parse_errors':parse_errors,'archive_count':len(arc),'archive_verified_count':sum(x['status']=='VERIFIED' for x in arc),
+                  'archive_ok':archive_ok,'complete_start':complete_start,'complete_end':complete_end,'data_gate_pass':data_ok,
+                  'current_status':info.get('status','NOT_IN_CURRENT_EXCHANGEINFO'),'current_spot_allowed':info.get('isSpotTradingAllowed'),
+                  'current_quote_asset':info.get('quoteAsset'),'current_base_asset':info.get('baseAsset'),
+                  'source_parquet_sha256':cutoffs[symbol]['source_parquet_sha256'],
+                  'preholdout_sha256':sha256(pre_path),'sealed_holdout_sha256':sha256(hold_path),
+                  'source_csv_files':source_files,'gaps':gaps[:100],
+              }
+              pair_results.append(result)
+              (root/'manifests'/f'{symbol}.json').write_text(json.dumps(result,indent=2)+'\n')
+
+          summary={
+              'schema':'FQT_M21_BINANCE_VISION_INGEST_V1','generated_utc':dt.datetime.now(dt.timezone.utc).isoformat(),
+              'group':int(os.environ['GROUP']),'target_end_utc':target_end.isoformat(),'holdout_start_utc':holdout_start.isoformat(),
+              'pair_count':len(pair_results),'all_pairs_pass':all(x['data_gate_pass'] for x in pair_results),
+              'final_active_pairs_pass':all(x['data_gate_pass'] for x in pair_results if x['final_active_pair']),
+              'pair_results':pair_results,
+              'method_note':'Integrity-only read. No strategy, trade, return, price-performance, or holdout metric computation performed.'
+          }
+          (root/'GROUP_MANIFEST.json').write_text(json.dumps(summary,indent=2)+'\n')
+          with (root/'PAIR_DATA_GATE.csv').open('w',newline='') as f:
+              cols=['symbol','final_active_pair','append_rows_total','preholdout_rows','sealed_holdout_rows','first_append_ms','last_append_ms','archive_verified_count','archive_ok','complete_start','complete_end','gap_count','missing_minutes','parse_errors','zero_volume_rows','zero_volume_pct','current_status','current_spot_allowed','data_gate_pass','preholdout_sha256','sealed_holdout_sha256']
+              w=csv.DictWriter(f,fieldnames=cols); w.writeheader(); w.writerows({k:r.get(k) for k in cols} for r in pair_results)
+          if gate_fail:
+              (root/'FINAL_ACTIVE_PAIR_GATE_FAILED').write_text('One or more final active pairs failed data integrity.\n')
+          print(json.dumps({k:summary[k] for k in ['group','pair_count','all_pairs_pass','final_active_pairs_pass']},indent=2))
+          PY
+
+          find "$ROOT" -type f -print0 | sort -z | xargs -0 sha256sum > "$ROOT/SHA256SUMS.txt"
+          tar -I 'zstd -10 -T0' -cf "fqt-m21-august-ingest-group-${GROUP}.tar.zst" "$ROOT"
+          sha256sum "fqt-m21-august-ingest-group-${GROUP}.tar.zst" > "fqt-m21-august-ingest-group-${GROUP}.tar.zst.sha256"
+
+      - name: Upload verified ingestion artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-m21-august-ingest-group-${{ matrix.group }}
+          path: |
+            fqt-m21-august-ingest-group-${{ matrix.group }}.tar.zst
+            fqt-m21-august-ingest-group-${{ matrix.group }}.tar.zst.sha256
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
+
+      - name: Enforce final-active-pair data gate
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f "fqt_m21_group_${GROUP}/FINAL_ACTIVE_PAIR_GATE_FAILED" ]]; then
+            echo 'BLOCKED_DATA: final active pair failed data integrity' >&2
+            exit 1
+          fi
