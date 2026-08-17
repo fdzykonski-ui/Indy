@@ -533,7 +533,9 @@ def main() -> int:
                     "## Version und Kompatibilität\n\n"
                     f"Die lokale Engine ist Freqtrade {version['local_runtime']['freqtrade']} auf Commit {version['local_runtime']['git_commit'][:12]}, "
                     f"Python {version['local_runtime']['python']} und CCXT {version['local_runtime']['ccxt']}. "
-                    "Sie reproduziert den historischen 2026.5.1-Lauf exakt; Live-Kompatibilität ist dadurch nicht bewiesen."
+                    f"Die am {version['official_reference']['release_observed_at_utc']} auf der offiziellen Release-Seite als aktuell markierte Version ist "
+                    f"{version['official_reference']['observed_latest_release']}. Die eingefrorene ältere Engine reproduziert den historischen "
+                    "2026.5.1-Lauf exakt; Kompatibilität mit der aktuellen Version, Exchange-Verhalten und Live-Betrieb sind dadurch nicht bewiesen."
                 ),
             },
             {

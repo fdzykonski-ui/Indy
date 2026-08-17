@@ -2,9 +2,10 @@
   "checked_at_utc": "2026-08-17",
   "compatibility_assessment": {
     "exact_historical_reproduction_on_local_dev_runtime": true,
+    "local_runtime_is_current_official_release": false,
     "python_requirement_met": true,
-    "scope_limit": "Exact backtest reproduction does not establish exchange/live compatibility.",
-    "truth_status": "VERIFIZIERT"
+    "scope_limit": "The frozen 2026.5 development runtime reproduces the historical backtest, but it predates official release 2026.7; exact backtest reproduction does not establish current-version or exchange/live compatibility.",
+    "truth_status": "TEILWEISE VERIFIZIERT"
   },
   "historical_evidence_runtime": {
     "ccxt": "4.5.56",
@@ -27,13 +28,14 @@
   "official_reference": {
     "installation_source": "https://www.freqtrade.io/en/stable/installation/",
     "lookahead_source": "https://www.freqtrade.io/en/stable/lookahead-analysis/",
-    "observed_latest_release": "2026.5.1",
+    "observed_latest_release": "2026.7",
     "python_requirement": ">=3.11",
-    "reason": "Official pages were checked, but the release index snapshot may lag the 2026-08-17 wall clock.",
+    "reason": "The official GitHub releases page marked 2026.7 as Latest when checked on 2026-08-17.",
     "recursive_source": "https://docs.freqtrade.io/en/stable/recursive-analysis/",
+    "release_observed_at_utc": "2026-08-17",
     "release_source": "https://github.com/freqtrade/freqtrade/releases",
     "repository_source": "https://github.com/freqtrade/freqtrade",
-    "truth_status": "TEILWEISE VERIFIZIERT"
+    "truth_status": "VERIFIZIERT"
   },
   "schema_version": 1
 }

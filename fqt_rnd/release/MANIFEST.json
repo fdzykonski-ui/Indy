@@ -59,9 +59,9 @@
       "sha256": "b556d93b26a42ee43a2e270e5b09c59076a0210c5f5c6eca0c3477579a99dc01"
     },
     {
-      "bytes": 1549,
+      "bytes": 1773,
       "path": "audit/freqtrade_version_audit.json",
-      "sha256": "fbc7cbe6e3436f686402c41eba69fbbaf561f3bb79397da0c9d110f110dbc0fe"
+      "sha256": "2c64851e9df88cb9a6fc61a1dc91127b9de7fc972806d20c541d310385409b85"
     },
     {
       "bytes": 6420,
@@ -274,19 +274,19 @@
       "sha256": "1f141d5936a1d7fdfc834b5c89a1d958b0a984fa0d0fcd0eb83c2a1278699aa4"
     },
     {
-      "bytes": 86461,
+      "bytes": 86642,
       "path": "report/artifact.json",
-      "sha256": "13fc2e550bca8a81e016072b077c72cd9273d2fdfa0fa865646679cf8b01a05c"
+      "sha256": "3250fdd550bc94b3bb5f40116bbde1864c36677d5f189a9d9ce44baeafe544f5"
     },
     {
       "bytes": 733,
       "path": "report/delivery_receipt.json",
-      "sha256": "6f38e899a945e4f9144acc596a818b8df8b08d9bc9b4801bc185b18350be17bd"
+      "sha256": "482eb54a458f93a5c21b1887a59a1f8d7cb0bca5a128a14942b1268342ec5d04"
     },
     {
-      "bytes": 503833,
+      "bytes": 504647,
       "path": "report/report.html",
-      "sha256": "f5928c41070b6c64fdc7cc59447cb31b633da84813feaea3758823ae0597ac4a"
+      "sha256": "76447f694f8508506ba9125ae44a6f545273218e447883610e12ddfab425afc6"
     },
     {
       "bytes": 45056,
@@ -379,9 +379,9 @@
       "sha256": "61c698d002e7ad290591af00faf0466ca0a741f66048fd534e24d20ba18bfdc0"
     },
     {
-      "bytes": 34261,
+      "bytes": 34590,
       "path": "tools/build_report_artifact.py",
-      "sha256": "ced544197de68bf6bdd5df0a9032c3cc81bb63764612fa5874b5a307866e70bd"
+      "sha256": "286cf0a4895549111c32ad99f5c1b36ec3bb679a7cf02d98174781850a52e2e2"
     },
     {
       "bytes": 10178,
@@ -444,9 +444,9 @@
       "sha256": "20bc1a068036e72371db5bf6573d2e19d7db89e3fde7e8448da82b2fb2661096"
     },
     {
-      "bytes": 3571,
+      "bytes": 4093,
       "path": "tools/version_audit.py",
-      "sha256": "3b6c29625451b1ca9b33a91bfac285ac5344ad613dab9c61e50e91cc85503926"
+      "sha256": "4515e89093d144ae0ce22d6712af38b53c5f5488fb9a2ea59f3ae3d413342884"
     }
   ],
   "reproducibility": "ZIP timestamps and member order are fixed; hashes cover every bundled file.",

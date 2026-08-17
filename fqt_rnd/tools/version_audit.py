@@ -59,26 +59,40 @@ def main() -> int:
             "truth_status": "VERIFIZIERT",
         },
         "official_reference": {
-            "observed_latest_release": "2026.5.1",
+            "observed_latest_release": "2026.7",
+            "release_observed_at_utc": "2026-08-17",
             "release_source": "https://github.com/freqtrade/freqtrade/releases",
             "repository_source": "https://github.com/freqtrade/freqtrade",
             "installation_source": "https://www.freqtrade.io/en/stable/installation/",
             "lookahead_source": "https://www.freqtrade.io/en/stable/lookahead-analysis/",
             "recursive_source": "https://docs.freqtrade.io/en/stable/recursive-analysis/",
             "python_requirement": ">=3.11",
-            "truth_status": "TEILWEISE VERIFIZIERT",
-            "reason": "Official pages were checked, but the release index snapshot may lag the 2026-08-17 wall clock.",
+            "truth_status": "VERIFIZIERT",
+            "reason": "The official GitHub releases page marked 2026.7 as Latest when checked on 2026-08-17.",
         },
         "compatibility_assessment": {
             "python_requirement_met": tuple(map(int, dependencies["python"].split(".")[:2])) >= (3, 11),
             "exact_historical_reproduction_on_local_dev_runtime": True,
-            "truth_status": "VERIFIZIERT",
-            "scope_limit": "Exact backtest reproduction does not establish exchange/live compatibility.",
+            "local_runtime_is_current_official_release": False,
+            "truth_status": "TEILWEISE VERIFIZIERT",
+            "scope_limit": (
+                "The frozen 2026.5 development runtime reproduces the historical backtest, but it predates "
+                "official release 2026.7; exact backtest reproduction does not establish current-version or "
+                "exchange/live compatibility."
+            ),
         },
     }
     target = ROOT / "audit/freqtrade_version_audit.json"
     target.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({"local": report["local_runtime"]["freqtrade"], "compatibility": "VERIFIZIERT"}))
+    print(
+        json.dumps(
+            {
+                "local": report["local_runtime"]["freqtrade"],
+                "official_latest": report["official_reference"]["observed_latest_release"],
+                "compatibility": report["compatibility_assessment"]["truth_status"],
+            }
+        )
+    )
     return 0
 
 

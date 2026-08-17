@@ -1,8 +1,8 @@
 {
   "bundle": "release/FQT_RnD_V741_Audit_20260817.zip",
-  "bundle_bytes": 565873,
-  "bundle_sha256": "17e0ae2239d66ccb9adba163f867d6fb5d1a0e89939ca500facb28645b644833",
-  "deterministic_rebuild_sha256": "17e0ae2239d66ccb9adba163f867d6fb5d1a0e89939ca500facb28645b644833",
+  "bundle_bytes": 566494,
+  "bundle_sha256": "4efda382d9201191ce665dcc0fc66e2cd1c063aa02b36b2a41804c07eac30857",
+  "deterministic_rebuild_sha256": "4efda382d9201191ce665dcc0fc66e2cd1c063aa02b36b2a41804c07eac30857",
   "deterministic_rebuild_verified": true,
   "guarantee_limit": "Pattern scanning reduces risk but cannot prove absence of every possible secret.",
   "hash_mismatches": [],

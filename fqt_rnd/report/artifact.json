@@ -5,7 +5,7 @@
     "surface": "report",
     "title": "Freqtrade R&D Audit — V741 bleibt ein historischer Champion",
     "description": "Technischer Champion-Challenger-Audit für Binance Spot, BTC/USDC, Long-only, 1m.",
-    "generatedAt": "2026-08-17T16:43:32Z",
+    "generatedAt": "2026-08-17T16:48:24Z",
     "filters": [],
     "cards": [
       {
@@ -615,7 +615,7 @@
         "id": "version_note",
         "type": "markdown",
         "sourceId": "version",
-        "body": "## Version und Kompatibilität\n\nDie lokale Engine ist Freqtrade 2026.5-dev-77cabd291 auf Commit 77cabd291fa6, Python 3.12.3 und CCXT 4.5.51. Sie reproduziert den historischen 2026.5.1-Lauf exakt; Live-Kompatibilität ist dadurch nicht bewiesen."
+        "body": "## Version und Kompatibilität\n\nDie lokale Engine ist Freqtrade 2026.5-dev-77cabd291 auf Commit 77cabd291fa6, Python 3.12.3 und CCXT 4.5.51. Die am 2026-08-17 auf der offiziellen Release-Seite als aktuell markierte Version ist 2026.7. Die eingefrorene ältere Engine reproduziert den historischen 2026.5.1-Lauf exakt; Kompatibilität mit der aktuellen Version, Exchange-Verhalten und Live-Betrieb sind dadurch nicht bewiesen."
       },
       {
         "id": "gate_finding",
@@ -660,7 +660,7 @@
   },
   "snapshot": {
     "version": 1,
-    "generatedAt": "2026-08-17T16:43:32Z",
+    "generatedAt": "2026-08-17T16:48:24Z",
     "status": "partial",
     "datasets": {
       "headline": [
