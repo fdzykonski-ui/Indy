@@ -1,0 +1,19 @@
+{
+  "hypothesis_id": "H002",
+  "registered_before_execution": true,
+  "parent": "H001",
+  "candidate": "CausalRegimePullbackV2",
+  "observed_parent_failure": "H001 exited recovered pullbacks after a median few minutes at gross moves too small to cover a modeled 0.1% fee on both entry and exit.",
+  "single_controlled_change": "Keep H001 entries and indicators unchanged; permit exit signals only above 0.25% gross profit, use a fee-aware ROI floor, and tighten the catastrophic stop from 1.8% to 1.2%.",
+  "expected_effect": "Remove structurally fee-negative micro exits without using outcome timestamps or pair-specific rules.",
+  "falsification_criteria": [
+    "training net profit is non-positive or profit factor is <= 1",
+    "training closed-trade drawdown is >= 5%",
+    "validation net profit is non-positive or profit factor is <= 1",
+    "validation drawdown is >= 5%",
+    "one- or two-candle entry delay makes validation expectancy non-positive",
+    "lookahead-analysis or recursive-analysis fails",
+    "trade count falls below 10 per day or exceeds 20 per day in the combined development windows"
+  ],
+  "decision_rule": "Run training first. Open validation only if all training gates pass. Keep frozen OOS sealed until all pre-OOS tests pass."
+}

@@ -1,0 +1,25 @@
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3127: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["enter_long"] = 0
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3128: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["enter_tag"] = ""
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3200: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["exit_long"] = 0
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3201: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["exit_tag"] = ""
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3127: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["enter_long"] = 0
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3128: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["enter_tag"] = ""
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3200: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["exit_long"] = 0
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3201: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["exit_tag"] = ""
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3127: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["enter_long"] = 0
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3128: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["enter_tag"] = ""
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3200: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["exit_long"] = 0
+/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py:3201: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()`
+  dataframe["exit_tag"] = ""
+{"status": "VERIFIZIERT", "output": "audit/runtime_signal_audit.json"}

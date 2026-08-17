@@ -1,0 +1,24 @@
+{
+  "hypothesis_id": "H001",
+  "registered_before_execution": true,
+  "candidate": "CausalRegimePullbackV1",
+  "change": "Replace the mined, pair-specific edge ensemble with a compact pair-agnostic EMA trend plus causal pullback, RSI, ATR, and prior-volume gate.",
+  "causal_availability": "All features use the current closed candle or earlier candles; Freqtrade executes the signal on the following candle.",
+  "expected_effect": "Reduce selection leakage and recursive sensitivity while retaining positive risk-adjusted return across train and validation.",
+  "falsification_criteria": [
+    "lookahead-analysis reports any biased entry, exit, or indicator",
+    "recursive-analysis shows a material signal feature deviation at the declared startup count",
+    "validation net profit is non-positive or profit factor is <= 1 after 0.1% fees",
+    "validation drawdown is >= 5%",
+    "one- or two-candle entry delay changes positive validation expectancy to non-positive",
+    "reversed or seeded-random negative controls perform comparably or better",
+    "performance depends on the volume gate or exit rule without stable incremental value"
+  ],
+  "development_windows": {
+    "train": "20260101-20260301",
+    "validation": "20260302-20260401",
+    "development_test": "20260402-20260501",
+    "frozen_oos": "20260502-20260510"
+  },
+  "decision_rule": "Do not open frozen OOS unless code and thresholds are frozen and all pre-OOS causal and validation gates pass. A failed H001 remains documented and cannot replace the Champion."
+}

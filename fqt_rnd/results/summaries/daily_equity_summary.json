@@ -1,0 +1,24 @@
+{
+  "grain": "last observed per-minute sum of all currency total_quote values per UTC calendar day",
+  "rows": 363,
+  "schema_version": 1,
+  "scope_limit": "Backtest wallet equity is simulated and is not exchange-account equity.",
+  "series": {
+    "Buy-and-hold": {
+      "first_equity_usdc": 1013.77628453,
+      "last_equity_usdc": 873.3187307099998,
+      "observations": 121
+    },
+    "Cash": {
+      "first_equity_usdc": 1000.0,
+      "last_equity_usdc": 1000.0,
+      "observations": 121
+    },
+    "Champion V741": {
+      "first_equity_usdc": 1000.0,
+      "last_equity_usdc": 1262.4181329,
+      "observations": 121
+    }
+  },
+  "truth_status": "VERIFIZIERT"
+}

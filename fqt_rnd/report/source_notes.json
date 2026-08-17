@@ -1,0 +1,64 @@
+{
+  "audience": "technical",
+  "delivery_mode": "html",
+  "report_job": {
+    "question": "Is any strategy promotable under the frozen Freqtrade research contract?",
+    "decision_useful_answer": "RETAIN_HISTORICAL_CHAMPION; NO PROMOTION; NO OOS; NO CANARY",
+    "scope": "20260101-20260301; BTC/USDC; 1m; 1000 USDC; unlimited; max_open_trades=1; fee=0.1%",
+    "success_criteria": [
+      "net_profit_gt_50pct",
+      "profit_factor_gt_5",
+      "trades_gt_500",
+      "trades_per_day_10_to_20",
+      "wallet_drawdown_lt_5pct",
+      "winrate_gt_80pct"
+    ]
+  },
+  "required_structure_mapping": {
+    "technical_summary": "Technisches Ergebnis",
+    "key_findings": [
+      "Equity",
+      "Training comparison",
+      "Stress"
+    ],
+    "scope_definitions": "Scope und Metrikdefinitionen",
+    "methodology": "Methodik und Reproduzierbarkeit",
+    "limitations": "Grenzen, Unsicherheit und robuste Gegenbefunde",
+    "recommended_next_steps": "Empfohlene nächste Arbeitspakete",
+    "further_questions": "Offene Fragen"
+  },
+  "chart_map": [
+    {
+      "section": "Equity finding",
+      "question": "How did simulated capital evolve against cash and buy-and-hold?",
+      "family": "Trend",
+      "type": "line",
+      "fields": [
+        "date",
+        "strategy",
+        "equity_usdc"
+      ],
+      "data_sufficiency": "121 daily points per series",
+      "palette_policy": "relaxed multi-category; three directly named series",
+      "claim": "V741 ends above both controls in the selected backtest"
+    },
+    {
+      "section": "Training finding",
+      "question": "Which strategy generated net profit under the identical train contract?",
+      "family": "Comparison",
+      "type": "bar",
+      "fields": [
+        "strategy",
+        "profit_pct"
+      ],
+      "data_sufficiency": "three intentional, fully labelled candidates",
+      "palette_policy": "single-root preferred; zero baseline",
+      "claim": "both challengers are negative on training"
+    }
+  ],
+  "omissions": [
+    "No OOS visual: the frozen OOS was correctly not opened.",
+    "No pair comparison visual: only BTC/USDC exists.",
+    "No finite Profit-Factor card: the base run has zero losses, so PF is undefined rather than infinite."
+  ]
+}

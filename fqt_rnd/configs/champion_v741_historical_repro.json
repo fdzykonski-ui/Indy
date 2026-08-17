@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schema.freqtrade.io/schema.json",
+  "bot_name": "FQT_RND_OFFLINE",
+  "cancel_open_orders_on_exit": false,
+  "dataformat_ohlcv": "parquet",
+  "db_url": "sqlite://",
+  "dry_run": true,
+  "dry_run_wallet": 50.0,
+  "entry_pricing": {
+    "price_side": "other",
+    "use_order_book": false
+  },
+  "exchange": {
+    "ccxt_async_config": {
+      "aiohttp_trust_env": true,
+      "enableRateLimit": false,
+      "options": {
+        "defaultType": "spot"
+      }
+    },
+    "ccxt_config": {
+      "enableRateLimit": false,
+      "options": {
+        "adjustForTimeDifference": false,
+        "defaultType": "spot"
+      }
+    },
+    "enable_ws": false,
+    "name": "binance",
+    "pair_blacklist": [],
+    "pair_whitelist": [
+      "BTC/USDC"
+    ]
+  },
+  "exit_pricing": {
+    "price_side": "other",
+    "use_order_book": false
+  },
+  "fiat_display_currency": "USD",
+  "force_entry_enable": false,
+  "internals": {
+    "process_only_new_candles": true,
+    "process_throttle_secs": 15
+  },
+  "margin_mode": "",
+  "max_open_trades": 1,
+  "order_time_in_force": {
+    "entry": "GTC",
+    "exit": "GTC"
+  },
+  "order_types": {
+    "entry": "limit",
+    "exit": "limit",
+    "stoploss": "market",
+    "stoploss_on_exchange": false
+  },
+  "pairlists": [
+    {
+      "method": "StaticPairList"
+    }
+  ],
+  "stake_amount": "unlimited",
+  "stake_currency": "USDC",
+  "strategy": "ED8",
+  "timeframe": "1m",
+  "tradable_balance_ratio": 0.99,
+  "trading_mode": "spot",
+  "unfilledtimeout": {
+    "entry": 90,
+    "exit": 120,
+    "unit": "seconds"
+  },
+  "version": 3
+}

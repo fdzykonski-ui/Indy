@@ -1,0 +1,1045 @@
+{
+  "format": "split-7z",
+  "combined_bytes": 1399507489,
+  "combined_sha256": "1060a41bee11cddb6aec8ae3dba169ad29110803940a157338f3b79d603d1656",
+  "volumes": [
+    {
+      "index": 1,
+      "source": "/workspace/scratch/3754652a4c5b/project_sources/03-freqtrade_backup.7z.001",
+      "bytes": 314572800,
+      "sha256": "127fa2215b3f86d2cd58b542ac2cc360b51a7b2695cb14a15b13deb27d1ab2de"
+    },
+    {
+      "index": 2,
+      "source": "/workspace/scratch/3754652a4c5b/project_sources/05-freqtrade_backup.7z.002",
+      "bytes": 314572800,
+      "sha256": "1563629351f85bb36bb795e8a8a58efe6fc11c7e9253a10065141befdd544ef3"
+    },
+    {
+      "index": 3,
+      "source": "/workspace/scratch/3754652a4c5b/project_sources/02-freqtrade_backup.7z.003",
+      "bytes": 314572800,
+      "sha256": "4acba65c3065ca97297f2b249dc538cece89a510fb49e7e3782e4b1c0a56d988"
+    },
+    {
+      "index": 4,
+      "source": "/workspace/scratch/3754652a4c5b/project_sources/04-freqtrade_backup.7z.004",
+      "bytes": 314572800,
+      "sha256": "62da958738686f93d65bc53ff633aaf5689fb4250e9a49d07a494c5d7b95282f"
+    },
+    {
+      "index": 5,
+      "source": "/workspace/scratch/3754652a4c5b/project_sources/01-freqtrade_backup.7z.005",
+      "bytes": 141216289,
+      "sha256": "f1f10fac29253c78a7480b556e689629036b6108942aa4a98c4d183fa10dcb0e"
+    }
+  ],
+  "destination": null,
+  "regular_files": 0,
+  "directories": 0,
+  "symlinks": 0,
+  "skipped_special": 0,
+  "uncompressed_regular_bytes": 3837829684,
+  "entry_sample": [
+    {
+      "path": "freqtrade/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.devcontainer/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/branches/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/hooks/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/info/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/logs/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/logs/refs/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/logs/refs/heads/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/logs/refs/remotes/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/logs/refs/remotes/origin/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/objects/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/objects/info/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/objects/pack/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/refs/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/refs/heads/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/refs/remotes/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/refs/remotes/origin/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.git/refs/tags/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.github/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.github/.devcontainer/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.github/ISSUE_TEMPLATE/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.github/actions/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.github/actions/docker-tags/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.github/workflows/",
+      "bytes": 0,
+      "mode": "0o40775"
+    },
+    {
+      "path": "freqtrade/.venv/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/bin/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/include/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/include/python3.12/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/include/site/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/include/site/python3.12/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/include/site/python3.12/greenlet/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Build/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Build/Tests/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Build/Tests/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Build/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Compiler/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Compiler/Tests/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Compiler/Tests/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Compiler/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Debugger/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Debugger/Tests/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Debugger/Tests/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Debugger/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Distutils/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Distutils/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Includes/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Includes/cpython/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Includes/libc/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Includes/libcpp/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Includes/numpy/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Includes/posix/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Plex/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Plex/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Runtime/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Runtime/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Tempita/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Tempita/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Tests/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Tests/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Utility/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/Utility/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/Cython/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/MarketProfile-0.2.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/_distutils_hack/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/_distutils_hack/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/_yaml/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/_yaml/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiodns/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiodns/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiodns-4.0.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiodns-4.0.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiofiles/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiofiles/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiofiles/tempfile/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiofiles/tempfile/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiofiles/threadpool/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiofiles/threadpool/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiofiles-25.1.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiofiles-25.1.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohappyeyeballs/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohappyeyeballs/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohappyeyeballs-2.6.1.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp/.hash/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp/_websocket/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp/_websocket/.hash/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp/_websocket/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp-3.13.5.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp-3.13.5.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp-3.13.5.dist-info/licenses/vendor/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiohttp-3.13.5.dist-info/licenses/vendor/llhttp/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiosignal/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiosignal/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiosignal-1.4.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/aiosignal-1.4.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/autogenerate/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/autogenerate/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/autogenerate/compare/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/autogenerate/compare/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/ddl/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/ddl/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/operations/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/operations/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/runtime/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/runtime/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/script/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/script/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/async/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/async/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/generic/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/generic/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/multidb/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/multidb/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/pyproject/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/pyproject/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/pyproject_async/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/templates/pyproject_async/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/testing/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/testing/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/testing/plugin/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/testing/plugin/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/testing/suite/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/testing/suite/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/util/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic/util/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic-1.18.4.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/alembic-1.18.4.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/annotated_doc/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/annotated_doc/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/annotated_doc-0.0.4.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/annotated_doc-0.0.4.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/annotated_types/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/annotated_types/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/annotated_types-0.7.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/annotated_types-0.7.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/_backends/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/_backends/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/_core/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/_core/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/abc/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/abc/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/streams/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio/streams/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio-4.13.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/anyio-4.13.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/arrow/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/arrow/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/arrow-1.4.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/arrow-1.4.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/ast_comments-1.3.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/attr/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/attr/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/attrs/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/attrs/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/attrs-26.1.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/attrs-26.1.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/benchmark/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/benchmark/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/slow/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/slow/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/src/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/src/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/tests/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/tests/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/tests/data/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck/tests/data/template_test/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck-1.6.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/bottleneck-1.6.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/build/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/build/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/build/_compat/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/build/_compat/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/build-1.5.0.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/build-1.5.0.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/build_tools/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/build_tools/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/cachetools/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/cachetools/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/cachetools-7.0.6.dist-info/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/cachetools-7.0.6.dist-info/licenses/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/ccxt/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/ccxt/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/ccxt/abstract/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/ccxt/abstract/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/ccxt/async_support/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "path": "freqtrade/.venv/lib/python3.12/site-packages/ccxt/async_support/__pycache__/",
+      "bytes": 0,
+      "mode": "0o40755"
+    }
+  ]
+}

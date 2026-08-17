@@ -1,0 +1,12 @@
+{
+  "claim": "external and embedded V741 strategy bytes are identical",
+  "embedded_strategy_sha256": "a5ac726eab351b08605a4ac1cd1637ef4f82b91b559edcd849f37ac364a95388",
+  "immutability": "Frozen file is read-only; tests enforce the strategy hash.",
+  "raw_config_contains_sensitive_keys": true,
+  "raw_config_publishable": false,
+  "raw_config_sha256": "d9465354428d0d7d83f2f81d670c1d90b9c1c985f0bb7bac60affea08e24b7f8",
+  "sanitized_comparison_config_sha256": "9f84fb5b2029420a03a63ca761ff47c576cd3e743f3e707e9110285ccb3fac19",
+  "sanitized_historical_config_sha256": "5262dbdc6657d6efa6bfba31461138286b889b6bda4d9e92e748eb97baf6f652",
+  "status": "VERIFIZIERT",
+  "strategy_sha256": "a5ac726eab351b08605a4ac1cd1637ef4f82b91b559edcd849f37ac364a95388"
+}

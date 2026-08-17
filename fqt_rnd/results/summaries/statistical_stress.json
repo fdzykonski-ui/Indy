@@ -1,0 +1,244 @@
+{
+  "limitations": [
+    "Bootstrap resamples a selected twenty-trade sample and therefore cannot remove selection bias.",
+    "Permutation Monte Carlo changes trade order only; it does not simulate new price paths.",
+    "Analytical slippage is an approximation; Freqtrade engine fee runs are the primary stress evidence.",
+    "Zero-loss samples cannot estimate a finite Profit Factor."
+  ],
+  "multiple_testing_sensitivity": {
+    "corrections": [
+      {
+        "assumed_test_family_size": 8,
+        "basis": "eight explicitly recorded V735-V742 variants",
+        "bonferroni_adjusted_naive_all_wins_p": 7.62939453125e-06,
+        "status": "VERIFIZIERT"
+      },
+      {
+        "assumed_test_family_size": 2985,
+        "basis": "rows in attached score90 candidate CSV; direct lineage/independence is not proven",
+        "bonferroni_adjusted_naive_all_wins_p": 0.0028467178344726562,
+        "status": "TEILWEISE VERIFIZIERT"
+      },
+      {
+        "assumed_test_family_size": 810000,
+        "basis": "filename/stage label only; not established as independent tested candidates",
+        "bonferroni_adjusted_naive_all_wins_p": 0.7724761962890625,
+        "status": "NICHT VERIFIZIERT"
+      }
+    ],
+    "interpretation": "This is a sensitivity illustration, not a valid market-model p-value; trades are non-independent, the null win probability is unknown, and the full selection family is not reconstructable.",
+    "naive_null": "independent Bernoulli wins with p=0.5",
+    "uncorrected_one_sided_probability_of_20_wins": 9.5367431640625e-07
+  },
+  "resamples_per_seed": 10000,
+  "samples": [
+    {
+      "analytical_slippage_approximation": [
+        {
+          "approximate_final_balance": 1265.0862524581175,
+          "approximate_profit_pct": 26.508625245811746,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 0
+        },
+        {
+          "approximate_final_balance": 1240.313155495647,
+          "approximate_profit_pct": 24.031315549564702,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 5
+        },
+        {
+          "approximate_final_balance": 1216.0013647693002,
+          "approximate_profit_pct": 21.60013647693002,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 10
+        },
+        {
+          "approximate_final_balance": 1168.7292541238946,
+          "approximate_profit_pct": 16.87292541238947,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 20
+        }
+      ],
+      "losses": 0,
+      "observed_winrate_pct": 100.0,
+      "sample": "champion_fee_0.1pct",
+      "seeds": [
+        {
+          "bootstrap_probability_nonpositive": 0.0,
+          "bootstrap_total_profit_abs_median": 261.64294121499995,
+          "bootstrap_total_profit_abs_p025": 201.04959969824998,
+          "bootstrap_total_profit_abs_p975": 326.50647063375,
+          "permutation_max_drawdown_pct_p50": 0.0,
+          "permutation_max_drawdown_pct_p95": 0.0,
+          "seed": 17
+        },
+        {
+          "bootstrap_probability_nonpositive": 0.0,
+          "bootstrap_total_profit_abs_median": 261.65321797499996,
+          "bootstrap_total_profit_abs_p025": 200.622391866,
+          "bootstrap_total_profit_abs_p975": 328.44523459425,
+          "permutation_max_drawdown_pct_p50": 0.0,
+          "permutation_max_drawdown_pct_p95": 0.0,
+          "seed": 43
+        },
+        {
+          "bootstrap_probability_nonpositive": 0.0,
+          "bootstrap_total_profit_abs_median": 261.91618237,
+          "bootstrap_total_profit_abs_p025": 200.44050107274998,
+          "bootstrap_total_profit_abs_p975": 328.26093379375004,
+          "permutation_max_drawdown_pct_p50": 0.0,
+          "permutation_max_drawdown_pct_p95": 0.0,
+          "seed": 97
+        }
+      ],
+      "source_archive": "results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip",
+      "trade_count": 20,
+      "wilson_95_winrate_pct": [
+        83.88748419471807,
+        100.0
+      ],
+      "wins": 20
+    },
+    {
+      "analytical_slippage_approximation": [
+        {
+          "approximate_final_balance": 1140.9302911060045,
+          "approximate_profit_pct": 14.09302911060044,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 0
+        },
+        {
+          "approximate_final_balance": 1119.5923880357423,
+          "approximate_profit_pct": 11.959238803574234,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 5
+        },
+        {
+          "approximate_final_balance": 1098.6329174153313,
+          "approximate_profit_pct": 9.863291741533132,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 10
+        },
+        {
+          "approximate_final_balance": 1057.8239940201804,
+          "approximate_profit_pct": 5.782399402018035,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 20
+        }
+      ],
+      "losses": 4,
+      "observed_winrate_pct": 78.94736842105263,
+      "sample": "champion_fee_0.2pct",
+      "seeds": [
+        {
+          "bootstrap_probability_nonpositive": 0.006,
+          "bootstrap_total_profit_abs_median": 140.20133209499997,
+          "bootstrap_total_profit_abs_p025": 32.31062509825001,
+          "bootstrap_total_profit_abs_p975": 240.5819297447499,
+          "permutation_max_drawdown_pct_p50": 2.0013037900198474,
+          "permutation_max_drawdown_pct_p95": 3.534924836253291,
+          "seed": 17
+        },
+        {
+          "bootstrap_probability_nonpositive": 0.0075,
+          "bootstrap_total_profit_abs_median": 141.07106874,
+          "bootstrap_total_profit_abs_p025": 29.834849945499997,
+          "bootstrap_total_profit_abs_p975": 240.93574362549998,
+          "permutation_max_drawdown_pct_p50": 1.976032175910147,
+          "permutation_max_drawdown_pct_p95": 3.4831066219336613,
+          "seed": 43
+        },
+        {
+          "bootstrap_probability_nonpositive": 0.0052,
+          "bootstrap_total_profit_abs_median": 141.17099793,
+          "bootstrap_total_profit_abs_p025": 32.12527771150001,
+          "bootstrap_total_profit_abs_p975": 240.25833958149994,
+          "permutation_max_drawdown_pct_p50": 1.9984756979521197,
+          "permutation_max_drawdown_pct_p95": 3.5081363683205415,
+          "seed": 97
+        }
+      ],
+      "source_archive": "results/champion_common_fee_002/backtest-result-2026-08-17_18-08-24.zip",
+      "trade_count": 19,
+      "wilson_95_winrate_pct": [
+        56.66572155618583,
+        91.49232336708376
+      ],
+      "wins": 15
+    },
+    {
+      "analytical_slippage_approximation": [
+        {
+          "approximate_final_balance": 1095.0658174986297,
+          "approximate_profit_pct": 9.506581749862963,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 0
+        },
+        {
+          "approximate_final_balance": 1074.541770678392,
+          "approximate_profit_pct": 7.454177067839196,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 5
+        },
+        {
+          "approximate_final_balance": 1054.3825035216073,
+          "approximate_profit_pct": 5.438250352160723,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 10
+        },
+        {
+          "approximate_final_balance": 1015.1338885768042,
+          "approximate_profit_pct": 1.51338885768042,
+          "method_status": "TEILWEISE VERIFIZIERT",
+          "slippage_bps_per_side": 20
+        }
+      ],
+      "losses": 4,
+      "observed_winrate_pct": 78.94736842105263,
+      "sample": "champion_fee_0.3pct",
+      "seeds": [
+        {
+          "bootstrap_probability_nonpositive": 0.0412,
+          "bootstrap_total_profit_abs_median": 96.22914758499999,
+          "bootstrap_total_profit_abs_p025": -13.525050482499998,
+          "bootstrap_total_profit_abs_p975": 191.95967678375,
+          "permutation_max_drawdown_pct_p50": 2.6806132795027846,
+          "permutation_max_drawdown_pct_p95": 4.435059881241847,
+          "seed": 17
+        },
+        {
+          "bootstrap_probability_nonpositive": 0.0428,
+          "bootstrap_total_profit_abs_median": 95.78668954,
+          "bootstrap_total_profit_abs_p025": -12.527740320499996,
+          "bootstrap_total_profit_abs_p975": 191.87115855824996,
+          "permutation_max_drawdown_pct_p50": 2.6671274652963937,
+          "permutation_max_drawdown_pct_p95": 4.399282150003722,
+          "seed": 43
+        },
+        {
+          "bootstrap_probability_nonpositive": 0.0388,
+          "bootstrap_total_profit_abs_median": 95.51485219,
+          "bootstrap_total_profit_abs_p025": -10.991205087750002,
+          "bootstrap_total_profit_abs_p975": 193.567734562,
+          "permutation_max_drawdown_pct_p50": 2.675119740933587,
+          "permutation_max_drawdown_pct_p95": 4.418153747822636,
+          "seed": 97
+        }
+      ],
+      "source_archive": "results/champion_common_fee_003/backtest-result-2026-08-17_18-08-24.zip",
+      "trade_count": 19,
+      "wilson_95_winrate_pct": [
+        56.66572155618583,
+        91.49232336708376
+      ],
+      "wins": 15
+    }
+  ],
+  "schema_version": 1,
+  "seeds": [
+    17,
+    43,
+    97
+  ],
+  "truth_status": "TEILWEISE VERIFIZIERT"
+}

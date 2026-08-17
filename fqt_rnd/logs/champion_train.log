@@ -1,0 +1,215 @@
+FQT_RND_OFFLINE_MARKET_CATALOG=BTC/USDC; execution/liquidity/live-order evidence=false
+2026-08-17 17:58:45,033 - freqtrade - INFO - freqtrade 2026.5-dev-77cabd291
+2026-08-17 17:58:45,229 - freqtrade.configuration.load_config - INFO - Using config: ../../configs/common_research_1000usdc.json ...
+2026-08-17 17:58:45,230 - freqtrade.configuration.configuration - INFO - Parameter --no-color detected ...
+2026-08-17 17:58:45,232 - freqtrade.loggers - INFO - Logfile configured
+2026-08-17 17:58:45,232 - freqtrade.loggers - INFO - Verbosity set to 0
+2026-08-17 17:58:45,232 - freqtrade.configuration.configuration - INFO - Using additional Strategy lookup path: ../../champion/frozen
+2026-08-17 17:58:45,233 - freqtrade.configuration.configuration - INFO - Parameter -i/--timeframe detected ... Using timeframe: 1m ...
+2026-08-17 17:58:45,233 - freqtrade.configuration.configuration - INFO - Using max_open_trades: 1 ...
+2026-08-17 17:58:45,234 - freqtrade.configuration.configuration - INFO - Parameter --fee detected, setting fee to: 0.001 ...
+2026-08-17 17:58:45,234 - freqtrade.configuration.configuration - INFO - Parameter --timerange detected: 20260101-20260301 ...
+2026-08-17 17:58:45,235 - freqtrade.configuration.configuration - INFO - Using user-data directory: /workspace/scratch/3754652a4c5b/fqt_rnd/reconstruction/freqtrade/user_data ...
+2026-08-17 17:58:45,235 - freqtrade.configuration.configuration - INFO - Using data directory: /workspace/scratch/3754652a4c5b/fqt_rnd/reconstruction/freqtrade/user_data/data/binance ...
+2026-08-17 17:58:45,235 - freqtrade.configuration.configuration - INFO - Using ../../results/champion_train as backtest directory ...
+2026-08-17 17:58:45,236 - freqtrade.configuration.configuration - INFO - Parameter --export detected: trades ...
+2026-08-17 17:58:45,236 - freqtrade.configuration.configuration - INFO - Parameter --cache=none detected ...
+2026-08-17 17:58:45,237 - freqtrade.configuration.configuration - INFO - Filter trades by timerange: 20260101-20260301
+2026-08-17 17:58:45,237 - freqtrade.exchange.check_exchange - INFO - Checking exchange...
+2026-08-17 17:58:45,243 - freqtrade.exchange.check_exchange - INFO - Exchange "binance" is officially supported by the Freqtrade development team.
+2026-08-17 17:58:45,244 - freqtrade.configuration.configuration - INFO - Using pairlist from configuration.
+2026-08-17 17:58:45,244 - freqtrade.configuration.config_validation - INFO - Validating configuration ...
+2026-08-17 17:58:45,246 - freqtrade.commands.optimize_commands - INFO - Starting freqtrade in Backtesting mode
+2026-08-17 17:58:45,247 - freqtrade.exchange.exchange - INFO - Instance is running with dry_run enabled
+2026-08-17 17:58:45,247 - freqtrade.exchange.exchange - INFO - Using CCXT 4.5.51
+2026-08-17 17:58:45,247 - freqtrade.exchange.exchange - INFO - Applying additional ccxt config: {'enableRateLimit': False, 'options': {'adjustForTimeDifference': False, 'defaultType': 'spot'}}
+2026-08-17 17:58:45,253 - freqtrade.exchange.exchange - INFO - Applying additional ccxt config: {'enableRateLimit': False, 'options': {'adjustForTimeDifference': False, 'defaultType': 'spot'}, 
+'aiohttp_trust_env': True}
+2026-08-17 17:58:45,260 - freqtrade.exchange.exchange - INFO - Using Exchange "Binance"
+2026-08-17 17:58:45,260 - freqtrade.resolvers.exchange_resolver - INFO - Using resolved exchange 'Binance'...
+2026-08-17 17:58:45,375 - freqtrade.resolvers.iresolver - INFO - Using resolved strategy ED8 from '/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py'...
+2026-08-17 17:58:45,375 - freqtrade.strategy.hyper - INFO - Found no parameter file.
+2026-08-17 17:58:45,376 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'timeframe' with value from the configuration: 1m.
+2026-08-17 17:58:45,376 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'order_types' with value from the configuration: {'entry': 'limit', 'exit': 'limit', 'stoploss': 'market', 
+'stoploss_on_exchange': False, 'emergency_exit': 'market'}.
+2026-08-17 17:58:45,376 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'order_time_in_force' with value from the configuration: {'entry': 'GTC', 'exit': 'GTC'}.
+2026-08-17 17:58:45,377 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'stake_currency' with value from the configuration: USDC.
+2026-08-17 17:58:45,377 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'stake_amount' with value from the configuration: unlimited.
+2026-08-17 17:58:45,377 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'unfilledtimeout' with value from the configuration: {'entry': 90, 'exit': 120, 'unit': 'seconds', 
+'exit_timeout_count': 0}.
+2026-08-17 17:58:45,378 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'max_open_trades' with value from the configuration: 1.
+2026-08-17 17:58:45,378 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using minimal_roi: {'0': 0.03, '45': 0.021, '180': 0.01, '720': 0.005, '1440': 0.002}
+2026-08-17 17:58:45,378 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using timeframe: 1m
+2026-08-17 17:58:45,379 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stoploss: -0.022
+2026-08-17 17:58:45,379 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop: True
+2026-08-17 17:58:45,380 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop_positive: 0.009
+2026-08-17 17:58:45,380 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop_positive_offset: 0.02
+2026-08-17 17:58:45,380 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_only_offset_is_reached: True
+2026-08-17 17:58:45,381 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using use_custom_stoploss: True
+2026-08-17 17:58:45,381 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using process_only_new_candles: True
+2026-08-17 17:58:45,381 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using order_types: {'entry': 'limit', 'exit': 'limit', 'stoploss': 'market', 'stoploss_on_exchange': False, 
+'emergency_exit': 'market'}
+2026-08-17 17:58:45,381 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using order_time_in_force: {'entry': 'GTC', 'exit': 'GTC'}
+2026-08-17 17:58:45,382 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stake_currency: USDC
+2026-08-17 17:58:45,382 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stake_amount: unlimited
+2026-08-17 17:58:45,382 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using startup_candle_count: 1600
+2026-08-17 17:58:45,382 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using unfilledtimeout: {'entry': 90, 'exit': 120, 'unit': 'seconds', 'exit_timeout_count': 0}
+2026-08-17 17:58:45,382 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using use_exit_signal: True
+2026-08-17 17:58:45,383 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using exit_profit_only: True
+2026-08-17 17:58:45,383 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using ignore_roi_if_entry_signal: False
+2026-08-17 17:58:45,383 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using exit_profit_offset: 0.001
+2026-08-17 17:58:45,383 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using disable_dataframe_checks: False
+2026-08-17 17:58:45,384 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using ignore_buying_expired_candle_after: 0
+2026-08-17 17:58:45,384 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using position_adjustment_enable: False
+2026-08-17 17:58:45,384 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using max_entry_position_adjustment: -1
+2026-08-17 17:58:45,384 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using max_open_trades: 1
+2026-08-17 17:58:45,384 - freqtrade.configuration.config_validation - INFO - Validating configuration ...
+2026-08-17 17:58:45,388 - freqtrade.resolvers.iresolver - INFO - Using resolved pairlist StaticPairList from 
+'/workspace/scratch/3754652a4c5b/fqt_rnd/reconstruction/freqtrade/freqtrade/plugins/pairlist/StaticPairList.py'...
+2026-08-17 17:58:45,388 - freqtrade.optimize.backtesting - INFO - Using fee 0.1000% from config.
+2026-08-17 17:58:45,389 - freqtrade.exchange.exchange - WARNING - Using 2 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 1600 candles for your 
+strategy.
+2026-08-17 17:58:45,509 - freqtrade.optimize.backtesting - INFO - Loading data from 2025-12-30 21:20:00 up to 2026-03-01 00:00:00 (60 days).
+2026-08-17 17:58:46,030 - freqtrade.optimize.backtesting - INFO - Dataload complete. Calculating indicators
+2026-08-17 17:58:46,031 - freqtrade.optimize.backtesting - INFO - Running backtesting for Strategy ED8
+2026-08-17 17:58:46,032 - freqtrade.strategy.hyper - INFO - No params for buy found, using default values.
+2026-08-17 17:58:46,032 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): clean_pullback_penalty = 0
+2026-08-17 17:58:46,033 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): edge_hit_min = 1
+2026-08-17 17:58:46,033 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): entry_score_min = 55
+2026-08-17 17:58:46,033 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): max_risk_score = 78
+2026-08-17 17:58:46,033 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): quarantine_edge_penalty = 0
+2026-08-17 17:58:46,034 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): regime_score_min = 30
+2026-08-17 17:58:46,034 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): soft_gate_min = 3
+2026-08-17 17:58:46,034 - freqtrade.strategy.hyper - INFO - No params for sell found, using default values.
+2026-08-17 17:58:46,034 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): defensive_stop_profit = -0.018
+2026-08-17 17:58:46,034 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): exit_pressure_min = 82
+2026-08-17 17:58:46,035 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): loss_exit_min_minutes = 25
+2026-08-17 17:58:46,035 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): loss_exit_pressure_min = 78
+2026-08-17 17:58:46,035 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): loss_exit_risk_min = 64
+2026-08-17 17:58:46,035 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): profit_decay_min = 0.018
+2026-08-17 17:58:46,035 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): time_decay_minutes = 1440
+2026-08-17 17:58:48,083 - freqtrade.optimize.backtesting - INFO - Backtesting with data from 2026-01-01 00:00:00 up to 2026-03-01 00:00:00 (59 days).
+2026-08-17 17:58:53,511 - freqtrade.misc - INFO - dumping json to "../../results/champion_train-2026-08-17_17-58-53.meta.json"
+Result for strategy ED8
+                                             BACKTESTING REPORT                                              
+┏━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃     Pair ┃ Trades ┃ Avg Profit % ┃ Tot Profit USDC ┃ Tot Profit % ┃ Avg Duration ┃  Win  Draw  Loss  Win% ┃
+┡━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ BTC/USDC │     13 │         1.11 │         152.496 │        15.25 │      8:30:00 │   13     0     0   100 │
+│    TOTAL │     13 │         1.11 │         152.496 │        15.25 │      8:30:00 │   13     0     0   100 │
+└──────────┴────────┴──────────────┴─────────────────┴──────────────┴──────────────┴────────────────────────┘
+                                         LEFT OPEN TRADES REPORT                                          
+┏━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  Pair ┃ Trades ┃ Avg Profit % ┃ Tot Profit USDC ┃ Tot Profit % ┃ Avg Duration ┃  Win  Draw  Loss  Win% ┃
+┡━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ TOTAL │      0 │          0.0 │           0.000 │          0.0 │         0:00 │    0     0     0     0 │
+└───────┴────────┴──────────────┴─────────────────┴──────────────┴──────────────┴────────────────────────┘
+                                                                        ENTER TAG STATS                                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                              Enter Tag ┃ Entries ┃ Avg Profit % ┃ Tot Profit USDC ┃ Tot Profit % ┃    Avg Duration ┃  Win  Draw  Loss  Win% ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│         ED8|dirty_chop|e001|trend_pullback|s82|rnormal │       4 │         0.79 │          33.016 │          3.3 │         4:02:00 │    4     0     0   100 │
+│     ED8|dirty_chop|e059|capitulation_recov|s67|rnormal │       2 │         1.14 │          24.881 │         2.49 │         6:00:00 │    2     0     0   100 │
+│      ED8|clean_uptrend|e104|trend_pullback|s67|rnormal │       1 │          2.1 │          22.697 │         2.27 │         1:09:00 │    1     0     0   100 │
+│ ED8|volatility_sho|e007|continuation_momen|s66|rnormal │       1 │          2.1 │          21.770 │         2.18 │         0:46:00 │    1     0     0   100 │
+│     ED8|volatility_sho|e005|trend_pullback|s81|rnormal │       1 │          2.1 │          20.954 │          2.1 │         2:30:00 │    1     0     0   100 │
+│ ED8|range_rotation|e083|capitulation_recov|s69|rnormal │       1 │          1.0 │          11.197 │         1.12 │         4:13:00 │    1     0     0   100 │
+│ ED8|breakout_expan|e059|capitulation_recov|s67|rnormal │       1 │          1.0 │          11.033 │          1.1 │         3:31:00 │    1     0     0   100 │
+│  ED8|clean_uptrend|e036|capitulation_recov|s76|rnormal │       1 │          0.5 │           4.965 │          0.5 │        14:30:00 │    1     0     0   100 │
+│     ED8|pullback_in_up|e133|range_reversal|s61|rnormal │       1 │          0.2 │           1.982 │          0.2 │ 2 days, 7:45:00 │    1     0     0   100 │
+│                                                  TOTAL │      13 │         1.11 │         152.496 │        15.25 │         8:30:00 │   13     0     0   100 │
+└────────────────────────────────────────────────────────┴─────────┴──────────────┴─────────────────┴──────────────┴─────────────────┴────────────────────────┘
+                                                        EXIT REASON STATS                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                   Exit Reason ┃ Exits ┃ Avg Profit % ┃ Tot Profit USDC ┃ Tot Profit % ┃ Avg Duration ┃  Win  Draw  Loss  Win% ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│                           roi │    10 │         1.18 │         125.051 │        12.51 │     10:46:00 │   10     0     0   100 │
+│ profit_capture|e001_fast_save │     3 │         0.88 │          27.445 │         2.74 │      0:57:00 │    3     0     0   100 │
+│                         TOTAL │    13 │         1.11 │         152.496 │        15.25 │      8:30:00 │   13     0     0   100 │
+└───────────────────────────────┴───────┴──────────────┴─────────────────┴──────────────┴──────────────┴────────────────────────┘
+                                                                                       MIXED TAG STATS                                                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                              Enter Tag ┃                   Exit Reason ┃ Trades ┃ Avg Profit % ┃ Tot Profit USDC ┃ Tot Profit % ┃    Avg Duration ┃  Win  Draw  Loss  Win% ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│         ED8|dirty_chop|e001|trend_pullback|s82|rnormal │ profit_capture|e001_fast_save │      3 │         0.88 │          27.445 │         2.74 │         0:57:00 │    3     0     0   100 │
+│     ED8|dirty_chop|e059|capitulation_recov|s67|rnormal │                           roi │      2 │         1.14 │          24.881 │         2.49 │         6:00:00 │    2     0     0   100 │
+│      ED8|clean_uptrend|e104|trend_pullback|s67|rnormal │                           roi │      1 │          2.1 │          22.697 │         2.27 │         1:09:00 │    1     0     0   100 │
+│ ED8|volatility_sho|e007|continuation_momen|s66|rnormal │                           roi │      1 │          2.1 │          21.770 │         2.18 │         0:46:00 │    1     0     0   100 │
+│     ED8|volatility_sho|e005|trend_pullback|s81|rnormal │                           roi │      1 │          2.1 │          20.954 │          2.1 │         2:30:00 │    1     0     0   100 │
+│ ED8|range_rotation|e083|capitulation_recov|s69|rnormal │                           roi │      1 │          1.0 │          11.197 │         1.12 │         4:13:00 │    1     0     0   100 │
+│ ED8|breakout_expan|e059|capitulation_recov|s67|rnormal │                           roi │      1 │          1.0 │          11.033 │          1.1 │         3:31:00 │    1     0     0   100 │
+│         ED8|dirty_chop|e001|trend_pullback|s82|rnormal │                           roi │      1 │          0.5 │           5.571 │         0.56 │        13:15:00 │    1     0     0   100 │
+│  ED8|clean_uptrend|e036|capitulation_recov|s76|rnormal │                           roi │      1 │          0.5 │           4.965 │          0.5 │        14:30:00 │    1     0     0   100 │
+│     ED8|pullback_in_up|e133|range_reversal|s61|rnormal │                           roi │      1 │          0.2 │           1.982 │          0.2 │ 2 days, 7:45:00 │    1     0     0   100 │
+│                                                  TOTAL │                               │     13 │         1.11 │         152.496 │        15.25 │         8:30:00 │   13     0     0   100 │
+└────────────────────────────────────────────────────────┴───────────────────────────────┴────────┴──────────────┴─────────────────┴──────────────┴─────────────────┴────────────────────────┘
+                                   SUMMARY METRICS                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                                 ┃ Value                                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Backtesting from                       │ 2026-01-01 00:00:00                       │
+│ Backtesting to                         │ 2026-03-01 00:00:00                       │
+│ Trading Mode                           │ Spot                                      │
+│ Max open trades                        │ 1                                         │
+│                                        │                                           │
+│ Total/Daily Avg Trades                 │ 13 / 0.22                                 │
+│ Starting balance                       │ 1000 USDC                                 │
+│ Final balance                          │ 1152.496 USDC                             │
+│ Absolute profit                        │ 152.496 USDC                              │
+│ Total profit %                         │ 15.25%                                    │
+│ CAGR %                                 │ 140.62%                                   │
+│ Sharpe (closed trades)                 │ 7.89                                      │
+│ Sortino (closed trades)                │ -100.00                                   │
+│ Calmar (closed trades)                 │ -100.00                                   │
+│ SQN                                    │ 6.49                                      │
+│ Profit factor                          │ 0.00                                      │
+│ Expectancy (Ratio)                     │ 11.73 (100.00)                            │
+│ Avg. daily profit                      │ 2.585 USDC                                │
+│ Avg. stake amount                      │ 1055.77 USDC                              │
+│ Market change                          │ -23.46%                                   │
+│ Total trade volume                     │ 27657.77 USDC                             │
+│                                        │                                           │
+│ Best Pair                              │ BTC/USDC 15.25%                           │
+│ Worst Pair                             │ BTC/USDC 15.25%                           │
+│ Best trade                             │ BTC/USDC 2.10%                            │
+│ Worst trade                            │ BTC/USDC 0.20%                            │
+│ Best day                               │ 67.289 USDC                               │
+│ Worst day                              │ 0 USDC                                    │
+│ Days win/draw/lose                     │ 10 / 35 / 0                               │
+│ Min/Max/Avg. Duration Winners          │ 0d 00:11 / 2d 07:45 / 0d 08:30            │
+│ Min/Max/Avg. Duration Losers           │ 0d 00:00 / 0d 00:00 / 0d 00:00            │
+│ Max Consecutive Wins / Loss            │ 13 / 0                                    │
+│ Rejected Entry signals                 │ 0                                         │
+│ Entry/Exit Timeouts                    │ 0 / 0                                     │
+│                                        │                                           │
+│ Min/Max balance (closed trades)        │ 1001.982 USDC / 1152.496 USDC             │
+│ Max % of account underwater            │ 0.00%                                     │
+│ Absolute drawdown                      │ 0 USDC (0.00%)                            │
+│ Drawdown duration                      │ 0 days 00:00:00                           │
+│ Profit at drawdown start               │ 0 USDC                                    │
+│ Profit at drawdown end                 │ 0 USDC                                    │
+│ Drawdown start                         │ 2026-01-12 01:03:00                       │
+│ Drawdown end                           │ 2026-01-12 01:03:00                       │
+│                                        │                                           │
+│ Wallet based Metrics                   │                                           │
+│ Min/Max balance (wallet balance)       │ 989.215 USDC / 1152.496 USDC              │
+│ Min/Max balance dates (wallet balance) │ 2026-01-09 21:07:00 / 2026-02-25 12:53:00 │
+│ Max % of account underwater (balance)  │ 1.91%                                     │
+│ Absolute drawdown (wallet balance)     │ 21.37 USDC (1.91%)                        │
+│ Drawdown duration                      │ 0 days 00:49:00                           │
+│ Profit at drawdown start               │ 116.229 USDC                              │
+│ Profit at drawdown end                 │ 94.859 USDC                               │
+│ Drawdown start                         │ 2026-02-11 16:14:00                       │
+│ Drawdown end                           │ 2026-02-11 17:03:00                       │
+│ Sharpe (daily wallet balance)          │ 5.17                                      │
+│ Sortino (daily wallet balance)         │ 18.88                                     │
+│ Calmar (daily wallet balance)          │ 262.38                                    │
+└────────────────────────────────────────┴───────────────────────────────────────────┘
+
+Backtested 2026-01-01 00:00:00 -> 2026-03-01 00:00:00 | Max open trades : 1
+                                                      STRATEGY SUMMARY                                                       
+┏━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Strategy ┃ Trades ┃ Avg Profit % ┃ Tot Profit USDC ┃ Tot Profit % ┃ Avg Duration ┃  Win  Draw  Loss  Win% ┃      Drawdown ┃
+┡━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│      ED8 │     13 │         1.11 │         152.496 │        15.25 │      8:30:00 │   13     0     0   100 │ 0 USDC  0.00% │
+└──────────┴────────┴──────────────┴─────────────────┴──────────────┴──────────────┴────────────────────────┴───────────────┘

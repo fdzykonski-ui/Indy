@@ -1,0 +1,10 @@
+{
+  "environment_gap": "nbformat/nbclient are absent, so this is a deterministic code-cell smoke runner rather than a Jupyter kernel execution.",
+  "full_engine_cell_executed": false,
+  "json_shape": "VERIFIZIERT",
+  "notebook": "notebooks/FQT_RnD_Audit.ipynb",
+  "reason": "All analysis/gate cells executed; the opt-in full engine cell remained disabled to avoid duplicate compute and preserve OOS locks.",
+  "schema_version": 1,
+  "smoke_cells_executed": 7,
+  "truth_status": "TEILWEISE VERIFIZIERT"
+}

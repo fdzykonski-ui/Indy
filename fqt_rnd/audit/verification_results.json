@@ -1,0 +1,66 @@
+{
+  "checks": [
+    {
+      "check": "test_research_contract.py::test_configs_are_secret_free_and_dry_run_only",
+      "status": "PASS"
+    },
+    {
+      "check": "test_research_contract.py::test_contract_hard_constraints",
+      "status": "PASS"
+    },
+    {
+      "check": "test_research_contract.py::test_frozen_champion_hash",
+      "status": "PASS"
+    },
+    {
+      "check": "test_research_contract.py::test_wallet_equity_sums_all_currencies_per_minute",
+      "status": "PASS"
+    },
+    {
+      "check": "test_offline_catalog.py::test_catalog_is_single_pair_spot_usdc",
+      "status": "PASS"
+    },
+    {
+      "check": "test_offline_catalog.py::test_catalog_returns_deep_copies",
+      "status": "PASS"
+    },
+    {
+      "check": "deterministic reproduction",
+      "status": "PASS"
+    },
+    {
+      "check": "OHLCV integrity",
+      "status": "PASS"
+    },
+    {
+      "check": "runtime signal semantics",
+      "status": "PASS"
+    },
+    {
+      "check": "publishable secret scan",
+      "status": "PASS"
+    },
+    {
+      "check": "portable report validation",
+      "status": "PASS"
+    },
+    {
+      "check": "OOS remains sealed",
+      "status": "PASS"
+    },
+    {
+      "check": "promotion is blocked",
+      "status": "PASS"
+    },
+    {
+      "check": "python bytecode compilation",
+      "error": null,
+      "status": "PASS"
+    }
+  ],
+  "failed": 0,
+  "passed": 14,
+  "runner": "tools/verify_project.py (pytest unavailable)",
+  "schema_version": 1,
+  "truth_status": "VERIFIZIERT"
+}

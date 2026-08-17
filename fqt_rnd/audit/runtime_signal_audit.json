@@ -1,0 +1,193 @@
+{
+  "data_sha256": "0b311b5a815a35c616d786c5eee0b67750213c8d5fb8d36e4403b425e4a762a9",
+  "prefix_causality": {
+    "column_set_exactly_equal": true,
+    "columns_with_mismatches": {},
+    "extended_rows": 24000,
+    "interpretation": "Appending future rows did not change any already-computed indicator or signal cell.",
+    "prefix_rows": 20000,
+    "prefix_stable": true,
+    "shared_columns": 33,
+    "truth_status": "VERIFIZIERT"
+  },
+  "same_candle_and_collision": {
+    "all_enter_tags_match_previous_candle": true,
+    "all_entries_execute_at_next_candle_open": true,
+    "all_trades_have_previous_candle_signal": true,
+    "checks": [
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-01-09T17:17:00+00:00",
+        "trade_open": "2026-01-09T17:18:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-01-12T18:32:00+00:00",
+        "trade_open": "2026-01-12T18:33:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-01-21T17:03:00+00:00",
+        "trade_open": "2026-01-21T17:04:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-02T01:16:00+00:00",
+        "trade_open": "2026-02-02T01:17:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-04T02:44:00+00:00",
+        "trade_open": "2026-02-04T02:45:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-06T01:13:00+00:00",
+        "trade_open": "2026-02-06T01:14:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-06T03:17:00+00:00",
+        "trade_open": "2026-02-06T03:18:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-06T07:20:00+00:00",
+        "trade_open": "2026-02-06T07:21:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-06T16:21:00+00:00",
+        "trade_open": "2026-02-06T16:22:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-11T16:11:00+00:00",
+        "trade_open": "2026-02-11T16:12:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-15T23:10:00+00:00",
+        "trade_open": "2026-02-15T23:11:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-23T05:17:00+00:00",
+        "trade_open": "2026-02-23T05:18:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-02-25T03:50:00+00:00",
+        "trade_open": "2026-02-25T03:51:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-03-04T12:36:00+00:00",
+        "trade_open": "2026-03-04T12:37:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-03-10T13:44:00+00:00",
+        "trade_open": "2026-03-10T13:45:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-03-19T18:53:00+00:00",
+        "trade_open": "2026-03-19T18:54:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-03-23T16:02:00+00:00",
+        "trade_open": "2026-03-23T16:03:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-03-23T20:03:00+00:00",
+        "trade_open": "2026-03-23T20:04:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-04-07T22:36:00+00:00",
+        "trade_open": "2026-04-07T22:37:00+00:00"
+      },
+      {
+        "enter_tag_matches": true,
+        "execution_rate_equals_next_candle_open": true,
+        "signal_exit_collision": false,
+        "signal_present_previous_candle": true,
+        "signal_time": "2026-04-14T00:59:00+00:00",
+        "trade_open": "2026-04-14T01:00:00+00:00"
+      }
+    ],
+    "checks_sha256": "e1e95199c2e4b391d8f136a8681161deff75d4d7fd0804e795f05b869ddd1d36",
+    "data_end_exclusive": "2026-05-01T00:00:00+00:00",
+    "data_start": "2025-12-30T21:20:00+00:00",
+    "entry_exit_collision_count": 0,
+    "entry_signal_count": 25,
+    "exit_signal_count": 99,
+    "scope_limit": "Verifies saved trades and engine candle timing on this dataset; it is not live fill evidence.",
+    "trade_count": 20,
+    "trade_level_collision_count": 0,
+    "truth_status": "VERIFIZIERT"
+  },
+  "schema_version": 1,
+  "strategy_sha256": "a5ac726eab351b08605a4ac1cd1637ef4f82b91b559edcd849f37ac364a95388",
+  "truth_status": "VERIFIZIERT"
+}
