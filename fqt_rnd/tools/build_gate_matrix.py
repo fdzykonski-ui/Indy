@@ -39,6 +39,7 @@ def main() -> int:
     deterministic = load("audit/deterministic_reproduction.json")
     runtime = load("audit/runtime_signal_audit.json")
     secret_scan = load("audit/secret_scan.json")
+    publication = load("audit/github_publication.json")
 
     gates = [
         gate("Testvertrag und Versions-Freeze", "VERIFIZIERT", "contracts/research_contract_v1.json", "locked"),
@@ -71,7 +72,12 @@ def main() -> int:
         gate("Dry-run Canary", "BLOCKIERT", "decisions/promotion_decision.json", "no deployment candidate; preflight only"),
         gate("Micro-Live/Skalierung/Drift", "BLOCKIERT", "contracts/research_contract_v1.json", "outside authorized evidence stage"),
         gate("Geheimnisfreier Publish", secret_scan["publishable_tree"]["truth_status"], "audit/secret_scan.json", "raw historical zips excluded"),
-        gate("GitHub Branch/PR", "BLOCKIERT", "audit/github_publication.json", "target repository not identified"),
+        gate(
+            "GitHub Branch/PR",
+            publication["status"],
+            "audit/github_publication.json",
+            f"PR #{publication['publication']['pull_request']} open and mergeable-clean",
+        ),
     ]
 
     targets = {

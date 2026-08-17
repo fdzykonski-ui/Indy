@@ -5,7 +5,7 @@
     "surface": "report",
     "title": "Freqtrade R&D Audit — V741 bleibt ein historischer Champion",
     "description": "Technischer Champion-Challenger-Audit für Binance Spot, BTC/USDC, Long-only, 1m.",
-    "generatedAt": "2026-08-17T16:29:24Z",
+    "generatedAt": "2026-08-17T16:43:32Z",
     "filters": [],
     "cards": [
       {
@@ -621,7 +621,7 @@
         "id": "gate_finding",
         "type": "markdown",
         "sourceId": "gates",
-        "body": "## Die Mehrzahl der Promotions-Gates ist noch offen\n\nVon 31 Gates sind 10 verifiziert, 10 teilweise verifiziert, 5 nicht verifiziert und 6 blockiert. Die kritischsten Stopper sind Recursive-Stabilität, fehlendes historisches 30-Pair-USDC-Universum, fehlende Pair-Holdouts, versiegeltes OOS und ein nicht erreichbarer GitHub-Publish-Connector."
+        "body": "## Die Mehrzahl der Promotions-Gates ist noch offen\n\nVon 31 Gates sind 11 verifiziert, 10 teilweise verifiziert, 5 nicht verifiziert und 5 blockiert. Die kritischsten Stopper sind Recursive-Stabilität, fehlendes historisches 30-Pair-USDC-Universum, fehlende Pair-Holdouts und das versiegelte OOS."
       },
       {
         "id": "gate_detail",
@@ -654,13 +654,13 @@
       {
         "id": "further_questions",
         "type": "markdown",
-        "body": "## Offene Fragen\n\n- Welches autorisierte GitHub-Zielrepository soll den atomaren Branch und Pull Request erhalten?\n- Kann ein historischer Binance-USDC-Pair-Snapshot mit Delisting-Historie bereitgestellt werden?\n- Soll der nächste Challenger primär Aktivität, Kostenrobustheit oder Pair-Generalisation optimieren?"
+        "body": "## Offene Fragen\n\n- Kann ein historischer Binance-USDC-Pair-Snapshot mit Delisting-Historie bereitgestellt werden?\n- Soll der nächste Challenger primär Aktivität, Kostenrobustheit oder Pair-Generalisation optimieren?"
       }
     ]
   },
   "snapshot": {
     "version": 1,
-    "generatedAt": "2026-08-17T16:29:24Z",
+    "generatedAt": "2026-08-17T16:43:32Z",
     "status": "partial",
     "datasets": {
       "headline": [
@@ -2618,13 +2618,6 @@
         },
         {
           "priority": 1,
-          "gate": "GitHub Branch/PR",
-          "status": "BLOCKIERT",
-          "decision": "target repository not identified",
-          "evidence": "audit/github_publication.json"
-        },
-        {
-          "priority": 1,
           "gate": "Micro-Live/Skalierung/Drift",
           "status": "BLOCKIERT",
           "decision": "outside authorized evidence stage",
@@ -2793,6 +2786,13 @@
         },
         {
           "priority": 4,
+          "gate": "GitHub Branch/PR",
+          "status": "VERIFIZIERT",
+          "decision": "PR #2 open and mergeable-clean",
+          "evidence": "audit/github_publication.json"
+        },
+        {
+          "priority": 4,
           "gate": "Naive Baselines/Negativkontrollen",
           "status": "VERIFIZIERT",
           "decision": "all common settings recorded",
@@ -2838,11 +2838,6 @@
         "id": "pair_universe_missing",
         "dataset": "pair_universe",
         "message": "Only BTC/USDC 1m is available; pair holdouts and survivorship audit are blocked."
-      },
-      {
-        "id": "github_connector_unavailable",
-        "dataset": "github_publication",
-        "message": "GitHub connector returned MCP -32603 and no target repository is configured."
       }
     ]
   },

@@ -181,10 +181,10 @@
       "status": "VERIFIZIERT"
     },
     {
-      "decision": "target repository not identified",
+      "decision": "PR #2 open and mergeable-clean",
       "evidence": "audit/github_publication.json",
       "gate": "GitHub Branch/PR",
-      "status": "BLOCKIERT"
+      "status": "VERIFIZIERT"
     }
   ],
   "schema_version": 1

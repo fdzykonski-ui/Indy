@@ -194,6 +194,10 @@ def main() -> int:
         {"priority": status_priority[item["status"]], **item}
         for item in gates
     ]
+    gate_counts = {
+        status: sum(item["status"] == status for item in gates)
+        for status in status_priority
+    }
     headline_rows = [
         {
             "total_trades": champion["total_trades"],
@@ -538,8 +542,11 @@ def main() -> int:
                 "sourceId": "gates",
                 "body": (
                     "## Die Mehrzahl der Promotions-Gates ist noch offen\n\n"
-                    "Von 31 Gates sind 10 verifiziert, 10 teilweise verifiziert, 5 nicht verifiziert und 6 blockiert. "
-                    "Die kritischsten Stopper sind Recursive-Stabilität, fehlendes historisches 30-Pair-USDC-Universum, fehlende Pair-Holdouts, versiegeltes OOS und ein nicht erreichbarer GitHub-Publish-Connector."
+                    f"Von {len(gates)} Gates sind {gate_counts['VERIFIZIERT']} verifiziert, "
+                    f"{gate_counts['TEILWEISE VERIFIZIERT']} teilweise verifiziert, "
+                    f"{gate_counts['NICHT VERIFIZIERT']} nicht verifiziert und {gate_counts['BLOCKIERT']} blockiert. "
+                    "Die kritischsten Stopper sind Recursive-Stabilität, fehlendes historisches 30-Pair-USDC-Universum, "
+                    "fehlende Pair-Holdouts und das versiegelte OOS."
                 ),
             },
             {"id": "gate_detail", "type": "table", "tableId": "gate_table"},
@@ -585,7 +592,6 @@ def main() -> int:
                 "type": "markdown",
                 "body": (
                     "## Offene Fragen\n\n"
-                    "- Welches autorisierte GitHub-Zielrepository soll den atomaren Branch und Pull Request erhalten?\n"
                     "- Kann ein historischer Binance-USDC-Pair-Snapshot mit Delisting-Historie bereitgestellt werden?\n"
                     "- Soll der nächste Challenger primär Aktivität, Kostenrobustheit oder Pair-Generalisation optimieren?"
                 ),
@@ -609,7 +615,6 @@ def main() -> int:
             },
             "accessIssues": [
                 {"id": "pair_universe_missing", "dataset": "pair_universe", "message": "Only BTC/USDC 1m is available; pair holdouts and survivorship audit are blocked."},
-                {"id": "github_connector_unavailable", "dataset": "github_publication", "message": "GitHub connector returned MCP -32603 and no target repository is configured."},
             ],
         },
         "sources": sources,

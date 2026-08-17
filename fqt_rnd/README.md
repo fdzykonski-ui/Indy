@@ -122,8 +122,8 @@ causality, robustness, pair and statistical gate. Canary remains dry-run-only
 and must never place live orders. Micro-live is outside the present evidence
 and authorization stage.
 
-GitHub publication is also fail-closed: no target remote is configured and the
-connector was unavailable. The local branch may be committed atomically, but a
-push or pull request requires an authenticated, explicitly identified target
-repository. Never force-push and never publish the reconstructed upstream or
-raw secret-bearing evidence.
+GitHub publication is fail-closed and connector-mediated. The verified snapshot
+is published without overwriting existing files under `fqt_rnd/` on branch
+`codex/freqtrade-rnd-v741-20260817`; pull request #2 targets `main`. The local
+checkout intentionally has no write remote. Never force-push and never publish
+the reconstructed upstream or raw secret-bearing evidence.

@@ -1,18 +1,43 @@
 {
   "schema_version": 1,
-  "status": "BLOCKIERT",
+  "status": "VERIFIZIERT",
   "checked_at_utc": "2026-08-17",
+  "authenticated_profile": "fdzykonski-ui",
+  "target_repository": {
+    "full_name": "fdzykonski-ui/Indy",
+    "visibility": "public",
+    "permission": "admin",
+    "selection_evidence": "Repository contains the existing Freqtrade notebook and fqt_bridge; fdzykonski-ui/indi is a different Python project."
+  },
+  "publication": {
+    "base_branch": "main",
+    "base_sha": "a3eec2cc4e96257412671050c52c31600178af01",
+    "branch": "codex/freqtrade-rnd-v741-20260817",
+    "project_path": "fqt_rnd/",
+    "published_tree_commit": "bf0b728cd7b79dce1e871564167f9afa5e395313",
+    "published_tree_url": "https://github.com/fdzykonski-ui/Indy/commit/bf0b728cd7b79dce1e871564167f9afa5e395313",
+    "pull_request": 2,
+    "pull_request_url": "https://github.com/fdzykonski-ui/Indy/pull/2",
+    "pull_request_state": "open",
+    "mergeable": true,
+    "mergeable_state": "clean",
+    "changed_files": 91,
+    "commits_at_initial_publish": 1
+  },
   "local_repository": {
     "branch": "agent/freqtrade-research-baseline",
+    "snapshot_commit": "3985d5b5325e0b31fc340926fd372b81bc61e969",
     "remote_configured": false,
-    "gh_cli_available": false
+    "publication_transport": "authenticated GitHub connector"
   },
-  "github_connector": {
-    "profile_call": "MCP error -32603 Internal error",
-    "repository_list_call": "MCP error -32603 Internal error",
-    "retry": "MCP error -32603 Internal error"
+  "verification": {
+    "remote_project_blob_count": 91,
+    "remote_tree_truncated": false,
+    "existing_repository_files_preserved": true,
+    "force_push_used": false,
+    "secret_bearing_archives_published": false,
+    "workflow_runs_observed_at_publish": 0,
+    "combined_commit_status_at_publish": "pending with zero status contexts"
   },
-  "reason": "No authenticated target repository can be identified; publishing to the reconstructed official upstream would be unauthorized and unsafe.",
-  "required_to_unblock": "Reconnect GitHub and identify the exact owner/repository with write permission.",
-  "safety_policy": "No force-push, no upstream overwrite, no raw secret-bearing archives."
+  "safety_policy": "No force-push, no overwrite of existing files, no raw secret-bearing archives, no live orders."
 }
