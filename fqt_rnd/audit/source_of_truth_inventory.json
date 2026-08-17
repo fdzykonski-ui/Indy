@@ -1,0 +1,79 @@
+{
+  "eligible_market_data": {
+    "available_pairs": [
+      "BTC/USDC"
+    ],
+    "blocker": "Only BTC/USDC 1m USDC-quoted OHLCV is present; no 30-pair USDC universe exists.",
+    "data_quality_reference": "audit/data_quality/ohlcv_quality_summary.json",
+    "files": [
+      {
+        "bytes": 18066450,
+        "path": "user_data/data/binance/BTC_USDC-1m.feather",
+        "sha256": "b89409ee34af75eb0ce749c1e6c20aab9db9cf4b03238877a632157ab6421a4d"
+      },
+      {
+        "bytes": 23928653,
+        "path": "user_data/data/binance/BTC_USDC-1m.parquet",
+        "sha256": "0b311b5a815a35c616d786c5eee0b67750213c8d5fb8d36e4403b425e4a762a9"
+      }
+    ],
+    "provenance_truth_status": "TEILWEISE VERIFIZIERT",
+    "quality_truth_status": "VERIFIZIERT",
+    "requested_multi_pair_universe_status": "BLOCKIERT"
+  },
+  "generated_from": "immutable supplied reconstruction plus secret-free research layer",
+  "historical_champion": {
+    "deployment_status": "NICHT VERIFIZIERT",
+    "frozen_strategy_sha256": "a5ac726eab351b08605a4ac1cd1637ef4f82b91b559edcd849f37ac364a95388",
+    "selection_status": "VERIFIZIERT",
+    "strategy": "ED8",
+    "version": "V741"
+  },
+  "inventories": {
+    "active_strategy_python_files": 516,
+    "backtest_result_files_in_supplied_user_data": 0,
+    "config_json_files": 50,
+    "hyperopt_result_files_in_supplied_user_data": 0,
+    "market_data_files": 35,
+    "normal_log_files_in_supplied_user_data": 0,
+    "research_result_archives_created_locally": 15,
+    "strategy_backup_python_files": 2590,
+    "truth_status": "VERIFIZIERT"
+  },
+  "missing_primary_evidence": [
+    {
+      "item": "normal supplied backtest result directory",
+      "reason": "directory exists but contains no result files; only separately attached V741 evidence is available",
+      "status": "BLOCKIERT"
+    },
+    {
+      "item": "supplied Hyperopt trials/seeds",
+      "reason": "hyperopt_results contains no result artifacts",
+      "status": "BLOCKIERT"
+    },
+    {
+      "item": "30-pair USDC market universe and delisting history",
+      "reason": "not supplied, so survivorship and pair-holdout claims cannot be tested",
+      "status": "BLOCKIERT"
+    }
+  ],
+  "schema_version": 1,
+  "source_archive": {
+    "combined_bytes": 1399507489,
+    "combined_sha256": "1060a41bee11cddb6aec8ae3dba169ad29110803940a157338f3b79d603d1656",
+    "directories": 7091,
+    "entry_count": 76001,
+    "regular_files": 68910,
+    "truth_status": "VERIFIZIERT"
+  },
+  "upstream_checkout": {
+    "branch": "develop",
+    "commit": "77cabd291fa656ec6a1d237cfa524ee792133d89",
+    "describe": "2025.11.2-1571-g77cabd291-dirty",
+    "dirty": true,
+    "path": "reconstruction/freqtrade",
+    "policy": "read-only; user-owned dirty checkout is never modified or published",
+    "remote": "https://github.com/freqtrade/freqtrade.git",
+    "truth_status": "VERIFIZIERT"
+  }
+}

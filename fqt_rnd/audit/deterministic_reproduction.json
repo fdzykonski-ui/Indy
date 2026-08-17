@@ -1,0 +1,53 @@
+{
+  "failed_attempt_wrong_amount_precision": {
+    "diagnosis": "offline catalog used 1e-8 BTC amount precision instead of historical 1e-6",
+    "expected_result": "must differ; retained as root-cause evidence",
+    "left": "evidence/ed8_v741/ED8_V741_8x_InternalExecution/backtests/V741_Final_Off_Backtest.zip",
+    "metric_differences": {
+      "final_balance": {
+        "left": 63.10967119,
+        "right": 63.121350070000005
+      },
+      "profit_total": {
+        "left": 0.2621934238,
+        "right": 0.2624270014
+      },
+      "profit_total_abs": {
+        "left": 13.10967119,
+        "right": 13.121350070000002
+      }
+    },
+    "right": "results/champion_historical/backtest-result-2026-08-17_17-30-28.zip",
+    "selected_metrics_exactly_equal": false,
+    "trade_count_left": 20,
+    "trade_count_right": 20,
+    "trades_exactly_equal": false,
+    "trades_sha256_left": "700a36907f0258b3620a6ce887e6191de1c83528e98234c5c6c65d6f9c1a07a5",
+    "trades_sha256_right": "65df829936fa6d78564b67a94f26322b34ca3289a9609150e5a4dd183870ce5f"
+  },
+  "historical_vs_precision6": {
+    "left": "evidence/ed8_v741/ED8_V741_8x_InternalExecution/backtests/V741_Final_Off_Backtest.zip",
+    "metric_differences": {},
+    "right": "results/champion_historical_precision6/backtest-result-2026-08-17_17-33-00.zip",
+    "selected_metrics_exactly_equal": true,
+    "trade_count_left": 20,
+    "trade_count_right": 20,
+    "trades_exactly_equal": true,
+    "trades_sha256_left": "700a36907f0258b3620a6ce887e6191de1c83528e98234c5c6c65d6f9c1a07a5",
+    "trades_sha256_right": "700a36907f0258b3620a6ce887e6191de1c83528e98234c5c6c65d6f9c1a07a5"
+  },
+  "precision6_vs_repeat": {
+    "left": "results/champion_historical_precision6/backtest-result-2026-08-17_17-33-00.zip",
+    "metric_differences": {},
+    "right": "results/champion_determinism_repeat/backtest-result-2026-08-17_17-42-28.zip",
+    "selected_metrics_exactly_equal": true,
+    "trade_count_left": 20,
+    "trade_count_right": 20,
+    "trades_exactly_equal": true,
+    "trades_sha256_left": "700a36907f0258b3620a6ce887e6191de1c83528e98234c5c6c65d6f9c1a07a5",
+    "trades_sha256_right": "700a36907f0258b3620a6ce887e6191de1c83528e98234c5c6c65d6f9c1a07a5"
+  },
+  "schema_version": 1,
+  "scope_limit": "Exact equality proves deterministic reproduction of this artifact, not future profitability.",
+  "truth_status": "VERIFIZIERT"
+}

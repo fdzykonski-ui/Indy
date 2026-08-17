@@ -1,0 +1,218 @@
+FQT_RND_OFFLINE_MARKET_CATALOG=BTC/USDC; execution/liquidity/live-order evidence=false
+2026-08-17 17:35:25,732 - freqtrade - INFO - freqtrade 2026.5-dev-77cabd291
+2026-08-17 17:35:25,953 - freqtrade.configuration.load_config - INFO - Using config: ../../configs/champion_v741_historical_repro.json ...
+2026-08-17 17:35:25,954 - freqtrade.configuration.configuration - INFO - Parameter --no-color detected ...
+2026-08-17 17:35:25,956 - freqtrade.loggers - INFO - Logfile configured
+2026-08-17 17:35:25,956 - freqtrade.loggers - INFO - Verbosity set to 0
+2026-08-17 17:35:25,957 - freqtrade.configuration.configuration - INFO - Using additional Strategy lookup path: ../../champion/frozen
+2026-08-17 17:35:25,957 - freqtrade.configuration.configuration - INFO - Parameter -i/--timeframe detected ... Using timeframe: 1m ...
+2026-08-17 17:35:25,957 - freqtrade.configuration.configuration - INFO - Parameter --timerange detected: 20260101-20260501 ...
+2026-08-17 17:35:25,958 - freqtrade.configuration.configuration - INFO - Using user-data directory: /workspace/scratch/3754652a4c5b/fqt_rnd/reconstruction/freqtrade/user_data ...
+2026-08-17 17:35:25,958 - freqtrade.configuration.configuration - INFO - Using data directory: user_data/data/binance ...
+2026-08-17 17:35:25,958 - freqtrade.configuration.configuration - INFO - Using pairs ['BTC/USDC']
+2026-08-17 17:35:25,959 - freqtrade.configuration.configuration - INFO - Using "parquet" to store OHLCV data.
+2026-08-17 17:35:25,959 - freqtrade.configuration.configuration - INFO - Filter trades by timerange: 20260101-20260501
+2026-08-17 17:35:25,960 - freqtrade.configuration.configuration - INFO - Startup candle to be used on recursive analysis: ['499', '999', '1599', '1600', '1800', '2999', '4999']
+2026-08-17 17:35:25,960 - freqtrade.exchange.check_exchange - INFO - Checking exchange...
+2026-08-17 17:35:25,967 - freqtrade.exchange.check_exchange - INFO - Exchange "binance" is officially supported by the Freqtrade development team.
+2026-08-17 17:35:25,967 - freqtrade.configuration.config_validation - INFO - Validating configuration ...
+2026-08-17 17:35:26,087 - freqtrade.optimize.analysis.recursive_helpers - INFO - Recursive test of ED8_V741_E001FastCapture10m08bp.py started.
+2026-08-17 17:35:26,089 - freqtrade.exchange.exchange - INFO - Instance is running with dry_run enabled
+2026-08-17 17:35:26,089 - freqtrade.exchange.exchange - INFO - Using CCXT 4.5.51
+2026-08-17 17:35:26,090 - freqtrade.exchange.exchange - INFO - Applying additional ccxt config: {'enableRateLimit': False, 'options': {'adjustForTimeDifference': False, 'defaultType': 'spot'}}
+2026-08-17 17:35:26,098 - freqtrade.exchange.exchange - INFO - Applying additional ccxt config: {'enableRateLimit': False, 'options': {'adjustForTimeDifference': False, 'defaultType': 'spot'}, 
+'aiohttp_trust_env': True}
+2026-08-17 17:35:26,105 - freqtrade.exchange.exchange - INFO - Using Exchange "Binance"
+2026-08-17 17:35:26,106 - freqtrade.resolvers.exchange_resolver - INFO - Using resolved exchange 'Binance'...
+2026-08-17 17:35:26,108 - freqtrade.resolvers.iresolver - INFO - Using resolved strategy ED8 from '/workspace/scratch/3754652a4c5b/fqt_rnd/champion/frozen/ED8_V741_E001FastCapture10m08bp.py'...
+2026-08-17 17:35:26,109 - freqtrade.strategy.hyper - INFO - Found no parameter file.
+2026-08-17 17:35:26,109 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'timeframe' with value from the configuration: 1m.
+2026-08-17 17:35:26,109 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'order_types' with value from the configuration: {'entry': 'limit', 'exit': 'limit', 'stoploss': 'market', 
+'stoploss_on_exchange': False, 'emergency_exit': 'market'}.
+2026-08-17 17:35:26,110 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'order_time_in_force' with value from the configuration: {'entry': 'GTC', 'exit': 'GTC'}.
+2026-08-17 17:35:26,110 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'stake_currency' with value from the configuration: USDC.
+2026-08-17 17:35:26,110 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'stake_amount' with value from the configuration: unlimited.
+2026-08-17 17:35:26,110 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'unfilledtimeout' with value from the configuration: {'entry': 90, 'exit': 120, 'unit': 'seconds', 
+'exit_timeout_count': 0}.
+2026-08-17 17:35:26,110 - freqtrade.resolvers.strategy_resolver - INFO - Override strategy 'max_open_trades' with value from the configuration: 1.
+2026-08-17 17:35:26,111 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using minimal_roi: {'0': 0.03, '45': 0.021, '180': 0.01, '720': 0.005, '1440': 0.002}
+2026-08-17 17:35:26,111 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using timeframe: 1m
+2026-08-17 17:35:26,111 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stoploss: -0.022
+2026-08-17 17:35:26,112 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop: True
+2026-08-17 17:35:26,113 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop_positive: 0.009
+2026-08-17 17:35:26,113 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_stop_positive_offset: 0.02
+2026-08-17 17:35:26,113 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using trailing_only_offset_is_reached: True
+2026-08-17 17:35:26,113 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using use_custom_stoploss: True
+2026-08-17 17:35:26,113 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using process_only_new_candles: True
+2026-08-17 17:35:26,113 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using order_types: {'entry': 'limit', 'exit': 'limit', 'stoploss': 'market', 'stoploss_on_exchange': False, 
+'emergency_exit': 'market'}
+2026-08-17 17:35:26,114 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using order_time_in_force: {'entry': 'GTC', 'exit': 'GTC'}
+2026-08-17 17:35:26,114 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stake_currency: USDC
+2026-08-17 17:35:26,114 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using stake_amount: unlimited
+2026-08-17 17:35:26,114 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using startup_candle_count: 1600
+2026-08-17 17:35:26,114 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using unfilledtimeout: {'entry': 90, 'exit': 120, 'unit': 'seconds', 'exit_timeout_count': 0}
+2026-08-17 17:35:26,115 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using use_exit_signal: True
+2026-08-17 17:35:26,115 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using exit_profit_only: True
+2026-08-17 17:35:26,115 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using ignore_roi_if_entry_signal: False
+2026-08-17 17:35:26,115 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using exit_profit_offset: 0.001
+2026-08-17 17:35:26,115 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using disable_dataframe_checks: False
+2026-08-17 17:35:26,115 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using ignore_buying_expired_candle_after: 0
+2026-08-17 17:35:26,115 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using position_adjustment_enable: False
+2026-08-17 17:35:26,116 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using max_entry_position_adjustment: -1
+2026-08-17 17:35:26,116 - freqtrade.resolvers.strategy_resolver - INFO - Strategy using max_open_trades: 1
+2026-08-17 17:35:26,116 - freqtrade.configuration.config_validation - INFO - Validating configuration ...
+2026-08-17 17:35:26,119 - freqtrade.resolvers.iresolver - INFO - Using resolved pairlist StaticPairList from 
+'/workspace/scratch/3754652a4c5b/fqt_rnd/reconstruction/freqtrade/freqtrade/plugins/pairlist/StaticPairList.py'...
+2026-08-17 17:35:26,120 - freqtrade.optimize.backtesting - INFO - Using fee 0.1000% - worst case fee from exchange (lowest tier).
+2026-08-17 17:35:26,120 - freqtrade.exchange.exchange - WARNING - Using 2 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 1600 candles for your 
+strategy.
+2026-08-17 17:35:26,120 - freqtrade.optimize.analysis.recursive - INFO - Using pair BTC/USDC only for recursive analysis. Replacing whitelist.
+2026-08-17 17:35:26,121 - freqtrade.strategy.hyper - INFO - No params for buy found, using default values.
+2026-08-17 17:35:26,121 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): clean_pullback_penalty = 0
+2026-08-17 17:35:26,121 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): edge_hit_min = 1
+2026-08-17 17:35:26,121 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): entry_score_min = 55
+2026-08-17 17:35:26,122 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): max_risk_score = 78
+2026-08-17 17:35:26,122 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): quarantine_edge_penalty = 0
+2026-08-17 17:35:26,122 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): regime_score_min = 30
+2026-08-17 17:35:26,122 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): soft_gate_min = 3
+2026-08-17 17:35:26,123 - freqtrade.strategy.hyper - INFO - No params for sell found, using default values.
+2026-08-17 17:35:26,123 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): defensive_stop_profit = -0.018
+2026-08-17 17:35:26,123 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): exit_pressure_min = 82
+2026-08-17 17:35:26,123 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): loss_exit_min_minutes = 25
+2026-08-17 17:35:26,123 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): loss_exit_pressure_min = 78
+2026-08-17 17:35:26,123 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): loss_exit_risk_min = 64
+2026-08-17 17:35:26,124 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): profit_decay_min = 0.018
+2026-08-17 17:35:26,124 - freqtrade.strategy.hyper - INFO - Strategy Parameter(default): time_decay_minutes = 1440
+2026-08-17 17:35:26,299 - freqtrade.optimize.backtesting - INFO - Loading data from 2025-12-30 21:20:00 up to 2026-05-01 00:00:00 (121 days).
+2026-08-17 17:35:31,529 - freqtrade.loggers.set_log_levels - INFO - Reducing verbosity for bias tester.
+2026-08-17 17:35:31,530 - freqtrade.optimize.analysis.recursive - INFO - Calculating indicators to test lookahead on indicators.
+2026-08-17 17:35:31,536 - freqtrade.exchange.exchange - WARNING - Using 2 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 1600 candles for your 
+strategy.
+2026-08-17 17:35:31,619 - freqtrade.optimize.backtesting - INFO - Loading data from 2025-12-30 21:20:00 up to 2026-01-01 00:10:00 (1 days).
+2026-08-17 17:35:31,738 - freqtrade.optimize.analysis.recursive - INFO - Calculating indicators using startup candle of 499.
+2026-08-17 17:35:31,794 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-04-30 15:40:00 up to 2026-05-01 00:00:00 (0 days).
+2026-08-17 17:35:31,887 - freqtrade.optimize.analysis.recursive - INFO - Calculating indicators using startup candle of 999.
+2026-08-17 17:35:31,939 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-04-30 07:20:00 up to 2026-05-01 00:00:00 (0 days).
+2026-08-17 17:35:32,058 - freqtrade.optimize.analysis.recursive - INFO - Calculating indicators using startup candle of 1599.
+2026-08-17 17:35:32,064 - freqtrade.exchange.exchange - WARNING - Using 2 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 1599 candles for your 
+strategy.
+2026-08-17 17:35:32,134 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-04-29 21:20:00 up to 2026-05-01 00:00:00 (1 days).
+2026-08-17 17:35:32,258 - freqtrade.optimize.analysis.recursive - INFO - Calculating indicators using startup candle of 1600.
+2026-08-17 17:35:32,265 - freqtrade.exchange.exchange - WARNING - Using 2 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 1600 candles for your 
+strategy.
+2026-08-17 17:35:32,327 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-04-29 21:19:00 up to 2026-05-01 00:00:00 (1 days).
+2026-08-17 17:35:32,490 - freqtrade.optimize.analysis.recursive - INFO - Calculating indicators using startup candle of 1800.
+2026-08-17 17:35:32,498 - freqtrade.exchange.exchange - WARNING - Using 2 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 1800 candles for your 
+strategy.
+2026-08-17 17:35:32,567 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-04-29 17:59:00 up to 2026-05-01 00:00:00 (1 days).
+2026-08-17 17:35:32,733 - freqtrade.optimize.analysis.recursive - INFO - Calculating indicators using startup candle of 2999.
+2026-08-17 17:35:32,740 - freqtrade.exchange.exchange - WARNING - Using 3 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 2999 candles for your 
+strategy.
+2026-08-17 17:35:32,855 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-04-28 22:00:00 up to 2026-05-01 00:00:00 (2 days).
+2026-08-17 17:35:33,038 - freqtrade.optimize.analysis.recursive - INFO - Calculating indicators using startup candle of 4999.
+2026-08-17 17:35:33,049 - freqtrade.exchange.exchange - WARNING - Using 5 calls to get OHLCV. This can result in slower operations for the bot. Please check if you really need 4999 candles for your 
+strategy.
+2026-08-17 17:35:33,129 - freqtrade.optimize.backtesting - INFO - Loading data from 2026-04-27 12:40:00 up to 2026-05-01 00:00:00 (3 days).
+2026-08-17 17:35:33,621 - freqtrade.loggers.set_log_levels - INFO - Restoring log verbosity.
+2026-08-17 17:35:33,624 - freqtrade.optimize.analysis.recursive - INFO - Start checking for recursive bias
+2026-08-17 17:35:33,675 - freqtrade.optimize.analysis.recursive - INFO - Start checking for lookahead bias on indicators only
+2026-08-17 17:35:33,677 - freqtrade.optimize.analysis.recursive - INFO - Check indicators at 2026-01-01T00:10:00
+2026-08-17 17:35:33,679 - freqtrade.optimize.analysis.recursive - INFO - No lookahead bias on indicators found.
+2026-08-17 17:35:33,679 - freqtrade.optimize.analysis.recursive_helpers - INFO - Checking recursive and indicator-only lookahead bias of indicators of ED8_V741_E001FastCapture10m08bp.py took 8 
+seconds.
+                                               Recursive Analysis                                               
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+┃         Indicators ┃       499 ┃      999 ┃     1599 ┃ 1600 (from strategy) ┃     1800 ┃     2999 ┃     4999 ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
+│          bar_index │  -99.713% │ -99.427% │ -99.083% │             -99.082% │ -98.967% │ -98.280% │ -97.133% │
+│             ema_50 │    0.000% │        - │        - │                    - │        - │        - │        - │
+│           edist_50 │   -0.000% │        - │        - │                    - │        - │        - │        - │
+│          eslope_50 │   -0.000% │        - │        - │                    - │        - │        - │        - │
+│             ema_55 │    0.000% │        - │        - │                    - │        - │        - │        - │
+│          eslope_55 │   -0.000% │        - │        - │                    - │        - │        - │        - │
+│             ema_60 │    0.000% │        - │        - │                    - │        - │        - │        - │
+│           edist_60 │   -0.000% │        - │        - │                    - │        - │        - │        - │
+│          eslope_60 │   -0.000% │        - │        - │                    - │        - │        - │        - │
+│             ema_89 │    0.000% │   0.000% │        - │                    - │        - │        - │        - │
+│           edist_89 │   -0.001% │  -0.000% │        - │                    - │        - │        - │        - │
+│          eslope_89 │   -0.003% │  -0.000% │        - │                    - │        - │        - │        - │
+│            ema_100 │    0.000% │   0.000% │        - │                    - │        - │        - │        - │
+│          edist_100 │   -0.005% │  -0.000% │        - │                    - │        - │        - │        - │
+│         eslope_100 │   -0.013% │  -0.000% │        - │                    - │        - │        - │        - │
+│            ema_144 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │        - │        - │
+│          edist_144 │   -0.192% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │        - │        - │
+│         eslope_144 │   -0.876% │  -0.001% │  -0.000% │              -0.000% │  -0.000% │        - │        - │
+│            ema_200 │    0.001% │   0.000% │   0.000% │               0.000% │   0.000% │        - │        - │
+│          edist_200 │   -2.560% │  -0.016% │  -0.000% │              -0.000% │  -0.000% │        - │        - │
+│         eslope_200 │   59.041% │   0.363% │   0.002% │               0.002% │   0.000% │        - │        - │
+│            ema_233 │    0.002% │   0.000% │   0.000% │               0.000% │  -0.000% │   0.000% │        - │
+│          edist_233 │   -6.982% │  -0.068% │  -0.001% │              -0.001% │   0.000% │  -0.000% │        - │
+│         eslope_233 │   36.554% │   0.355% │   0.004% │               0.004% │  -0.000% │   0.000% │        - │
+│            ema_240 │    0.002% │   0.000% │   0.000% │               0.000% │  -0.000% │   0.000% │        - │
+│          edist_240 │   -8.349% │  -0.087% │  -0.001% │              -0.001% │   0.000% │  -0.000% │        - │
+│         eslope_240 │   38.311% │   0.400% │   0.005% │               0.006% │  -0.000% │   0.000% │        - │
+│            ema_480 │    0.036% │   0.000% │  -0.000% │              -0.000% │  -0.000% │   0.000% │  -0.000% │
+│          edist_480 │  -86.296% │  -0.633% │   0.444% │               0.387% │   0.552% │  -0.001% │   0.000% │
+│            ema_720 │    0.091% │  -0.005% │  -0.005% │              -0.005% │  -0.004% │   0.000% │  -0.000% │
+│          edist_720 │ -107.058% │   6.193% │   5.610% │               5.350% │   4.636% │  -0.014% │   0.001% │
+│            roc_720 │       NaN │        - │        - │                    - │        - │        - │        - │
+│            roc_960 │       NaN │        - │        - │                    - │        - │        - │        - │
+│             rsi_21 │    0.000% │        - │        - │                    - │        - │        - │        - │
+│             rsi_28 │    0.000% │   0.000% │        - │                    - │        - │        - │        - │
+│        lowdist_720 │  -10.611% │        - │        - │                    - │        - │        - │        - │
+│       highdist_720 │  -34.003% │        - │        - │                    - │        - │        - │        - │
+│         ddhigh_720 │  -34.003% │        - │        - │                    - │        - │        - │        - │
+│             atr_60 │   -0.003% │   0.000% │  -0.000% │              -0.000% │   0.000% │        - │        - │
+│          atrpct_60 │   -0.003% │   0.000% │  -0.000% │              -0.000% │   0.000% │        - │        - │
+│            atr_120 │    0.100% │  -0.003% │  -0.000% │              -0.000% │   0.000% │   0.000% │        - │
+│         atrpct_120 │    0.100% │  -0.003% │  -0.000% │              -0.000% │   0.000% │   0.000% │        - │
+│            atr_240 │    3.673% │  -0.345% │  -0.169% │              -0.123% │   0.104% │   0.000% │   0.000% │
+│         atrpct_240 │    3.673% │  -0.345% │  -0.169% │              -0.123% │   0.104% │   0.000% │   0.000% │
+│            volr_10 │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│            volz_10 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│            volr_20 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│            volz_20 │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│            volr_30 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│            volz_30 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│            volr_60 │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│            volz_60 │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│           volz_120 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│           volz_200 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│           volz_240 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│           volz_480 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│           volr_720 │   17.391% │        - │        - │                    - │        - │        - │        - │
+│           volz_720 │   17.826% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│           bbpos_20 │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│             bbw_20 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│           bbpos_50 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│             bbw_50 │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│          bbpos_100 │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│            bbw_100 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│          bbpos_200 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│            bbw_200 │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│       liquidityraw │   -0.000% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│      atrpct_14_q20 │    0.000% │        - │        - │                    - │        - │        - │        - │
+│      atrpct_60_q10 │   -0.030% │   0.000% │  -0.000% │              -0.000% │   0.000% │        - │        - │
+│     atrpct_120_q20 │   -2.245% │  -0.007% │  -0.001% │              -0.000% │   0.000% │   0.000% │        - │
+│     atrpct_120_q90 │  -11.706% │  -0.054% │  -0.004% │              -0.003% │   0.001% │   0.000% │        - │
+│     atrpct_240_q50 │   -6.576% │   1.624% │  -4.374% │              -3.113% │   2.499% │   0.003% │   0.000% │
+│     atrpct_240_q80 │   -6.685% │   0.532% │  -0.931% │              -0.649% │   0.369% │   0.000% │   0.000% │
+│     atrpct_240_q90 │  -11.500% │  -0.525% │  -0.785% │              -0.518% │   0.424% │   0.000% │   0.000% │
+│     atrpct_240_q95 │  -13.221% │  -1.443% │  -0.856% │              -0.651% │   0.547% │   0.000% │   0.000% │
+│         bbw_20_q20 │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│        bbw_200_q70 │   -4.698% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│        bbw_200_q90 │  -21.447% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│   liquidityraw_q70 │ -230.549% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│   liquidityraw_q80 │   13.103% │  -0.000% │  -0.000% │              -0.000% │  -0.000% │  -0.000% │  -0.000% │
+│       regime_trend │  -27.273% │        - │        - │                    - │        - │        - │        - │
+│  regime_volatility │    0.000% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│     regime_quality │   -8.456% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│       regime_score │   -8.456% │   0.000% │   0.000% │               0.000% │   0.000% │   0.000% │   0.000% │
+│      active_regime │       NaN │        - │        - │                    - │        - │        - │        - │
+│ active_regime_code │  100.000% │        - │        - │                    - │        - │        - │        - │
+│         risk_score │   -2.701% │  -0.028% │  -0.000% │              -0.000% │   0.000% │  -0.000% │        - │
+│   ed8_context_code │  100.000% │        - │        - │                    - │        - │        - │        - │
+│        entry_score │   -3.484% │   0.000% │   0.000% │               0.000% │  -0.000% │   0.000% │   0.000% │
+│         meta_score │   -4.592% │   0.000% │   0.000% │               0.000% │  -0.000% │   0.000% │   0.000% │
+│      exit_pressure │   -0.009% │  -0.000% │  -0.000% │              -0.000% │   0.000% │  -0.000% │        - │
+└────────────────────┴───────────┴──────────┴──────────┴──────────────────────┴──────────┴──────────┴──────────┘

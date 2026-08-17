@@ -1,0 +1,58 @@
+{
+  "column_count": 6,
+  "columns": [
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume"
+  ],
+  "complete_calendar_days": 493,
+  "dataset": "/workspace/scratch/3754652a4c5b/fqt_rnd/reconstruction/freqtrade/user_data/data/binance/BTC_USDC-1m.parquet",
+  "dtypes": {
+    "close": "float64",
+    "date": "datetime64[ms, UTC]",
+    "high": "float64",
+    "low": "float64",
+    "open": "float64",
+    "volume": "float64"
+  },
+  "duplicate_timestamps": 0,
+  "exact_duplicate_rows": 0,
+  "expected_contiguous_rows": 710937,
+  "expected_sha256": "0b311b5a815a35c616d786c5eee0b67750213c8d5fb8d36e4403b425e4a762a9",
+  "first_timestamp_utc": "2025-01-01T00:00:00+00:00",
+  "gap_count": 0,
+  "grain": "one row per BTC/USDC UTC minute",
+  "hash_matches_contract": true,
+  "invalid_high_rows": 0,
+  "invalid_low_rows": 0,
+  "last_timestamp_utc": "2026-05-09T16:56:00+00:00",
+  "minute_alignment_violations": 0,
+  "missing_minutes": 0,
+  "monotonic_increasing": true,
+  "negative_volume_rows": 0,
+  "nonpositive_price_rows": 0,
+  "null_counts": {
+    "close": 0,
+    "date": 0,
+    "high": 0,
+    "low": 0,
+    "open": 0,
+    "volume": 0
+  },
+  "partial_calendar_days": 1,
+  "row_count": 710937,
+  "sha256": "0b311b5a815a35c616d786c5eee0b67750213c8d5fb8d36e4403b425e4a762a9",
+  "source_provenance": {
+    "reason": "archive and file bytes are hashed; original exchange download command and immutable Binance snapshot identifier are absent",
+    "status": "TEILWEISE VERIFIZIERT"
+  },
+  "status": "VERIFIZIERT",
+  "survivorship_audit": {
+    "reason": "only BTC/USDC is present; historical exchange universe/listing metadata is absent",
+    "status": "BLOCKIERT"
+  },
+  "zero_volume_rows": 2
+}

@@ -1,0 +1,119 @@
+{
+  "champion_assessment": {
+    "reason": "No static future-read pattern was found and callback iloc[-1] is scoped correctly, but the strategy is BTC/USDC-specific and runtime lookahead covered only ten signals.",
+    "truth_status": "TEILWEISE VERIFIZIERT"
+  },
+  "records": [
+    {
+      "forbidden_future_access": {
+        "centered_rolling_lines": [],
+        "future_fill_lines": [],
+        "hardcoded_calendar_timestamp_lines": [],
+        "iloc_last_in_populate": [],
+        "negative_shift_lines": []
+      },
+      "hard_constraints": {
+        "dca_disabled": true,
+        "long_only": true,
+        "timeframe_1m": true
+      },
+      "iloc_last_context": [
+        {
+          "function": "custom_exit",
+          "line": 3278
+        }
+      ],
+      "notes": [
+        "Static analysis cannot prove runtime causality; pair it with Freqtrade lookahead and prefix tests.",
+        "iloc[-1] is accepted only inside runtime callbacks, never inside populate_* methods."
+      ],
+      "pair_generalization_status": "NICHT VERIFIZIERT",
+      "pair_specific_literal_lines": [
+        3,
+        16,
+        88,
+        2596
+      ],
+      "parse_status": "VERIFIZIERT",
+      "path": "champion/frozen/ED8_V741_E001FastCapture10m08bp.py",
+      "sha256": "a5ac726eab351b08605a4ac1cd1637ef4f82b91b559edcd849f37ac364a95388",
+      "static_causality_status": "VERIFIZIERT"
+    },
+    {
+      "forbidden_future_access": {
+        "centered_rolling_lines": [],
+        "future_fill_lines": [],
+        "hardcoded_calendar_timestamp_lines": [],
+        "iloc_last_in_populate": [],
+        "negative_shift_lines": []
+      },
+      "hard_constraints": {
+        "dca_disabled": "INHERITED_FROM_FROZEN_ED8",
+        "long_only": "INHERITED_FROM_FROZEN_ED8",
+        "timeframe_1m": "INHERITED_FROM_FROZEN_ED8"
+      },
+      "iloc_last_context": [],
+      "notes": [
+        "Static analysis cannot prove runtime causality; pair it with Freqtrade lookahead and prefix tests.",
+        "iloc[-1] is accepted only inside runtime callbacks, never inside populate_* methods."
+      ],
+      "pair_generalization_status": "NICHT VERIFIZIERT",
+      "pair_specific_literal_lines": [],
+      "parse_status": "VERIFIZIERT",
+      "path": "champion/controls/ED8ControlVariants.py",
+      "sha256": "98861e9dfe64afe2a77de22ab987e2cad900bf1ba69612d833465333ad26872d",
+      "static_causality_status": "VERIFIZIERT"
+    },
+    {
+      "forbidden_future_access": {
+        "centered_rolling_lines": [],
+        "future_fill_lines": [],
+        "hardcoded_calendar_timestamp_lines": [],
+        "iloc_last_in_populate": [],
+        "negative_shift_lines": []
+      },
+      "hard_constraints": {
+        "dca_disabled": true,
+        "long_only": true,
+        "timeframe_1m": true
+      },
+      "iloc_last_context": [],
+      "notes": [
+        "Static analysis cannot prove runtime causality; pair it with Freqtrade lookahead and prefix tests.",
+        "iloc[-1] is accepted only inside runtime callbacks, never inside populate_* methods."
+      ],
+      "pair_generalization_status": "TEILWEISE VERIFIZIERT",
+      "pair_specific_literal_lines": [],
+      "parse_status": "VERIFIZIERT",
+      "path": "strategies/CausalRegimePullbackV1.py",
+      "sha256": "7878a4497e5da7583f60db08d0f638e63c9058f91ffd5d7ea661465d10122e61",
+      "static_causality_status": "VERIFIZIERT"
+    },
+    {
+      "forbidden_future_access": {
+        "centered_rolling_lines": [],
+        "future_fill_lines": [],
+        "hardcoded_calendar_timestamp_lines": [],
+        "iloc_last_in_populate": [],
+        "negative_shift_lines": []
+      },
+      "hard_constraints": {
+        "dca_disabled": true,
+        "long_only": true,
+        "timeframe_1m": true
+      },
+      "iloc_last_context": [],
+      "notes": [
+        "Static analysis cannot prove runtime causality; pair it with Freqtrade lookahead and prefix tests.",
+        "iloc[-1] is accepted only inside runtime callbacks, never inside populate_* methods."
+      ],
+      "pair_generalization_status": "TEILWEISE VERIFIZIERT",
+      "pair_specific_literal_lines": [],
+      "parse_status": "VERIFIZIERT",
+      "path": "strategies/ResearchBaselines.py",
+      "sha256": "636ba99f12ace85f081dbe2bfac347886c00704432412e6925d7aa394a97a091",
+      "static_causality_status": "VERIFIZIERT"
+    }
+  ],
+  "schema_version": 1
+}

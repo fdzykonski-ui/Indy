@@ -1,0 +1,191 @@
+{
+  "gates": [
+    {
+      "decision": "locked",
+      "evidence": "contracts/research_contract_v1.json",
+      "gate": "Testvertrag und Versions-Freeze",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "pass",
+      "evidence": "audit/source_archive_manifest.extract.json",
+      "gate": "Archivintegrit\u00e4t",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "pass",
+      "evidence": "audit/data_quality/ohlcv_quality_summary.json",
+      "gate": "OHLCV-Struktur/Datenl\u00fccken",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "needs exchange snapshot/download ledger",
+      "evidence": "audit/data_quality/ohlcv_quality_summary.json",
+      "gate": "Datenprovenienz",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "requires historical USDC universe and data",
+      "evidence": "audit/source_of_truth_inventory.json",
+      "gate": "Survivorship/30-Pair-Universum",
+      "status": "BLOCKIERT"
+    },
+    {
+      "decision": "pass for hard constraints",
+      "evidence": "audit/strategy_static_audit.json",
+      "gate": "Code/Callback/Konfiguration",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "ten signals only; expand coverage",
+      "evidence": "audit/causality_summary.json",
+      "gate": "Lookahead",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "fail at startup=1600; repair or increase proven startup",
+      "evidence": "audit/causality_summary.json",
+      "gate": "Recursive",
+      "status": "NICHT VERIFIZIERT"
+    },
+    {
+      "decision": "pass on saved sample",
+      "evidence": "audit/runtime_signal_audit.json",
+      "gate": "Prefix-/Same-Candle-/Kollision",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "exact trade and metric equality",
+      "evidence": "audit/deterministic_reproduction.json",
+      "gate": "Deterministische Reproduktion",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "all common settings recorded",
+      "evidence": "results/summaries/metrics_all.json",
+      "gate": "Naive Baselines/Negativkontrollen",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "monthly slices exist; session/regime independence incomplete",
+      "evidence": "evidence/ed8_v741/ED8_V741_8x_InternalExecution/ED8_V741_WF_StressMetrics.csv",
+      "gate": "Monats-/Session-/Regimeanalyse",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "not run after train kill; no promotable candidate",
+      "evidence": "hypotheses/H001_causal_regime_pullback_v1.json",
+      "gate": "Hyperopt nur Training/mehrere Seeds",
+      "status": "NICHT VERIFIZIERT"
+    },
+    {
+      "decision": "not justified after train failure",
+      "evidence": "contracts/research_contract_v1.json",
+      "gate": "Parameter-Nachbarschaft/Plateau",
+      "status": "NICHT VERIFIZIERT"
+    },
+    {
+      "decision": "selected ablations only",
+      "evidence": "results/champion_common_ablation",
+      "gate": "Entry/Exit/Gate/Indikator-Ablation",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "frozen monthly slices, not refit WF",
+      "evidence": "evidence/ed8_v741/ED8_V741_8x_InternalExecution/logs",
+      "gate": "Fast Walk-Forward",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "no candidate reached validation",
+      "evidence": "contracts/research_contract_v1.json",
+      "gate": "Nested Rolling/Anchored Walk-Forward",
+      "status": "NICHT VERIFIZIERT"
+    },
+    {
+      "decision": "partitioned, not executed beyond training",
+      "evidence": "contracts/research_contract_v1.json",
+      "gate": "Purging/Embargo",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "only BTC/USDC exists",
+      "evidence": "audit/source_of_truth_inventory.json",
+      "gate": "Pair-Holdout/Leave-One-Pair-Out",
+      "status": "BLOCKIERT"
+    },
+    {
+      "decision": "quality degrades below targets",
+      "evidence": "results/champion_common_fee_002; results/champion_common_fee_003",
+      "gate": "Geb\u00fchrenstress 0.10/0.20/0.30%",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "positive but tiny sample",
+      "evidence": "results/champion_common_ablation",
+      "gate": "Entry-Delay +1/+2",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "analytical only; engine/order-book replay absent",
+      "evidence": "results/summaries/statistical_stress.json",
+      "gate": "Slippage/Spread",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "wallet 50/1000; max-open fixed at one",
+      "evidence": "results/champion_historical_precision6; results/champion_common_full",
+      "gate": "Stake/Wallet/Parallelposition",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "no latency/order-rejection/outage simulator",
+      "evidence": "contracts/research_contract_v1.json",
+      "gate": "Order-/Betriebsst\u00f6rung",
+      "status": "NICHT VERIFIZIERT"
+    },
+    {
+      "decision": "conditional selected-sample diagnostics only",
+      "evidence": "results/summaries/statistical_stress.json",
+      "gate": "Bootstrap/Monte Carlo",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "full independent search family unknown",
+      "evidence": "results/summaries/statistical_stress.json",
+      "gate": "Multiple-Testing-Korrektur",
+      "status": "TEILWEISE VERIFIZIERT"
+    },
+    {
+      "decision": "sealed; no candidate passed training gates",
+      "evidence": "contracts/research_contract_v1.json",
+      "gate": "Finales unangetastetes OOS",
+      "status": "BLOCKIERT"
+    },
+    {
+      "decision": "no deployment candidate; preflight only",
+      "evidence": "decisions/promotion_decision.json",
+      "gate": "Dry-run Canary",
+      "status": "BLOCKIERT"
+    },
+    {
+      "decision": "outside authorized evidence stage",
+      "evidence": "contracts/research_contract_v1.json",
+      "gate": "Micro-Live/Skalierung/Drift",
+      "status": "BLOCKIERT"
+    },
+    {
+      "decision": "raw historical zips excluded",
+      "evidence": "audit/secret_scan.json",
+      "gate": "Geheimnisfreier Publish",
+      "status": "VERIFIZIERT"
+    },
+    {
+      "decision": "target repository not identified",
+      "evidence": "audit/github_publication.json",
+      "gate": "GitHub Branch/PR",
+      "status": "BLOCKIERT"
+    }
+  ],
+  "schema_version": 1
+}

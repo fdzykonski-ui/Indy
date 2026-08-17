@@ -1,0 +1,2 @@
+filename,strategy,has_bias,total_signals,biased_entry_signals,biased_exit_signals,biased_indicators
+ED8_V741_E001FastCapture10m08bp.py,ED8,False,10,0,0,

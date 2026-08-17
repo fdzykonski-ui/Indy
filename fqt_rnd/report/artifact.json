@@ -1,0 +1,3027 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Freqtrade R&D Audit — V741 bleibt ein historischer Champion",
+    "description": "Technischer Champion-Challenger-Audit für Binance Spot, BTC/USDC, Long-only, 1m.",
+    "generatedAt": "2026-08-17T16:29:24Z",
+    "filters": [],
+    "cards": [
+      {
+        "id": "trades_card",
+        "description": "Geschlossene Trades im Entwicklungsfenster gegenüber dem Promotionsziel.",
+        "dataset": "headline",
+        "sourceId": "headline_query",
+        "metrics": [
+          {
+            "label": "Trades",
+            "field": "total_trades",
+            "format": "number"
+          },
+          {
+            "label": "Ziel >",
+            "field": "trades_target",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "profit_card",
+        "description": "Nettoprofit im Entwicklungsfenster; Prozentwert auf 1.000 USDC Startkapital.",
+        "dataset": "headline",
+        "sourceId": "headline_query",
+        "metrics": [
+          {
+            "label": "Nettoprofit",
+            "field": "profit_pct",
+            "format": "number",
+            "unit": "%"
+          },
+          {
+            "label": "Ziel >",
+            "field": "profit_target_pct",
+            "format": "number",
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "winrate_card",
+        "description": "Gewinntrades geteilt durch geschlossene Trades; Stichprobe n=20.",
+        "dataset": "headline",
+        "sourceId": "headline_query",
+        "metrics": [
+          {
+            "label": "Winrate",
+            "field": "winrate_pct",
+            "format": "number",
+            "unit": "%"
+          },
+          {
+            "label": "Ziel >",
+            "field": "winrate_target_pct",
+            "format": "number",
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "drawdown_card",
+        "description": "Maximaler Wallet-Drawdown der simulierten Minuten-Equity.",
+        "dataset": "headline",
+        "sourceId": "headline_query",
+        "metrics": [
+          {
+            "label": "Wallet-DD",
+            "field": "wallet_drawdown_pct",
+            "format": "number",
+            "unit": "%"
+          },
+          {
+            "label": "Obergrenze <",
+            "field": "drawdown_ceiling_pct",
+            "format": "number",
+            "unit": "%"
+          }
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "id": "equity_chart",
+        "title": "Tägliche simulierte Equity",
+        "subtitle": "Summe aller Wallet-Währungen; 1.000 USDC Startkapital; 121 UTC-Tagesendpunkte je Serie.",
+        "type": "line",
+        "dataset": "equity",
+        "sourceId": "equity_query",
+        "valueFormat": "number",
+        "encodings": {
+          "x": {
+            "field": "date",
+            "type": "temporal",
+            "label": "Datum"
+          },
+          "y": {
+            "field": "equity_usdc",
+            "type": "quantitative",
+            "label": "Equity (USDC)"
+          },
+          "color": {
+            "field": "strategy",
+            "type": "nominal",
+            "label": "Vergleich"
+          },
+          "tooltip": [
+            {
+              "field": "strategy",
+              "type": "nominal",
+              "label": "Serie"
+            },
+            {
+              "field": "equity_usdc",
+              "type": "quantitative",
+              "label": "Equity",
+              "format": "number"
+            }
+          ]
+        }
+      },
+      {
+        "id": "training_profit_chart",
+        "title": "Nettoprofit im identischen Trainingsvertrag",
+        "subtitle": "BTC/USDC 1m, 1.000 USDC, 0,10% Gebühr je Seite, 1. Januar bis 1. März 2026.",
+        "type": "bar",
+        "dataset": "training",
+        "sourceId": "training_query",
+        "valueFormat": "number",
+        "encodings": {
+          "x": {
+            "field": "strategy",
+            "type": "nominal",
+            "label": "Strategie"
+          },
+          "y": {
+            "field": "profit_pct",
+            "type": "quantitative",
+            "label": "Nettoprofit (%)"
+          },
+          "tooltip": [
+            {
+              "field": "trades",
+              "type": "quantitative",
+              "label": "Trades",
+              "format": "number"
+            },
+            {
+              "field": "winrate_pct",
+              "type": "quantitative",
+              "label": "Winrate (%)",
+              "format": "number"
+            }
+          ]
+        }
+      }
+    ],
+    "tables": [
+      {
+        "id": "training_table",
+        "title": "Champion-Challenger auf identischem Training",
+        "subtitle": "Gleiche Daten, Pair-, Gebühren-, Wallet-, Stake- und Parallelpositionsparameter.",
+        "dataset": "training",
+        "sourceId": "training_query",
+        "defaultSort": {
+          "field": "profit_pct",
+          "direction": "desc"
+        },
+        "columns": [
+          {
+            "field": "strategy",
+            "label": "Strategie",
+            "type": "text"
+          },
+          {
+            "field": "trades",
+            "label": "Trades",
+            "format": "number"
+          },
+          {
+            "field": "winrate_pct",
+            "label": "Winrate (%)",
+            "format": "number"
+          },
+          {
+            "field": "profit_pct",
+            "label": "Profit (%)",
+            "format": "number",
+            "semantic": "movement"
+          },
+          {
+            "field": "profit_factor",
+            "label": "PF-Rohwert",
+            "format": "number"
+          },
+          {
+            "field": "profit_factor_interpretation",
+            "label": "PF-Interpretation",
+            "type": "text"
+          },
+          {
+            "field": "wallet_drawdown_pct",
+            "label": "Wallet-DD (%)",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "stress_table",
+        "title": "Gebühren-, Delay- und Exit-Stress",
+        "subtitle": "Entwicklungsfenster; alle Zeilen 1.000 USDC, unlimited Stake und max_open_trades=1.",
+        "dataset": "stress",
+        "sourceId": "stress_query",
+        "defaultSort": {
+          "field": "order",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "order",
+            "label": "#",
+            "format": "number"
+          },
+          {
+            "field": "scenario",
+            "label": "Szenario",
+            "type": "text"
+          },
+          {
+            "field": "trades",
+            "label": "Trades",
+            "format": "number"
+          },
+          {
+            "field": "wins",
+            "label": "Wins",
+            "format": "number"
+          },
+          {
+            "field": "losses",
+            "label": "Losses",
+            "format": "number"
+          },
+          {
+            "field": "winrate_pct",
+            "label": "Winrate (%)",
+            "format": "number"
+          },
+          {
+            "field": "profit_pct",
+            "label": "Profit (%)",
+            "format": "number",
+            "semantic": "movement"
+          },
+          {
+            "field": "profit_factor",
+            "label": "Profit Factor",
+            "type": "text"
+          },
+          {
+            "field": "wallet_drawdown_pct",
+            "label": "Wallet-DD (%)",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "gate_table",
+        "title": "Vollständige Forschungs-Gate-Matrix",
+        "subtitle": "31 Gates; blockierte und nicht verifizierte Punkte stehen zuerst.",
+        "dataset": "gates",
+        "sourceId": "gates_query",
+        "defaultSort": {
+          "field": "priority",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "priority",
+            "label": "Priorität",
+            "format": "number"
+          },
+          {
+            "field": "gate",
+            "label": "Gate",
+            "type": "text"
+          },
+          {
+            "field": "status",
+            "label": "Status",
+            "type": "text"
+          },
+          {
+            "field": "decision",
+            "label": "Entscheidung / Lücke",
+            "type": "text"
+          },
+          {
+            "field": "evidence",
+            "label": "Artefakt",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "id": "data_table",
+        "title": "BTC/USDC-1m-Datensatz",
+        "subtitle": "Struktur- und Kontinuitätsprüfung des einzigen zulässigen USDC-Pairs.",
+        "dataset": "data_quality",
+        "sourceId": "data_quality_query",
+        "defaultSort": {
+          "field": "rows",
+          "direction": "desc"
+        },
+        "columns": [
+          {
+            "field": "rows",
+            "label": "Zeilen",
+            "format": "number"
+          },
+          {
+            "field": "first",
+            "label": "Erste Kerze",
+            "type": "text"
+          },
+          {
+            "field": "last",
+            "label": "Letzte Kerze",
+            "type": "text"
+          },
+          {
+            "field": "gaps",
+            "label": "Lücken",
+            "format": "number"
+          },
+          {
+            "field": "duplicates",
+            "label": "Duplikate",
+            "format": "number"
+          },
+          {
+            "field": "complete_days",
+            "label": "Volle Tage",
+            "format": "number"
+          },
+          {
+            "field": "partial_days",
+            "label": "Teiltage",
+            "format": "number"
+          },
+          {
+            "field": "sha256",
+            "label": "SHA-256",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "headline_query",
+        "label": "Headline metrics query",
+        "path": "report/report_data.sqlite",
+        "query": {
+          "engine": "sqlite",
+          "language": "sql",
+          "sql": "SELECT total_trades, trades_target, profit_pct, profit_target_pct, winrate_pct, winrate_target_pct, wallet_drawdown_pct, drawdown_ceiling_pct FROM headline",
+          "description": "Selects the Champion development result and explicit promotion thresholds.",
+          "tables_used": [
+            "report_data.headline"
+          ],
+          "filters": [
+            "Binance Spot; BTC/USDC; 1m; long-only",
+            "Development window only; frozen OOS excluded"
+          ],
+          "metric_definitions": [
+            "Net profit % = (final wallet - 1,000 USDC) / 1,000 USDC * 100 after modeled fees.",
+            "Winrate % = winning closed trades / all closed trades * 100.",
+            "Wallet drawdown % = maximum peak-to-trough decline of simulated minute wallet equity."
+          ]
+        }
+      },
+      {
+        "id": "training_query",
+        "label": "Training comparison query",
+        "path": "report/report_data.sqlite",
+        "query": {
+          "engine": "sqlite",
+          "language": "sql",
+          "sql": "SELECT strategy, trades, winrate_pct, profit_pct, profit_factor, profit_factor_interpretation, wallet_drawdown_pct FROM training ORDER BY strategy",
+          "description": "Selects the identical-contract Champion and Challenger training rows.",
+          "tables_used": [
+            "report_data.training"
+          ],
+          "filters": [],
+          "metric_definitions": []
+        }
+      },
+      {
+        "id": "stress_query",
+        "label": "Stress comparison query",
+        "path": "report/report_data.sqlite",
+        "query": {
+          "engine": "sqlite",
+          "language": "sql",
+          "sql": "SELECT * FROM stress ORDER BY \"order\"",
+          "description": "Selects common-capital fee, entry-delay and exit-ablation results.",
+          "tables_used": [
+            "report_data.stress"
+          ],
+          "filters": [],
+          "metric_definitions": [
+            "Profit Factor = gross winning profit / absolute gross losing profit; undefined when there are no losing trades."
+          ]
+        }
+      },
+      {
+        "id": "equity_query",
+        "label": "Daily equity query",
+        "path": "report/report_data.sqlite",
+        "query": {
+          "engine": "sqlite",
+          "language": "sql",
+          "sql": "SELECT date, strategy, equity_usdc FROM equity ORDER BY date, strategy",
+          "description": "Selects deterministic daily endpoints for Champion, cash and buy-and-hold.",
+          "tables_used": [
+            "report_data.equity"
+          ],
+          "filters": [
+            "2026-01-01 <= date <= 2026-05-01"
+          ],
+          "metric_definitions": [
+            "Daily equity = final per-minute sum of every wallet currency's total_quote value for each UTC calendar date."
+          ]
+        }
+      },
+      {
+        "id": "gates_query",
+        "label": "Gate matrix query",
+        "path": "report/report_data.sqlite",
+        "query": {
+          "engine": "sqlite",
+          "language": "sql",
+          "sql": "SELECT priority, gate, status, decision, evidence FROM gates ORDER BY priority, gate",
+          "description": "Selects every gate ordered from blocked to verified.",
+          "tables_used": [
+            "report_data.gates"
+          ],
+          "filters": [],
+          "metric_definitions": []
+        }
+      },
+      {
+        "id": "data_quality_query",
+        "label": "OHLCV quality query",
+        "path": "report/report_data.sqlite",
+        "query": {
+          "engine": "sqlite",
+          "language": "sql",
+          "sql": "SELECT rows, first, last, gaps, duplicates, complete_days, partial_days, sha256 FROM data_quality",
+          "description": "Selects structural BTC/USDC 1m data-quality aggregates.",
+          "tables_used": [
+            "report_data.data_quality"
+          ],
+          "filters": [],
+          "metric_definitions": []
+        }
+      },
+      {
+        "id": "promotion",
+        "label": "Promotion decision",
+        "path": "decisions/promotion_decision.json"
+      },
+      {
+        "id": "metrics",
+        "label": "Normalized Freqtrade metrics",
+        "path": "results/summaries/metrics_all.json"
+      },
+      {
+        "id": "equity",
+        "label": "Daily Freqtrade wallet equity",
+        "path": "results/summaries/daily_equity.csv"
+      },
+      {
+        "id": "gates",
+        "label": "Research gate matrix",
+        "path": "audit/gate_matrix.json"
+      },
+      {
+        "id": "contract",
+        "label": "Frozen research contract",
+        "path": "contracts/research_contract_v1.json"
+      },
+      {
+        "id": "quality",
+        "label": "BTC/USDC OHLCV quality audit",
+        "path": "audit/data_quality/ohlcv_quality_summary.json"
+      },
+      {
+        "id": "determinism",
+        "label": "Exact reproduction audit",
+        "path": "audit/deterministic_reproduction.json"
+      },
+      {
+        "id": "causality",
+        "label": "Lookahead and recursive summary",
+        "path": "audit/causality_summary.json"
+      },
+      {
+        "id": "version",
+        "label": "Freqtrade version audit",
+        "path": "audit/freqtrade_version_audit.json"
+      },
+      {
+        "id": "statistics",
+        "label": "Bootstrap and Monte Carlo diagnostics",
+        "path": "results/summaries/statistical_stress.json"
+      },
+      {
+        "id": "secrets",
+        "label": "Secret scan",
+        "path": "audit/secret_scan.json"
+      },
+      {
+        "id": "github",
+        "label": "GitHub publication status",
+        "path": "audit/github_publication.json"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# Freqtrade R&D Audit — V741 bleibt ein historischer Champion"
+      },
+      {
+        "id": "technical_summary",
+        "type": "markdown",
+        "sourceId": "promotion",
+        "body": "## Technisches Ergebnis\n\n- **Keine Promotion:** V741 bleibt unverändert der historische Champion; es gibt keinen Deployment-Champion.\n- **Entwicklungsresultat:** 20 Trades, 100% Winrate, +26,24% auf 1.000 USDC und 1,91% Wallet-Drawdown. Tradezahl, Aktivität und Profitziel werden verfehlt; der Profit Factor ist bei null Verlusten nicht definiert.\n- **Challenger falsifiziert:** H001 verliert 74,18%, H002 45,07% auf identischem Training.\n- **Folge:** Validation, Frozen OOS, Canary und Live bleiben geschlossen."
+      },
+      {
+        "id": "metrics_strip",
+        "type": "metric-strip",
+        "cardIds": [
+          "trades_card",
+          "profit_card",
+          "winrate_card",
+          "drawdown_card"
+        ]
+      },
+      {
+        "id": "equity_finding",
+        "type": "markdown",
+        "sourceId": "equity",
+        "body": "## Die Backtest-Equity steigt, aber nur auf einem selektierten Pair\n\nDer letzte tägliche Mark-to-Market-Punkt liegt für V741 bei 1.262,42 USDC, für Cash bei 1.000,00 USDC und für Buy-and-Hold bei 873,32 USDC. Die Kurve zeigt damit einen historischen Mehrertrag in dieser Simulation; sie belegt weder Pair-Generalisation noch künftige Ausführbarkeit."
+      },
+      {
+        "id": "equity_visual",
+        "type": "chart",
+        "chartId": "equity_chart"
+      },
+      {
+        "id": "training_finding",
+        "type": "markdown",
+        "sourceId": "promotion",
+        "body": "## Beide Challenger scheitern bereits im Training\n\nUnter identischem Vertrag erreicht V741 +15,25% mit 13 Trades. H001 erzeugt zwar 685 Trades, verliert aber 74,18%; H002 verbessert die Winrate auf 67,70%, verliert dennoch 45,07%. Daher wäre jede weitere Öffnung der Validation ergebnisgetriebenes Tuning."
+      },
+      {
+        "id": "training_visual",
+        "type": "chart",
+        "chartId": "training_profit_chart"
+      },
+      {
+        "id": "training_detail",
+        "type": "table",
+        "tableId": "training_table"
+      },
+      {
+        "id": "stress_finding",
+        "type": "markdown",
+        "sourceId": "metrics",
+        "body": "## Kostenstress zerstört die Zielqualität\n\nBei 0,20% und 0,30% Gebühr je Seite sinkt die Winrate auf jeweils 78,95%, der Nettoprofit auf 13,97% bzw. 9,44% und der Profit Factor auf 3,69 bzw. 2,51. Delay +1/+2 bleibt positiv, basiert aber weiterhin nur auf 20 Trades."
+      },
+      {
+        "id": "stress_detail",
+        "type": "table",
+        "tableId": "stress_table"
+      },
+      {
+        "id": "scope_definitions",
+        "type": "markdown",
+        "sourceId": "contract",
+        "body": "## Scope und Metrikdefinitionen\n\nDer Vergleich gilt ausschließlich für Binance Spot, BTC/USDC, Long-only, 1-Minuten-Kerzen, unlimited Stake und genau eine offene Position. Profit ist Nettoprofit nach modellierter Gebühr; Wallet-Drawdown verwendet die simulierte Minuten-Equity. Der Frozen-OOS-Bereich ist 2.–9. Mai 2026 (Ende exklusiv) und bleibt unangetastet."
+      },
+      {
+        "id": "data_detail",
+        "type": "table",
+        "tableId": "data_table"
+      },
+      {
+        "id": "methodology",
+        "type": "markdown",
+        "body": "## Methodik und Reproduzierbarkeit\n\nDer eingefrorene Champion wurde über SHA-256 fixiert. Die historische 20-Trade-Liste und alle ausgewählten Kennzahlen wurden byte-/wertgleich reproduziert; ein bewusst aufbewahrter Fehlversuch führte die Abweichung auf BTC-Mengenpräzision zurück. Statische Causality-Prüfung, Prefix-Test, Vorminuten-Signal/Folgkerzen-Open-Prüfung, Freqtrade-Lookahead, Recursive, Baselines, Negativkontrollen, Gebühren, Delay, Ablationen sowie bedingte Bootstrap-/Monte-Carlo-Diagnostik sind artefaktgebunden."
+      },
+      {
+        "id": "version_note",
+        "type": "markdown",
+        "sourceId": "version",
+        "body": "## Version und Kompatibilität\n\nDie lokale Engine ist Freqtrade 2026.5-dev-77cabd291 auf Commit 77cabd291fa6, Python 3.12.3 und CCXT 4.5.51. Sie reproduziert den historischen 2026.5.1-Lauf exakt; Live-Kompatibilität ist dadurch nicht bewiesen."
+      },
+      {
+        "id": "gate_finding",
+        "type": "markdown",
+        "sourceId": "gates",
+        "body": "## Die Mehrzahl der Promotions-Gates ist noch offen\n\nVon 31 Gates sind 10 verifiziert, 10 teilweise verifiziert, 5 nicht verifiziert und 6 blockiert. Die kritischsten Stopper sind Recursive-Stabilität, fehlendes historisches 30-Pair-USDC-Universum, fehlende Pair-Holdouts, versiegeltes OOS und ein nicht erreichbarer GitHub-Publish-Connector."
+      },
+      {
+        "id": "gate_detail",
+        "type": "table",
+        "tableId": "gate_table"
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "sourceId": "statistics",
+        "body": "## Grenzen, Unsicherheit und robuste Gegenbefunde\n\nDie Auswahlhistorie ist groß und nicht vollständig als unabhängige Testfamilie rekonstruierbar; Multiple-Testing-Korrekturen bleiben daher sensitivitätsbasiert. Bootstrap resampelt eine selektierte 20-Trade-Stichprobe und entfernt keinen Selection Bias."
+      },
+      {
+        "id": "causality_limit",
+        "type": "markdown",
+        "sourceId": "causality",
+        "body": "**Causality-Grenze:** Lookahead prüfte nur zehn ausgelöste Signale. Recursive zeigt bei startup_candle_count=1600 materielle Abweichungen in langen EMA-/Quantilfeatures."
+      },
+      {
+        "id": "universe_limit",
+        "type": "markdown",
+        "sourceId": "quality",
+        "body": "**Universumsgrenze:** Nur BTC/USDC ist vorhanden; Survivorship und Pair-Generalisation sind blockiert."
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## Empfohlene nächste Arbeitspakete\n\n1. Historisches Binance-USDC-Universum inklusive Listings/Delistings und mindestens 30 vollständige 1m-Pairs beschaffen und hash-frieren.\n2. Recursive-Ursache beseitigen oder einen nachweislich stabilen Startup-Wert festlegen; danach Lookahead-Abdeckung über alle Entry-/Exit-Tags erhöhen.\n3. Einen neuen, vorregistrierten Challenger ausschließlich auf Training entwickeln; Kill-Kriterien automatisiert anwenden.\n4. Erst nach Train-Pass Multi-Seed-Hyperopt, Plateau-Test, Validation, Rolling/Anchored-WF und Pair-Holdouts ausführen.\n5. Frozen OOS genau einmal öffnen; nur bei vollständigem Gate-Pass einen mehrwöchigen Dry-run-Canary starten."
+      },
+      {
+        "id": "further_questions",
+        "type": "markdown",
+        "body": "## Offene Fragen\n\n- Welches autorisierte GitHub-Zielrepository soll den atomaren Branch und Pull Request erhalten?\n- Kann ein historischer Binance-USDC-Pair-Snapshot mit Delisting-Historie bereitgestellt werden?\n- Soll der nächste Challenger primär Aktivität, Kostenrobustheit oder Pair-Generalisation optimieren?"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-17T16:29:24Z",
+    "status": "partial",
+    "datasets": {
+      "headline": [
+        {
+          "total_trades": 20,
+          "trades_target": 500,
+          "profit_pct": 26.24181329,
+          "profit_target_pct": 50.0,
+          "winrate_pct": 100.0,
+          "winrate_target_pct": 80.0,
+          "wallet_drawdown_pct": 1.914468054293001,
+          "drawdown_ceiling_pct": 5.0
+        }
+      ],
+      "training": [
+        {
+          "strategy": "Challenger H001",
+          "trades": 685,
+          "winrate_pct": 3.3576642335766427,
+          "profit_pct": -74.176859537,
+          "profit_factor": 0.007730372683065349,
+          "profit_factor_interpretation": "FINITE",
+          "wallet_drawdown_pct": 74.18815138962567
+        },
+        {
+          "strategy": "Challenger H002",
+          "trades": 257,
+          "winrate_pct": 67.70428015564202,
+          "profit_pct": -45.065928043999996,
+          "profit_factor": 0.4742255157369716,
+          "profit_factor_interpretation": "FINITE",
+          "wallet_drawdown_pct": 47.634020338691734
+        },
+        {
+          "strategy": "Champion V741",
+          "trades": 13,
+          "winrate_pct": 100.0,
+          "profit_pct": 15.249601914,
+          "profit_factor": 0.0,
+          "profit_factor_interpretation": "UNDEFINED_NO_LOSSES",
+          "wallet_drawdown_pct": 1.914468054293001
+        }
+      ],
+      "stress": [
+        {
+          "order": 1,
+          "scenario": "Base fee 0.10%",
+          "fee_pct_per_side": "0.10",
+          "entry_delay_candles": "0",
+          "trades": 20,
+          "wins": 20,
+          "losses": 0,
+          "winrate_pct": 100.0,
+          "profit_pct": 26.24181329,
+          "profit_factor": "undefined (no losses)",
+          "wallet_drawdown_pct": 1.914468054293001
+        },
+        {
+          "order": 2,
+          "scenario": "Fee 0.20%",
+          "fee_pct_per_side": "0.20",
+          "entry_delay_candles": "0",
+          "trades": 19,
+          "wins": 15,
+          "losses": 4,
+          "winrate_pct": 78.94736842105263,
+          "profit_pct": 13.973302101000002,
+          "profit_factor": "3.69",
+          "wallet_drawdown_pct": 2.772726700443247
+        },
+        {
+          "order": 3,
+          "scenario": "Fee 0.30%",
+          "fee_pct_per_side": "0.30",
+          "entry_delay_candles": "0",
+          "trades": 19,
+          "wins": 15,
+          "losses": 4,
+          "winrate_pct": 78.94736842105263,
+          "profit_pct": 9.437549059999998,
+          "profit_factor": "2.51",
+          "wallet_drawdown_pct": 4.259990652156732
+        },
+        {
+          "order": 4,
+          "scenario": "Entry delay +1",
+          "fee_pct_per_side": "0.10",
+          "entry_delay_candles": "1",
+          "trades": 20,
+          "wins": 18,
+          "losses": 2,
+          "winrate_pct": 90.0,
+          "profit_pct": 17.833111813999995,
+          "profit_factor": "5.99",
+          "wallet_drawdown_pct": 2.648928463776737
+        },
+        {
+          "order": 5,
+          "scenario": "Entry delay +2",
+          "fee_pct_per_side": "0.10",
+          "entry_delay_candles": "2",
+          "trades": 20,
+          "wins": 18,
+          "losses": 2,
+          "winrate_pct": 90.0,
+          "profit_pct": 19.39967978,
+          "profit_factor": "6.30",
+          "wallet_drawdown_pct": 2.5157490079914138
+        },
+        {
+          "order": 6,
+          "scenario": "No custom exit",
+          "fee_pct_per_side": "0.10",
+          "entry_delay_candles": "0",
+          "trades": 20,
+          "wins": 18,
+          "losses": 2,
+          "winrate_pct": 90.0,
+          "profit_pct": 24.526743557000003,
+          "profit_factor": "28.65",
+          "wallet_drawdown_pct": 2.260272816389587
+        }
+      ],
+      "equity": [
+        {
+          "date": "2026-01-01",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1013.77628453
+        },
+        {
+          "date": "2026-01-01",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-01",
+          "strategy": "Champion V741",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-02",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1027.3361148
+        },
+        {
+          "date": "2026-01-02",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-02",
+          "strategy": "Champion V741",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-03",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1034.7334447899998
+        },
+        {
+          "date": "2026-01-03",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-03",
+          "strategy": "Champion V741",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-04",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1044.33139309
+        },
+        {
+          "date": "2026-01-04",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-04",
+          "strategy": "Champion V741",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-05",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1071.7825204199999
+        },
+        {
+          "date": "2026-01-05",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-05",
+          "strategy": "Champion V741",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-06",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1070.2517341799999
+        },
+        {
+          "date": "2026-01-06",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-06",
+          "strategy": "Champion V741",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-07",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1042.82729609
+        },
+        {
+          "date": "2026-01-07",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-07",
+          "strategy": "Champion V741",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-08",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1039.72376722
+        },
+        {
+          "date": "2026-01-08",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-08",
+          "strategy": "Champion V741",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-09",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1033.79140509
+        },
+        {
+          "date": "2026-01-09",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-09",
+          "strategy": "Champion V741",
+          "equity_usdc": 994.12237643
+        },
+        {
+          "date": "2026-01-10",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1032.50217909
+        },
+        {
+          "date": "2026-01-10",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-10",
+          "strategy": "Champion V741",
+          "equity_usdc": 992.8830824300001
+        },
+        {
+          "date": "2026-01-11",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1037.4823234199998
+        },
+        {
+          "date": "2026-01-11",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-11",
+          "strategy": "Champion V741",
+          "equity_usdc": 997.6703447
+        },
+        {
+          "date": "2026-01-12",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1041.51545209
+        },
+        {
+          "date": "2026-01-12",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-12",
+          "strategy": "Champion V741",
+          "equity_usdc": 997.5050363400001
+        },
+        {
+          "date": "2026-01-13",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1088.23293109
+        },
+        {
+          "date": "2026-01-13",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-13",
+          "strategy": "Champion V741",
+          "equity_usdc": 1006.94641779
+        },
+        {
+          "date": "2026-01-14",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1106.4743480899997
+        },
+        {
+          "date": "2026-01-14",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-14",
+          "strategy": "Champion V741",
+          "equity_usdc": 1006.94641779
+        },
+        {
+          "date": "2026-01-15",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1090.958287
+        },
+        {
+          "date": "2026-01-15",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-15",
+          "strategy": "Champion V741",
+          "equity_usdc": 1006.94641779
+        },
+        {
+          "date": "2026-01-16",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1090.6252369499998
+        },
+        {
+          "date": "2026-01-16",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-16",
+          "strategy": "Champion V741",
+          "equity_usdc": 1006.94641779
+        },
+        {
+          "date": "2026-01-17",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1085.790074
+        },
+        {
+          "date": "2026-01-17",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-17",
+          "strategy": "Champion V741",
+          "equity_usdc": 1006.94641779
+        },
+        {
+          "date": "2026-01-18",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1069.4464202899999
+        },
+        {
+          "date": "2026-01-18",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-18",
+          "strategy": "Champion V741",
+          "equity_usdc": 1006.94641779
+        },
+        {
+          "date": "2026-01-19",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1056.92973218
+        },
+        {
+          "date": "2026-01-19",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-19",
+          "strategy": "Champion V741",
+          "equity_usdc": 1006.94641779
+        },
+        {
+          "date": "2026-01-20",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1009.1830210899999
+        },
+        {
+          "date": "2026-01-20",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-20",
+          "strategy": "Champion V741",
+          "equity_usdc": 1006.94641779
+        },
+        {
+          "date": "2026-01-21",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1021.0011522699999
+        },
+        {
+          "date": "2026-01-21",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-21",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-22",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1022.0389791999999
+        },
+        {
+          "date": "2026-01-22",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-22",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-23",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1022.5613419099999
+        },
+        {
+          "date": "2026-01-23",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-23",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-24",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1017.66533654
+        },
+        {
+          "date": "2026-01-24",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-24",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-25",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 989.1660910899999
+        },
+        {
+          "date": "2026-01-25",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-25",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-26",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1008.3588211699998
+        },
+        {
+          "date": "2026-01-26",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-26",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-27",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1018.1962940899999
+        },
+        {
+          "date": "2026-01-27",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-27",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-28",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 1018.3434241799998
+        },
+        {
+          "date": "2026-01-28",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-28",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-29",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 966.5785122999999
+        },
+        {
+          "date": "2026-01-29",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-29",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-30",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 961.76212229
+        },
+        {
+          "date": "2026-01-30",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-30",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-01-31",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 899.3726310899999
+        },
+        {
+          "date": "2026-01-31",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-01-31",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-02-01",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 880.68857983
+        },
+        {
+          "date": "2026-02-01",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-01",
+          "strategy": "Champion V741",
+          "equity_usdc": 1027.90023353
+        },
+        {
+          "date": "2026-02-02",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 899.9767578699999
+        },
+        {
+          "date": "2026-02-02",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-02",
+          "strategy": "Champion V741",
+          "equity_usdc": 1036.61012091
+        },
+        {
+          "date": "2026-02-03",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 865.4567139099998
+        },
+        {
+          "date": "2026-02-03",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-03",
+          "strategy": "Champion V741",
+          "equity_usdc": 1036.61012091
+        },
+        {
+          "date": "2026-02-04",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 835.81605109
+        },
+        {
+          "date": "2026-02-04",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-04",
+          "strategy": "Champion V741",
+          "equity_usdc": 1046.09700087
+        },
+        {
+          "date": "2026-02-05",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 719.1780785199999
+        },
+        {
+          "date": "2026-02-05",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-05",
+          "strategy": "Champion V741",
+          "equity_usdc": 1046.09700087
+        },
+        {
+          "date": "2026-02-06",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 807.9948932799999
+        },
+        {
+          "date": "2026-02-06",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-06",
+          "strategy": "Champion V741",
+          "equity_usdc": 1113.38551685
+        },
+        {
+          "date": "2026-02-07",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 793.7965568699999
+        },
+        {
+          "date": "2026-02-07",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-07",
+          "strategy": "Champion V741",
+          "equity_usdc": 1113.38551685
+        },
+        {
+          "date": "2026-02-08",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 804.6246981899999
+        },
+        {
+          "date": "2026-02-08",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-08",
+          "strategy": "Champion V741",
+          "equity_usdc": 1113.38551685
+        },
+        {
+          "date": "2026-02-09",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 803.30572952
+        },
+        {
+          "date": "2026-02-09",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-09",
+          "strategy": "Champion V741",
+          "equity_usdc": 1113.38551685
+        },
+        {
+          "date": "2026-02-10",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 788.148503
+        },
+        {
+          "date": "2026-02-10",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-10",
+          "strategy": "Champion V741",
+          "equity_usdc": 1113.38551685
+        },
+        {
+          "date": "2026-02-11",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 767.64664308
+        },
+        {
+          "date": "2026-02-11",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-11",
+          "strategy": "Champion V741",
+          "equity_usdc": 1124.41890989
+        },
+        {
+          "date": "2026-02-12",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 758.8784361099999
+        },
+        {
+          "date": "2026-02-12",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-12",
+          "strategy": "Champion V741",
+          "equity_usdc": 1124.41890989
+        },
+        {
+          "date": "2026-02-13",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 788.6675860999999
+        },
+        {
+          "date": "2026-02-13",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-13",
+          "strategy": "Champion V741",
+          "equity_usdc": 1124.41890989
+        },
+        {
+          "date": "2026-02-14",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 799.10420984
+        },
+        {
+          "date": "2026-02-14",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-14",
+          "strategy": "Champion V741",
+          "equity_usdc": 1124.41890989
+        },
+        {
+          "date": "2026-02-15",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 788.0466089099999
+        },
+        {
+          "date": "2026-02-15",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-15",
+          "strategy": "Champion V741",
+          "equity_usdc": 1129.29941021
+        },
+        {
+          "date": "2026-02-16",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 788.6575210899999
+        },
+        {
+          "date": "2026-02-16",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-16",
+          "strategy": "Champion V741",
+          "equity_usdc": 1129.9900515499999
+        },
+        {
+          "date": "2026-02-17",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 773.322404
+        },
+        {
+          "date": "2026-02-17",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-17",
+          "strategy": "Champion V741",
+          "equity_usdc": 1129.9900515499999
+        },
+        {
+          "date": "2026-02-18",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 761.3350901799998
+        },
+        {
+          "date": "2026-02-18",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-18",
+          "strategy": "Champion V741",
+          "equity_usdc": 1129.9900515499999
+        },
+        {
+          "date": "2026-02-19",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 767.3986367099999
+        },
+        {
+          "date": "2026-02-19",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-19",
+          "strategy": "Champion V741",
+          "equity_usdc": 1129.9900515499999
+        },
+        {
+          "date": "2026-02-20",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 779.12086757
+        },
+        {
+          "date": "2026-02-20",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-20",
+          "strategy": "Champion V741",
+          "equity_usdc": 1129.9900515499999
+        },
+        {
+          "date": "2026-02-21",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 779.0565193599999
+        },
+        {
+          "date": "2026-02-21",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-21",
+          "strategy": "Champion V741",
+          "equity_usdc": 1129.9900515499999
+        },
+        {
+          "date": "2026-02-22",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 774.89718225
+        },
+        {
+          "date": "2026-02-22",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-22",
+          "strategy": "Champion V741",
+          "equity_usdc": 1129.9900515499999
+        },
+        {
+          "date": "2026-02-23",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 740.75712069
+        },
+        {
+          "date": "2026-02-23",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-23",
+          "strategy": "Champion V741",
+          "equity_usdc": 1141.1875017
+        },
+        {
+          "date": "2026-02-24",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 734.75882709
+        },
+        {
+          "date": "2026-02-24",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-24",
+          "strategy": "Champion V741",
+          "equity_usdc": 1141.1875017
+        },
+        {
+          "date": "2026-02-25",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 778.4678859099998
+        },
+        {
+          "date": "2026-02-25",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-25",
+          "strategy": "Champion V741",
+          "equity_usdc": 1152.49601914
+        },
+        {
+          "date": "2026-02-26",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 772.93699328
+        },
+        {
+          "date": "2026-02-26",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-26",
+          "strategy": "Champion V741",
+          "equity_usdc": 1152.49601914
+        },
+        {
+          "date": "2026-02-27",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 755.06979109
+        },
+        {
+          "date": "2026-02-27",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-27",
+          "strategy": "Champion V741",
+          "equity_usdc": 1152.49601914
+        },
+        {
+          "date": "2026-02-28",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 767.7246751799998
+        },
+        {
+          "date": "2026-02-28",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-02-28",
+          "strategy": "Champion V741",
+          "equity_usdc": 1152.49601914
+        },
+        {
+          "date": "2026-03-01",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 753.33691302
+        },
+        {
+          "date": "2026-03-01",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-01",
+          "strategy": "Champion V741",
+          "equity_usdc": 1152.49601914
+        },
+        {
+          "date": "2026-03-02",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 787.809233
+        },
+        {
+          "date": "2026-03-02",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-02",
+          "strategy": "Champion V741",
+          "equity_usdc": 1152.49601914
+        },
+        {
+          "date": "2026-03-03",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 782.3311534
+        },
+        {
+          "date": "2026-03-03",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-03",
+          "strategy": "Champion V741",
+          "equity_usdc": 1152.49601914
+        },
+        {
+          "date": "2026-03-04",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 832.8819310399999
+        },
+        {
+          "date": "2026-03-04",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-04",
+          "strategy": "Champion V741",
+          "equity_usdc": 1176.47925026
+        },
+        {
+          "date": "2026-03-05",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 811.0392760799999
+        },
+        {
+          "date": "2026-03-05",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-05",
+          "strategy": "Champion V741",
+          "equity_usdc": 1176.47925026
+        },
+        {
+          "date": "2026-03-06",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 780.47217998
+        },
+        {
+          "date": "2026-03-06",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-06",
+          "strategy": "Champion V741",
+          "equity_usdc": 1176.47925026
+        },
+        {
+          "date": "2026-03-07",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 770.8172343199999
+        },
+        {
+          "date": "2026-03-07",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-07",
+          "strategy": "Champion V741",
+          "equity_usdc": 1176.47925026
+        },
+        {
+          "date": "2026-03-08",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 755.8615341799999
+        },
+        {
+          "date": "2026-03-08",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-08",
+          "strategy": "Champion V741",
+          "equity_usdc": 1176.47925026
+        },
+        {
+          "date": "2026-03-09",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 783.6474079099999
+        },
+        {
+          "date": "2026-03-09",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-09",
+          "strategy": "Champion V741",
+          "equity_usdc": 1176.47925026
+        },
+        {
+          "date": "2026-03-10",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 800.8402544299998
+        },
+        {
+          "date": "2026-03-10",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-10",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-11",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 804.0714619099999
+        },
+        {
+          "date": "2026-03-11",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-11",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-12",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 807.26331407
+        },
+        {
+          "date": "2026-03-12",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-12",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-13",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 812.6665280899999
+        },
+        {
+          "date": "2026-03-13",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-13",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-14",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 815.41461509
+        },
+        {
+          "date": "2026-03-14",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-14",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-15",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 833.4177514599999
+        },
+        {
+          "date": "2026-03-15",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-15",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-16",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 856.4748799299998
+        },
+        {
+          "date": "2026-03-16",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-16",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-17",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 846.2443061699998
+        },
+        {
+          "date": "2026-03-17",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-17",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-18",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 815.8488806899999
+        },
+        {
+          "date": "2026-03-18",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-18",
+          "strategy": "Champion V741",
+          "equity_usdc": 1200.96141581
+        },
+        {
+          "date": "2026-03-19",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 800.62266927
+        },
+        {
+          "date": "2026-03-19",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-19",
+          "strategy": "Champion V741",
+          "equity_usdc": 1212.1783566
+        },
+        {
+          "date": "2026-03-20",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 807.4919820499999
+        },
+        {
+          "date": "2026-03-20",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-20",
+          "strategy": "Champion V741",
+          "equity_usdc": 1212.1783566
+        },
+        {
+          "date": "2026-03-21",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 787.2177723
+        },
+        {
+          "date": "2026-03-21",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-21",
+          "strategy": "Champion V741",
+          "equity_usdc": 1212.1783566
+        },
+        {
+          "date": "2026-03-22",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 777.30011857
+        },
+        {
+          "date": "2026-03-22",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-22",
+          "strategy": "Champion V741",
+          "equity_usdc": 1212.1783566
+        },
+        {
+          "date": "2026-03-23",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 811.9222828
+        },
+        {
+          "date": "2026-03-23",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-23",
+          "strategy": "Champion V741",
+          "equity_usdc": 1228.76738275
+        },
+        {
+          "date": "2026-03-24",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 807.6316481999999
+        },
+        {
+          "date": "2026-03-24",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-24",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-03-25",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 816.5307002999999
+        },
+        {
+          "date": "2026-03-25",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-25",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-03-26",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 788.1744006099999
+        },
+        {
+          "date": "2026-03-26",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-26",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-03-27",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 760.2494261799999
+        },
+        {
+          "date": "2026-03-27",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-27",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-03-28",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 760.2770201399999
+        },
+        {
+          "date": "2026-03-28",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-28",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-03-29",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 756.2912761799998
+        },
+        {
+          "date": "2026-03-29",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-29",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-03-30",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 764.53338847
+        },
+        {
+          "date": "2026-03-30",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-30",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-03-31",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 781.9454034099999
+        },
+        {
+          "date": "2026-03-31",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-03-31",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-04-01",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 780.2242866999999
+        },
+        {
+          "date": "2026-04-01",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-01",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-04-02",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 766.54017052
+        },
+        {
+          "date": "2026-04-02",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-02",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-04-03",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 767.1252981799998
+        },
+        {
+          "date": "2026-04-03",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-03",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-04-04",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 771.1286841799998
+        },
+        {
+          "date": "2026-04-04",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-04",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-04-05",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 790.4407242099999
+        },
+        {
+          "date": "2026-04-05",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-05",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-04-06",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 788.7726467099999
+        },
+        {
+          "date": "2026-04-06",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-06",
+          "strategy": "Champion V741",
+          "equity_usdc": 1230.58445534
+        },
+        {
+          "date": "2026-04-07",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 824.0502805799999
+        },
+        {
+          "date": "2026-04-07",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-07",
+          "strategy": "Champion V741",
+          "equity_usdc": 1256.19386594
+        },
+        {
+          "date": "2026-04-08",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 814.4757419099999
+        },
+        {
+          "date": "2026-04-08",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-08",
+          "strategy": "Champion V741",
+          "equity_usdc": 1256.19386594
+        },
+        {
+          "date": "2026-04-09",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 821.8956898999999
+        },
+        {
+          "date": "2026-04-09",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-09",
+          "strategy": "Champion V741",
+          "equity_usdc": 1256.19386594
+        },
+        {
+          "date": "2026-04-10",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 835.39592174
+        },
+        {
+          "date": "2026-04-10",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-10",
+          "strategy": "Champion V741",
+          "equity_usdc": 1256.19386594
+        },
+        {
+          "date": "2026-04-11",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 836.48418681
+        },
+        {
+          "date": "2026-04-11",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-11",
+          "strategy": "Champion V741",
+          "equity_usdc": 1256.19386594
+        },
+        {
+          "date": "2026-04-12",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 810.483778
+        },
+        {
+          "date": "2026-04-12",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-12",
+          "strategy": "Champion V741",
+          "equity_usdc": 1256.19386594
+        },
+        {
+          "date": "2026-04-13",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 852.6679312599999
+        },
+        {
+          "date": "2026-04-13",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-13",
+          "strategy": "Champion V741",
+          "equity_usdc": 1256.19386594
+        },
+        {
+          "date": "2026-04-14",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 849.2636960799999
+        },
+        {
+          "date": "2026-04-14",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-14",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-15",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 856.2778771499999
+        },
+        {
+          "date": "2026-04-15",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-15",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-16",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 860.3864368499999
+        },
+        {
+          "date": "2026-04-16",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-16",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-17",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 882.45583726
+        },
+        {
+          "date": "2026-04-17",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-17",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-18",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 866.5595675899999
+        },
+        {
+          "date": "2026-04-18",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-18",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-19",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 845.43593885
+        },
+        {
+          "date": "2026-04-19",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-19",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-20",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 868.3768107999999
+        },
+        {
+          "date": "2026-04-20",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-20",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-21",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 873.8404148799999
+        },
+        {
+          "date": "2026-04-21",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-21",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-22",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 894.916772
+        },
+        {
+          "date": "2026-04-22",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-22",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-23",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 895.22912658
+        },
+        {
+          "date": "2026-04-23",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-23",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-24",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 886.09609127
+        },
+        {
+          "date": "2026-04-24",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-24",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-25",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 888.00177086
+        },
+        {
+          "date": "2026-04-25",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-25",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-26",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 899.6578440699999
+        },
+        {
+          "date": "2026-04-26",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-26",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-27",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 885.0368903299999
+        },
+        {
+          "date": "2026-04-27",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-27",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-28",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 873.59489649
+        },
+        {
+          "date": "2026-04-28",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-28",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-29",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 867.23234
+        },
+        {
+          "date": "2026-04-29",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-29",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-04-30",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 873.0475408899999
+        },
+        {
+          "date": "2026-04-30",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-04-30",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        },
+        {
+          "date": "2026-05-01",
+          "strategy": "Buy-and-hold",
+          "equity_usdc": 873.3187307099998
+        },
+        {
+          "date": "2026-05-01",
+          "strategy": "Cash",
+          "equity_usdc": 1000.0
+        },
+        {
+          "date": "2026-05-01",
+          "strategy": "Champion V741",
+          "equity_usdc": 1262.4181329
+        }
+      ],
+      "gates": [
+        {
+          "priority": 1,
+          "gate": "Dry-run Canary",
+          "status": "BLOCKIERT",
+          "decision": "no deployment candidate; preflight only",
+          "evidence": "decisions/promotion_decision.json"
+        },
+        {
+          "priority": 1,
+          "gate": "Finales unangetastetes OOS",
+          "status": "BLOCKIERT",
+          "decision": "sealed; no candidate passed training gates",
+          "evidence": "contracts/research_contract_v1.json"
+        },
+        {
+          "priority": 1,
+          "gate": "GitHub Branch/PR",
+          "status": "BLOCKIERT",
+          "decision": "target repository not identified",
+          "evidence": "audit/github_publication.json"
+        },
+        {
+          "priority": 1,
+          "gate": "Micro-Live/Skalierung/Drift",
+          "status": "BLOCKIERT",
+          "decision": "outside authorized evidence stage",
+          "evidence": "contracts/research_contract_v1.json"
+        },
+        {
+          "priority": 1,
+          "gate": "Pair-Holdout/Leave-One-Pair-Out",
+          "status": "BLOCKIERT",
+          "decision": "only BTC/USDC exists",
+          "evidence": "audit/source_of_truth_inventory.json"
+        },
+        {
+          "priority": 1,
+          "gate": "Survivorship/30-Pair-Universum",
+          "status": "BLOCKIERT",
+          "decision": "requires historical USDC universe and data",
+          "evidence": "audit/source_of_truth_inventory.json"
+        },
+        {
+          "priority": 2,
+          "gate": "Hyperopt nur Training/mehrere Seeds",
+          "status": "NICHT VERIFIZIERT",
+          "decision": "not run after train kill; no promotable candidate",
+          "evidence": "hypotheses/H001_causal_regime_pullback_v1.json"
+        },
+        {
+          "priority": 2,
+          "gate": "Nested Rolling/Anchored Walk-Forward",
+          "status": "NICHT VERIFIZIERT",
+          "decision": "no candidate reached validation",
+          "evidence": "contracts/research_contract_v1.json"
+        },
+        {
+          "priority": 2,
+          "gate": "Order-/Betriebsstörung",
+          "status": "NICHT VERIFIZIERT",
+          "decision": "no latency/order-rejection/outage simulator",
+          "evidence": "contracts/research_contract_v1.json"
+        },
+        {
+          "priority": 2,
+          "gate": "Parameter-Nachbarschaft/Plateau",
+          "status": "NICHT VERIFIZIERT",
+          "decision": "not justified after train failure",
+          "evidence": "contracts/research_contract_v1.json"
+        },
+        {
+          "priority": 2,
+          "gate": "Recursive",
+          "status": "NICHT VERIFIZIERT",
+          "decision": "fail at startup=1600; repair or increase proven startup",
+          "evidence": "audit/causality_summary.json"
+        },
+        {
+          "priority": 3,
+          "gate": "Bootstrap/Monte Carlo",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "conditional selected-sample diagnostics only",
+          "evidence": "results/summaries/statistical_stress.json"
+        },
+        {
+          "priority": 3,
+          "gate": "Datenprovenienz",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "needs exchange snapshot/download ledger",
+          "evidence": "audit/data_quality/ohlcv_quality_summary.json"
+        },
+        {
+          "priority": 3,
+          "gate": "Entry/Exit/Gate/Indikator-Ablation",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "selected ablations only",
+          "evidence": "results/champion_common_ablation"
+        },
+        {
+          "priority": 3,
+          "gate": "Fast Walk-Forward",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "frozen monthly slices, not refit WF",
+          "evidence": "evidence/ed8_v741/ED8_V741_8x_InternalExecution/logs"
+        },
+        {
+          "priority": 3,
+          "gate": "Lookahead",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "ten signals only; expand coverage",
+          "evidence": "audit/causality_summary.json"
+        },
+        {
+          "priority": 3,
+          "gate": "Monats-/Session-/Regimeanalyse",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "monthly slices exist; session/regime independence incomplete",
+          "evidence": "evidence/ed8_v741/ED8_V741_8x_InternalExecution/ED8_V741_WF_StressMetrics.csv"
+        },
+        {
+          "priority": 3,
+          "gate": "Multiple-Testing-Korrektur",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "full independent search family unknown",
+          "evidence": "results/summaries/statistical_stress.json"
+        },
+        {
+          "priority": 3,
+          "gate": "Purging/Embargo",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "partitioned, not executed beyond training",
+          "evidence": "contracts/research_contract_v1.json"
+        },
+        {
+          "priority": 3,
+          "gate": "Slippage/Spread",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "analytical only; engine/order-book replay absent",
+          "evidence": "results/summaries/statistical_stress.json"
+        },
+        {
+          "priority": 3,
+          "gate": "Stake/Wallet/Parallelposition",
+          "status": "TEILWEISE VERIFIZIERT",
+          "decision": "wallet 50/1000; max-open fixed at one",
+          "evidence": "results/champion_historical_precision6; results/champion_common_full"
+        },
+        {
+          "priority": 4,
+          "gate": "Archivintegrität",
+          "status": "VERIFIZIERT",
+          "decision": "pass",
+          "evidence": "audit/source_archive_manifest.extract.json"
+        },
+        {
+          "priority": 4,
+          "gate": "Code/Callback/Konfiguration",
+          "status": "VERIFIZIERT",
+          "decision": "pass for hard constraints",
+          "evidence": "audit/strategy_static_audit.json"
+        },
+        {
+          "priority": 4,
+          "gate": "Deterministische Reproduktion",
+          "status": "VERIFIZIERT",
+          "decision": "exact trade and metric equality",
+          "evidence": "audit/deterministic_reproduction.json"
+        },
+        {
+          "priority": 4,
+          "gate": "Entry-Delay +1/+2",
+          "status": "VERIFIZIERT",
+          "decision": "positive but tiny sample",
+          "evidence": "results/champion_common_ablation"
+        },
+        {
+          "priority": 4,
+          "gate": "Gebührenstress 0.10/0.20/0.30%",
+          "status": "VERIFIZIERT",
+          "decision": "quality degrades below targets",
+          "evidence": "results/champion_common_fee_002; results/champion_common_fee_003"
+        },
+        {
+          "priority": 4,
+          "gate": "Geheimnisfreier Publish",
+          "status": "VERIFIZIERT",
+          "decision": "raw historical zips excluded",
+          "evidence": "audit/secret_scan.json"
+        },
+        {
+          "priority": 4,
+          "gate": "Naive Baselines/Negativkontrollen",
+          "status": "VERIFIZIERT",
+          "decision": "all common settings recorded",
+          "evidence": "results/summaries/metrics_all.json"
+        },
+        {
+          "priority": 4,
+          "gate": "OHLCV-Struktur/Datenlücken",
+          "status": "VERIFIZIERT",
+          "decision": "pass",
+          "evidence": "audit/data_quality/ohlcv_quality_summary.json"
+        },
+        {
+          "priority": 4,
+          "gate": "Prefix-/Same-Candle-/Kollision",
+          "status": "VERIFIZIERT",
+          "decision": "pass on saved sample",
+          "evidence": "audit/runtime_signal_audit.json"
+        },
+        {
+          "priority": 4,
+          "gate": "Testvertrag und Versions-Freeze",
+          "status": "VERIFIZIERT",
+          "decision": "locked",
+          "evidence": "contracts/research_contract_v1.json"
+        }
+      ],
+      "data_quality": [
+        {
+          "rows": 710937,
+          "first": "2025-01-01T00:00:00+00:00",
+          "last": "2026-05-09T16:56:00+00:00",
+          "gaps": 0,
+          "duplicates": 0,
+          "complete_days": 493,
+          "partial_days": 1,
+          "sha256": "0b311b5a815a35c616d786c5eee0b67750213c8d5fb8d36e4403b425e4a762a9"
+        }
+      ]
+    },
+    "accessIssues": [
+      {
+        "id": "pair_universe_missing",
+        "dataset": "pair_universe",
+        "message": "Only BTC/USDC 1m is available; pair holdouts and survivorship audit are blocked."
+      },
+      {
+        "id": "github_connector_unavailable",
+        "dataset": "github_publication",
+        "message": "GitHub connector returned MCP -32603 and no target repository is configured."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "headline_query",
+      "label": "Headline metrics query",
+      "path": "report/report_data.sqlite",
+      "query": {
+        "engine": "sqlite",
+        "language": "sql",
+        "sql": "SELECT total_trades, trades_target, profit_pct, profit_target_pct, winrate_pct, winrate_target_pct, wallet_drawdown_pct, drawdown_ceiling_pct FROM headline",
+        "description": "Selects the Champion development result and explicit promotion thresholds.",
+        "tables_used": [
+          "report_data.headline"
+        ],
+        "filters": [
+          "Binance Spot; BTC/USDC; 1m; long-only",
+          "Development window only; frozen OOS excluded"
+        ],
+        "metric_definitions": [
+          "Net profit % = (final wallet - 1,000 USDC) / 1,000 USDC * 100 after modeled fees.",
+          "Winrate % = winning closed trades / all closed trades * 100.",
+          "Wallet drawdown % = maximum peak-to-trough decline of simulated minute wallet equity."
+        ]
+      }
+    },
+    {
+      "id": "training_query",
+      "label": "Training comparison query",
+      "path": "report/report_data.sqlite",
+      "query": {
+        "engine": "sqlite",
+        "language": "sql",
+        "sql": "SELECT strategy, trades, winrate_pct, profit_pct, profit_factor, profit_factor_interpretation, wallet_drawdown_pct FROM training ORDER BY strategy",
+        "description": "Selects the identical-contract Champion and Challenger training rows.",
+        "tables_used": [
+          "report_data.training"
+        ],
+        "filters": [],
+        "metric_definitions": []
+      }
+    },
+    {
+      "id": "stress_query",
+      "label": "Stress comparison query",
+      "path": "report/report_data.sqlite",
+      "query": {
+        "engine": "sqlite",
+        "language": "sql",
+        "sql": "SELECT * FROM stress ORDER BY \"order\"",
+        "description": "Selects common-capital fee, entry-delay and exit-ablation results.",
+        "tables_used": [
+          "report_data.stress"
+        ],
+        "filters": [],
+        "metric_definitions": [
+          "Profit Factor = gross winning profit / absolute gross losing profit; undefined when there are no losing trades."
+        ]
+      }
+    },
+    {
+      "id": "equity_query",
+      "label": "Daily equity query",
+      "path": "report/report_data.sqlite",
+      "query": {
+        "engine": "sqlite",
+        "language": "sql",
+        "sql": "SELECT date, strategy, equity_usdc FROM equity ORDER BY date, strategy",
+        "description": "Selects deterministic daily endpoints for Champion, cash and buy-and-hold.",
+        "tables_used": [
+          "report_data.equity"
+        ],
+        "filters": [
+          "2026-01-01 <= date <= 2026-05-01"
+        ],
+        "metric_definitions": [
+          "Daily equity = final per-minute sum of every wallet currency's total_quote value for each UTC calendar date."
+        ]
+      }
+    },
+    {
+      "id": "gates_query",
+      "label": "Gate matrix query",
+      "path": "report/report_data.sqlite",
+      "query": {
+        "engine": "sqlite",
+        "language": "sql",
+        "sql": "SELECT priority, gate, status, decision, evidence FROM gates ORDER BY priority, gate",
+        "description": "Selects every gate ordered from blocked to verified.",
+        "tables_used": [
+          "report_data.gates"
+        ],
+        "filters": [],
+        "metric_definitions": []
+      }
+    },
+    {
+      "id": "data_quality_query",
+      "label": "OHLCV quality query",
+      "path": "report/report_data.sqlite",
+      "query": {
+        "engine": "sqlite",
+        "language": "sql",
+        "sql": "SELECT rows, first, last, gaps, duplicates, complete_days, partial_days, sha256 FROM data_quality",
+        "description": "Selects structural BTC/USDC 1m data-quality aggregates.",
+        "tables_used": [
+          "report_data.data_quality"
+        ],
+        "filters": [],
+        "metric_definitions": []
+      }
+    },
+    {
+      "id": "promotion",
+      "label": "Promotion decision",
+      "path": "decisions/promotion_decision.json"
+    },
+    {
+      "id": "metrics",
+      "label": "Normalized Freqtrade metrics",
+      "path": "results/summaries/metrics_all.json"
+    },
+    {
+      "id": "equity",
+      "label": "Daily Freqtrade wallet equity",
+      "path": "results/summaries/daily_equity.csv"
+    },
+    {
+      "id": "gates",
+      "label": "Research gate matrix",
+      "path": "audit/gate_matrix.json"
+    },
+    {
+      "id": "contract",
+      "label": "Frozen research contract",
+      "path": "contracts/research_contract_v1.json"
+    },
+    {
+      "id": "quality",
+      "label": "BTC/USDC OHLCV quality audit",
+      "path": "audit/data_quality/ohlcv_quality_summary.json"
+    },
+    {
+      "id": "determinism",
+      "label": "Exact reproduction audit",
+      "path": "audit/deterministic_reproduction.json"
+    },
+    {
+      "id": "causality",
+      "label": "Lookahead and recursive summary",
+      "path": "audit/causality_summary.json"
+    },
+    {
+      "id": "version",
+      "label": "Freqtrade version audit",
+      "path": "audit/freqtrade_version_audit.json"
+    },
+    {
+      "id": "statistics",
+      "label": "Bootstrap and Monte Carlo diagnostics",
+      "path": "results/summaries/statistical_stress.json"
+    },
+    {
+      "id": "secrets",
+      "label": "Secret scan",
+      "path": "audit/secret_scan.json"
+    },
+    {
+      "id": "github",
+      "label": "GitHub publication status",
+      "path": "audit/github_publication.json"
+    }
+  ],
+  "package_info": {
+    "originUrl": "artifact://fqt-rnd-v741-audit",
+    "controls": {
+      "edit": false,
+      "refresh": false
+    }
+  }
+}

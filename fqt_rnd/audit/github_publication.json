@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "BLOCKIERT",
+  "checked_at_utc": "2026-08-17",
+  "local_repository": {
+    "branch": "agent/freqtrade-research-baseline",
+    "remote_configured": false,
+    "gh_cli_available": false
+  },
+  "github_connector": {
+    "profile_call": "MCP error -32603 Internal error",
+    "repository_list_call": "MCP error -32603 Internal error",
+    "retry": "MCP error -32603 Internal error"
+  },
+  "reason": "No authenticated target repository can be identified; publishing to the reconstructed official upstream would be unauthorized and unsafe.",
+  "required_to_unblock": "Reconnect GitHub and identify the exact owner/repository with write permission.",
+  "safety_policy": "No force-push, no upstream overwrite, no raw secret-bearing archives."
+}

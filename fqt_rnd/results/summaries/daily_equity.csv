@@ -1,0 +1,364 @@
+date,strategy,equity_usdc,source_archive
+2026-01-01,Buy-and-hold,1013.77628453,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-01,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-01,Champion V741,1000.0,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-02,Buy-and-hold,1027.3361148,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-02,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-02,Champion V741,1000.0,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-03,Buy-and-hold,1034.7334447899998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-03,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-03,Champion V741,1000.0,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-04,Buy-and-hold,1044.33139309,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-04,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-04,Champion V741,1000.0,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-05,Buy-and-hold,1071.7825204199999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-05,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-05,Champion V741,1000.0,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-06,Buy-and-hold,1070.2517341799999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-06,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-06,Champion V741,1000.0,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-07,Buy-and-hold,1042.82729609,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-07,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-07,Champion V741,1000.0,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-08,Buy-and-hold,1039.72376722,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-08,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-08,Champion V741,1000.0,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-09,Buy-and-hold,1033.79140509,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-09,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-09,Champion V741,994.12237643,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-10,Buy-and-hold,1032.50217909,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-10,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-10,Champion V741,992.8830824300001,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-11,Buy-and-hold,1037.4823234199998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-11,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-11,Champion V741,997.6703447,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-12,Buy-and-hold,1041.51545209,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-12,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-12,Champion V741,997.5050363400001,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-13,Buy-and-hold,1088.23293109,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-13,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-13,Champion V741,1006.94641779,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-14,Buy-and-hold,1106.4743480899997,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-14,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-14,Champion V741,1006.94641779,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-15,Buy-and-hold,1090.958287,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-15,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-15,Champion V741,1006.94641779,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-16,Buy-and-hold,1090.6252369499998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-16,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-16,Champion V741,1006.94641779,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-17,Buy-and-hold,1085.790074,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-17,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-17,Champion V741,1006.94641779,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-18,Buy-and-hold,1069.4464202899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-18,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-18,Champion V741,1006.94641779,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-19,Buy-and-hold,1056.92973218,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-19,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-19,Champion V741,1006.94641779,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-20,Buy-and-hold,1009.1830210899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-20,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-20,Champion V741,1006.94641779,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-21,Buy-and-hold,1021.0011522699999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-21,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-21,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-22,Buy-and-hold,1022.0389791999999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-22,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-22,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-23,Buy-and-hold,1022.5613419099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-23,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-23,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-24,Buy-and-hold,1017.66533654,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-24,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-24,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-25,Buy-and-hold,989.1660910899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-25,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-25,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-26,Buy-and-hold,1008.3588211699998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-26,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-26,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-27,Buy-and-hold,1018.1962940899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-27,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-27,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-28,Buy-and-hold,1018.3434241799998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-28,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-28,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-29,Buy-and-hold,966.5785122999999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-29,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-29,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-30,Buy-and-hold,961.76212229,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-30,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-30,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-01-31,Buy-and-hold,899.3726310899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-31,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-01-31,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-01,Buy-and-hold,880.68857983,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-01,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-01,Champion V741,1027.90023353,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-02,Buy-and-hold,899.9767578699999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-02,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-02,Champion V741,1036.61012091,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-03,Buy-and-hold,865.4567139099998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-03,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-03,Champion V741,1036.61012091,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-04,Buy-and-hold,835.81605109,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-04,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-04,Champion V741,1046.09700087,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-05,Buy-and-hold,719.1780785199999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-05,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-05,Champion V741,1046.09700087,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-06,Buy-and-hold,807.9948932799999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-06,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-06,Champion V741,1113.38551685,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-07,Buy-and-hold,793.7965568699999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-07,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-07,Champion V741,1113.38551685,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-08,Buy-and-hold,804.6246981899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-08,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-08,Champion V741,1113.38551685,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-09,Buy-and-hold,803.30572952,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-09,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-09,Champion V741,1113.38551685,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-10,Buy-and-hold,788.148503,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-10,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-10,Champion V741,1113.38551685,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-11,Buy-and-hold,767.64664308,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-11,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-11,Champion V741,1124.41890989,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-12,Buy-and-hold,758.8784361099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-12,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-12,Champion V741,1124.41890989,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-13,Buy-and-hold,788.6675860999999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-13,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-13,Champion V741,1124.41890989,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-14,Buy-and-hold,799.10420984,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-14,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-14,Champion V741,1124.41890989,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-15,Buy-and-hold,788.0466089099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-15,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-15,Champion V741,1129.29941021,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-16,Buy-and-hold,788.6575210899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-16,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-16,Champion V741,1129.9900515499999,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-17,Buy-and-hold,773.322404,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-17,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-17,Champion V741,1129.9900515499999,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-18,Buy-and-hold,761.3350901799998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-18,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-18,Champion V741,1129.9900515499999,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-19,Buy-and-hold,767.3986367099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-19,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-19,Champion V741,1129.9900515499999,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-20,Buy-and-hold,779.12086757,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-20,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-20,Champion V741,1129.9900515499999,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-21,Buy-and-hold,779.0565193599999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-21,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-21,Champion V741,1129.9900515499999,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-22,Buy-and-hold,774.89718225,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-22,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-22,Champion V741,1129.9900515499999,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-23,Buy-and-hold,740.75712069,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-23,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-23,Champion V741,1141.1875017,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-24,Buy-and-hold,734.75882709,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-24,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-24,Champion V741,1141.1875017,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-25,Buy-and-hold,778.4678859099998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-25,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-25,Champion V741,1152.49601914,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-26,Buy-and-hold,772.93699328,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-26,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-26,Champion V741,1152.49601914,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-27,Buy-and-hold,755.06979109,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-27,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-27,Champion V741,1152.49601914,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-02-28,Buy-and-hold,767.7246751799998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-28,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-02-28,Champion V741,1152.49601914,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-01,Buy-and-hold,753.33691302,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-01,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-01,Champion V741,1152.49601914,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-02,Buy-and-hold,787.809233,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-02,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-02,Champion V741,1152.49601914,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-03,Buy-and-hold,782.3311534,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-03,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-03,Champion V741,1152.49601914,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-04,Buy-and-hold,832.8819310399999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-04,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-04,Champion V741,1176.47925026,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-05,Buy-and-hold,811.0392760799999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-05,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-05,Champion V741,1176.47925026,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-06,Buy-and-hold,780.47217998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-06,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-06,Champion V741,1176.47925026,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-07,Buy-and-hold,770.8172343199999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-07,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-07,Champion V741,1176.47925026,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-08,Buy-and-hold,755.8615341799999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-08,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-08,Champion V741,1176.47925026,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-09,Buy-and-hold,783.6474079099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-09,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-09,Champion V741,1176.47925026,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-10,Buy-and-hold,800.8402544299998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-10,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-10,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-11,Buy-and-hold,804.0714619099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-11,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-11,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-12,Buy-and-hold,807.26331407,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-12,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-12,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-13,Buy-and-hold,812.6665280899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-13,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-13,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-14,Buy-and-hold,815.41461509,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-14,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-14,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-15,Buy-and-hold,833.4177514599999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-15,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-15,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-16,Buy-and-hold,856.4748799299998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-16,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-16,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-17,Buy-and-hold,846.2443061699998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-17,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-17,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-18,Buy-and-hold,815.8488806899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-18,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-18,Champion V741,1200.96141581,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-19,Buy-and-hold,800.62266927,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-19,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-19,Champion V741,1212.1783566,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-20,Buy-and-hold,807.4919820499999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-20,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-20,Champion V741,1212.1783566,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-21,Buy-and-hold,787.2177723,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-21,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-21,Champion V741,1212.1783566,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-22,Buy-and-hold,777.30011857,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-22,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-22,Champion V741,1212.1783566,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-23,Buy-and-hold,811.9222828,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-23,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-23,Champion V741,1228.76738275,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-24,Buy-and-hold,807.6316481999999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-24,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-24,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-25,Buy-and-hold,816.5307002999999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-25,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-25,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-26,Buy-and-hold,788.1744006099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-26,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-26,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-27,Buy-and-hold,760.2494261799999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-27,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-27,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-28,Buy-and-hold,760.2770201399999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-28,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-28,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-29,Buy-and-hold,756.2912761799998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-29,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-29,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-30,Buy-and-hold,764.53338847,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-30,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-30,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-03-31,Buy-and-hold,781.9454034099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-31,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-03-31,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-01,Buy-and-hold,780.2242866999999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-01,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-01,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-02,Buy-and-hold,766.54017052,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-02,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-02,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-03,Buy-and-hold,767.1252981799998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-03,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-03,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-04,Buy-and-hold,771.1286841799998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-04,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-04,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-05,Buy-and-hold,790.4407242099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-05,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-05,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-06,Buy-and-hold,788.7726467099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-06,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-06,Champion V741,1230.58445534,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-07,Buy-and-hold,824.0502805799999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-07,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-07,Champion V741,1256.19386594,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-08,Buy-and-hold,814.4757419099999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-08,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-08,Champion V741,1256.19386594,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-09,Buy-and-hold,821.8956898999999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-09,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-09,Champion V741,1256.19386594,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-10,Buy-and-hold,835.39592174,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-10,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-10,Champion V741,1256.19386594,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-11,Buy-and-hold,836.48418681,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-11,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-11,Champion V741,1256.19386594,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-12,Buy-and-hold,810.483778,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-12,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-12,Champion V741,1256.19386594,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-13,Buy-and-hold,852.6679312599999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-13,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-13,Champion V741,1256.19386594,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-14,Buy-and-hold,849.2636960799999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-14,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-14,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-15,Buy-and-hold,856.2778771499999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-15,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-15,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-16,Buy-and-hold,860.3864368499999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-16,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-16,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-17,Buy-and-hold,882.45583726,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-17,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-17,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-18,Buy-and-hold,866.5595675899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-18,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-18,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-19,Buy-and-hold,845.43593885,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-19,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-19,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-20,Buy-and-hold,868.3768107999999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-20,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-20,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-21,Buy-and-hold,873.8404148799999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-21,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-21,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-22,Buy-and-hold,894.916772,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-22,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-22,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-23,Buy-and-hold,895.22912658,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-23,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-23,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-24,Buy-and-hold,886.09609127,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-24,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-24,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-25,Buy-and-hold,888.00177086,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-25,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-25,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-26,Buy-and-hold,899.6578440699999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-26,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-26,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-27,Buy-and-hold,885.0368903299999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-27,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-27,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-28,Buy-and-hold,873.59489649,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-28,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-28,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-29,Buy-and-hold,867.23234,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-29,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-29,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-04-30,Buy-and-hold,873.0475408899999,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-30,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-04-30,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip
+2026-05-01,Buy-and-hold,873.3187307099998,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-05-01,Cash,1000.0,results/baselines_full_development/backtest-result-2026-08-17_17-39-20.zip
+2026-05-01,Champion V741,1262.4181329,results/champion_common_full/backtest-result-2026-08-17_17-39-56.zip

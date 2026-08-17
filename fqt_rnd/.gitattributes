@@ -1,0 +1,3 @@
+# Preserve raw engine logs and generated CSV bytes exactly as produced.
+logs/*.log -whitespace
+results/summaries/*.csv -whitespace

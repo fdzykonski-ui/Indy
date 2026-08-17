@@ -1,0 +1,36 @@
+{
+  "subject_sha256": "a5ac726eab351b08605a4ac1cd1637ef4f82b91b559edcd849f37ac364a95388",
+  "rule": "Every control is a subclass; no byte of the frozen Champion may change.",
+  "tests": [
+    {
+      "id": "entry_delay_1",
+      "class": "ED8Delay1",
+      "change": "shift entry signal and tag by one closed candle"
+    },
+    {
+      "id": "entry_delay_2",
+      "class": "ED8Delay2",
+      "change": "shift entry signal and tag by two closed candles"
+    },
+    {
+      "id": "custom_exit_ablation",
+      "class": "ED8NoCustomExitAblation",
+      "change": "disable custom_exit only"
+    },
+    {
+      "id": "roi_only_exit_ablation",
+      "class": "ED8ROIOnlyExitAblation",
+      "change": "disable custom and dataframe exits; retain ROI, trailing, and stoploss"
+    },
+    {
+      "id": "e001_only_entry_ablation",
+      "class": "ED8OnlyE001EntryAblation",
+      "change": "retain only e001 entry tags"
+    },
+    {
+      "id": "e001_removed_entry_ablation",
+      "class": "ED8WithoutE001EntryAblation",
+      "change": "remove only e001 entry tags"
+    }
+  ]
+}

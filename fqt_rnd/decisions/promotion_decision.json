@@ -1,0 +1,60 @@
+{
+  "all_targets_pass": false,
+  "champion_common_contract": {
+    "final_balance": 1262.4181329,
+    "losses": 0,
+    "profit_factor": 0.0,
+    "profit_factor_state": "UNDEFINED_NO_LOSSES",
+    "profit_pct": 26.24181329,
+    "starting_balance": 1000.0,
+    "timerange": "20260101-20260501",
+    "total_trades": 20,
+    "trades_per_day": 0.17,
+    "wallet_max_drawdown_pct": 1.914468054293001,
+    "winrate_pct": 100.0,
+    "wins": 20
+  },
+  "decision": "RETAIN_HISTORICAL_CHAMPION; NO PROMOTION; NO OOS; NO CANARY",
+  "identical_training_comparison": {
+    "challenger_h001": {
+      "profit_factor": 0.007730372683065349,
+      "profit_pct": -74.176859537,
+      "total_trades": 685,
+      "wallet_max_drawdown_pct": 74.18815138962567,
+      "winrate_pct": 3.3576642335766427
+    },
+    "challenger_h002": {
+      "profit_factor": 0.4742255157369716,
+      "profit_pct": -45.065928043999996,
+      "total_trades": 257,
+      "wallet_max_drawdown_pct": 47.634020338691734,
+      "winrate_pct": 67.70428015564202
+    },
+    "champion": {
+      "profit_factor": 0.0,
+      "profit_factor_state": "UNDEFINED_NO_LOSSES",
+      "profit_pct": 15.249601914,
+      "total_trades": 13,
+      "wallet_max_drawdown_pct": 1.914468054293001,
+      "winrate_pct": 100.0
+    },
+    "contract": "20260101-20260301; BTC/USDC; 1m; 1000 USDC; unlimited; max_open_trades=1; fee=0.1%"
+  },
+  "promotion_targets_pass": {
+    "net_profit_gt_50pct": false,
+    "profit_factor_gt_5": false,
+    "trades_gt_500": false,
+    "trades_per_day_10_to_20": false,
+    "wallet_drawdown_lt_5pct": true,
+    "winrate_gt_80pct": true
+  },
+  "reasons": [
+    "Champion has only 20 trades (0.17/day) and +26.24%, so sample/activity/profit targets fail.",
+    "Profit Factor is undefined because the selected base-fee sample has no losses; Freqtrade emits 0.0.",
+    "At 0.20% and 0.30% fees, winrate falls to 78.95%/78.95% and Profit Factor to 3.69/2.51.",
+    "Configured startup_candle_count=1600 fails the recursive stability gate.",
+    "H001 and H002 are falsified on training; validation and frozen OOS remain untouched."
+  ],
+  "schema_version": 1,
+  "truth_status": "VERIFIZIERT"
+}

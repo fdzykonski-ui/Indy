@@ -1,0 +1,39 @@
+{
+  "checked_at_utc": "2026-08-17",
+  "compatibility_assessment": {
+    "exact_historical_reproduction_on_local_dev_runtime": true,
+    "python_requirement_met": true,
+    "scope_limit": "Exact backtest reproduction does not establish exchange/live compatibility.",
+    "truth_status": "VERIFIZIERT"
+  },
+  "historical_evidence_runtime": {
+    "ccxt": "4.5.56",
+    "freqtrade": "2026.5.1",
+    "source": "evidence/ed8_v741/ED8_V741_8x_InternalExecution/logs/V741_bt.log",
+    "truth_status": "VERIFIZIERT"
+  },
+  "local_runtime": {
+    "ccxt": "4.5.51",
+    "freqtrade": "2026.5-dev-77cabd291",
+    "git_branch": "develop",
+    "git_commit": "77cabd291fa656ec6a1d237cfa524ee792133d89",
+    "git_describe": "2025.11.2-1571-g77cabd291-dirty",
+    "numpy": "2.4.4",
+    "pandas": "3.0.2",
+    "pyarrow": "24.0.0",
+    "python": "3.12.3",
+    "truth_status": "VERIFIZIERT"
+  },
+  "official_reference": {
+    "installation_source": "https://www.freqtrade.io/en/stable/installation/",
+    "lookahead_source": "https://www.freqtrade.io/en/stable/lookahead-analysis/",
+    "observed_latest_release": "2026.5.1",
+    "python_requirement": ">=3.11",
+    "reason": "Official pages were checked, but the release index snapshot may lag the 2026-08-17 wall clock.",
+    "recursive_source": "https://docs.freqtrade.io/en/stable/recursive-analysis/",
+    "release_source": "https://github.com/freqtrade/freqtrade/releases",
+    "repository_source": "https://github.com/freqtrade/freqtrade",
+    "truth_status": "TEILWEISE VERIFIZIERT"
+  },
+  "schema_version": 1
+}
