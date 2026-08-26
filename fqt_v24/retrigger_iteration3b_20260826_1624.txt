@@ -1,0 +1,2 @@
+Retrigger requested by FQT continuation on 2026-08-26T16:24:32Z.
+No strategy-alpha change. Re-run native corrective lookahead/recursive CAPA and publish fresh evidence.
