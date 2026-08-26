@@ -1,0 +1,72 @@
+name: FQT V26 Publish Compact Release 20260827
+on:
+  push:
+    branches:
+      - fqt-v26-pioneer-factory-20260827
+    paths:
+      - 'fqt_v26_results/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-v26-pioneer-factory-20260827
+      - name: Download exact workflow artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          RUN_ID=$(jq -r '.workflow_run_id' fqt_v26_results/WORKFLOW_STATUS.json)
+          test "$RUN_ID" != "null"
+          mkdir -p payload
+          gh run download "$RUN_ID" --repo fdzykonski-ui/Indy \
+            --name fqt-v26-pioneer-factory-committed-return-20260827 --dir payload
+          find payload -maxdepth 3 -type f -printf '%p\t%s\n' | sort
+      - name: Normalize release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release_assets
+          cp payload/fqt_v26_work/FQT_V26_PIONEER_FACTORY_RETURN.zip release_assets/FQT_V26_PIONEER_FACTORY_RETURN.zip
+          cp payload/fqt_v26_work/FQT_V26_PIONEER_FACTORY_RETURN.zip.sha256 release_assets/FQT_V26_PIONEER_FACTORY_RETURN.zip.sha256
+          cp fqt_v26_results/M4PioneerV26Final.py release_assets/M4PioneerV26Final.py
+          cp fqt_v26_results/config_M4PioneerV26Final.json release_assets/config_M4PioneerV26Final.json
+          cp fqt_v26_results/summary.json release_assets/summary.json
+          sha256sum release_assets/* > release_assets/RELEASE_SHA256SUMS.txt
+      - name: Create or replace prerelease assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=fqt-v26-pioneer-factory-20260827
+          gh release delete "$TAG" --repo fdzykonski-ui/Indy --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" release_assets/* --repo fdzykonski-ui/Indy \
+            --target fqt-v26-pioneer-factory-20260827 \
+            --title 'FQT V26 Pioneer Factory — machine-generated research release' \
+            --notes 'Fail-closed research artifact. Read summary.json before use. No live-capital authorization.' \
+            --prerelease
+      - name: Commit publication receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import datetime,hashlib,json,pathlib
+          root=pathlib.Path('release_assets')
+          files=[]
+          for p in sorted(root.iterdir()):
+            if p.is_file():files.append({'name':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          receipt={'contract':'FQT_V26_PUBLICATION_RECEIPT_V1','published_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'tag':'fqt-v26-pioneer-factory-20260827','files':files}
+          pathlib.Path('fqt_v26_results/PUBLICATION_RECEIPT.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+          git config user.name 'FQT Evidence Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add fqt_v26_results/PUBLICATION_RECEIPT.json
+          git commit -m 'FQT V26: publish release receipt' || true
+          git push origin HEAD:fqt-v26-pioneer-factory-20260827
