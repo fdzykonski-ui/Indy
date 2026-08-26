@@ -1,0 +1,86 @@
+name: FQT V25 Exact MOT1 Baseline 20260826
+
+on:
+  push:
+    branches:
+      - fqt-v25-oos-performance-20260826
+    paths:
+      - '.github/workflows/fqt-v25-mot1-baseline-20260826.yml'
+      - 'fqt_v25/run_v25_baseline.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PYTHONHASHSEED: '0'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-v25-oos-performance-20260826
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+          cache: pip
+      - name: Install pinned Freqtrade source
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip wheel setuptools
+          git clone --filter=blob:none https://github.com/freqtrade/freqtrade.git freqtrade_src
+          git -C freqtrade_src checkout 77cabd291fa656ec6a1d237cfa524ee792133d89
+          python -m pip install -e ./freqtrade_src
+          python -m pip install pyarrow
+          python -m freqtrade --version | tee fqt_v25_baseline_version.log
+      - name: Execute exact baseline
+        id: baseline
+        shell: bash
+        run: |
+          set +e
+          PYTHONPATH="$PWD/fqt_v25" python fqt_v25/run_v25_baseline.py 2>&1 | tee fqt_v25_baseline_console.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Commit compact baseline evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'FQT Pioneer Factory'
+          git config user.email 'actions@users.noreply.github.com'
+          git add fqt_v25_baseline_results 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m 'FQT V25: publish exact MOT1 baseline evidence'
+            git push origin HEAD:fqt-v25-oos-performance-20260826
+          fi
+      - name: Package raw baseline evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_v25_baseline_return/raw_results
+          cp -a fqt_v25_baseline_results/. fqt_v25_baseline_return/ 2>/dev/null || true
+          cp fqt_v25_baseline_console.log fqt_v25_baseline_version.log fqt_v25_baseline_return/ 2>/dev/null || true
+          cp fqt_v25_work/user_data/backtest_results/baseline_*mot1.zip fqt_v25_baseline_return/raw_results/ 2>/dev/null || true
+          tar -czf FQT_V25_MOT1_BASELINE_RETURN_20260826.tar.gz fqt_v25_baseline_return
+          sha256sum FQT_V25_MOT1_BASELINE_RETURN_20260826.tar.gz > FQT_V25_MOT1_BASELINE_RETURN_20260826.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fqt-v25-mot1-baseline-return-20260826
+          path: |
+            FQT_V25_MOT1_BASELINE_RETURN_20260826.tar.gz
+            FQT_V25_MOT1_BASELINE_RETURN_20260826.tar.gz.sha256
+          retention-days: 7
+          if-no-files-found: error
+      - name: Enforce baseline integrity
+        if: always()
+        run: |
+          test "${{ steps.baseline.outputs.rc }}" = "0"
+          test -f fqt_v25_baseline_results/FINAL_SUMMARY.json
