@@ -1,0 +1,15 @@
+{
+  "contract": "FQT_PROJECT_LOCAL_SKILLS_V1",
+  "skills": [
+    {"id":"fqtpx001","name":"contract_governance_freeze","requires":[],"outputs":["FREEZE_RECEIPT","AUTHORIZATION_MATRIX"],"kill":["mutable_contract","missing_hash"]},
+    {"id":"fqtpx002","name":"data_integrity_pit_survivorship","requires":["fqtpx001"],"outputs":["DATA_MANIFEST","ELIGIBILITY_MATRIX"],"kill":["checksum_error","gap","duplicate","schema_error"]},
+    {"id":"fqtpx003","name":"causality_correctness","requires":["fqtpx002"],"outputs":["LOOKAHEAD_RECEIPT","RECURSIVE_RECEIPT","CALLBACK_AUDIT"],"kill":["bias","ambiguous_verdict","material_drift"]},
+    {"id":"fqtpx004","name":"deterministic_backtesting_controls","requires":["fqtpx003"],"outputs":["LEDGER_HASH","BASELINE_MATRIX","REGIME_MATRIX"],"kill":["ledger_divergence"]},
+    {"id":"fqtpx005","name":"training_only_optimization_walk_forward","requires":["fqtpx004"],"outputs":["CANDIDATE_REGISTRY","WF_MATRIX","PLATEAU_RECEIPT"],"kill":["seed_instability","no_plateau","outer_fold_regression"]},
+    {"id":"fqtpx006","name":"ablation_pair_holdout_concentration","requires":["fqtpx005"],"outputs":["ABLATION_MATRIX","LOPO_MATRIX","CONCENTRATION_MATRIX"],"kill":["single_pair_dependency","post_hoc_pair_deletion"]},
+    {"id":"fqtpx007","name":"execution_risk_stress","requires":["fqtpx006"],"outputs":["STRESS_MATRIX","FAULT_MATRIX","TAIL_RISK_RECEIPT"],"kill":["net_edge_nonpositive","pf_le_1","dd_breach"]},
+    {"id":"fqtpx008","name":"statistics_one_shot_oos","requires":["fqtpx007"],"outputs":["STATISTICS_RECEIPT","OOS_RECEIPT"],"kill":["predecessor_not_pass","oos_threshold_revision"]},
+    {"id":"fqtpx009","name":"forward_canary_release","requires":["fqtpx008"],"outputs":["DRYRUN_CONTRACT","DRIFT_MONITOR","RELEASE_DECISION"],"kill":["live_without_explicit_authorization","canary_failure"]}
+  ],
+  "global": {"wip_limit":1,"timestamp_replay":false,"fresh_oos_fail_closed":true,"live_capital":false}
+}
