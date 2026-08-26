@@ -1,0 +1,77 @@
+name: FQT V26 Pioneer Factory 41-Pair OOS50 20260827
+on:
+  push:
+    branches:
+      - fqt-v26-pioneer-factory-20260827
+    paths:
+      - '.github/workflows/fqt-v26-pioneer-factory-oos50-20260827.yml'
+      - 'fqt_v26/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  pioneer-factory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Install system prerequisites
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git curl unzip patch jq libgomp1
+      - name: Execute fail-closed 41-pair factory
+        id: execute
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          chmod +x fqt_v26/run_v26.sh
+          fqt_v26/run_v26.sh "$PWD/fqt_v26_work" 2>&1 | tee FQT_V26_CONSOLE.log
+          rc=${PIPESTATUS[0]}
+          echo "driver_rc=$rc" >> "$GITHUB_OUTPUT"
+          echo "$rc" > FQT_V26_DRIVER_EXIT_CODE.txt
+          exit 0
+      - name: Package emergency evidence on driver failure
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$PWD/fqt_v26_work"
+          if [ ! -f "$ROOT/FQT_V26_PIONEER_FACTORY_RETURN.zip" ]; then
+            mkdir -p "$ROOT/emergency"
+            cp FQT_V26_CONSOLE.log FQT_V26_DRIVER_EXIT_CODE.txt "$ROOT/emergency/" || true
+            find "$ROOT/evidence" "$ROOT/logs" "$ROOT/release" "$ROOT/summaries" -type f -maxdepth 8 -print0 2>/dev/null | xargs -0 -r cp --parents -t "$ROOT/emergency" || true
+            (cd "$ROOT/emergency" && zip -q -r ../FQT_V26_PIONEER_FACTORY_RETURN.zip .)
+            sha256sum "$ROOT/FQT_V26_PIONEER_FACTORY_RETURN.zip" > "$ROOT/FQT_V26_PIONEER_FACTORY_RETURN.zip.sha256"
+          fi
+      - name: Upload complete return
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v26-pioneer-factory-return-20260827
+          path: |
+            fqt_v26_work/FQT_V26_PIONEER_FACTORY_RETURN.zip
+            fqt_v26_work/FQT_V26_PIONEER_FACTORY_RETURN.zip.sha256
+            fqt_v26_work/release/summary.json
+            fqt_v26_work/release/M4PioneerV26Final.py
+            fqt_v26_work/release/config_M4PioneerV26Final.json
+            fqt_v26_work/release/COMPARISON_5x8.csv
+            fqt_v26_work/release/GATE_MATRIX.csv
+            fqt_v26_work/release/CHAT_LOG_BLOCK.txt
+            FQT_V26_CONSOLE.log
+            FQT_V26_DRIVER_EXIT_CODE.txt
+          retention-days: 3
+          if-no-files-found: warn
+      - name: Enforce driver integrity
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.execute.outputs.driver_rc }}" = "0"
+          test -f fqt_v26_work/release/summary.json
+          test -f fqt_v26_work/FQT_V26_PIONEER_FACTORY_RETURN.zip
