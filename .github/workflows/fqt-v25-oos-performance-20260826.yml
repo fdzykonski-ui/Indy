@@ -1,0 +1,113 @@
+name: FQT V25 One-Slot OOS Performance Factory 20260826
+
+on:
+  push:
+    branches:
+      - fqt-v25-oos-performance-20260826
+    paths:
+      - '.github/workflows/fqt-v25-oos-performance-20260826.yml'
+      - 'fqt_v25/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PYTHONHASHSEED: '0'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+
+jobs:
+  v25-factory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-v25-oos-performance-20260826
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+          cache: pip
+
+      - name: Install exact Freqtrade project source and data stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip wheel setuptools
+          git clone --filter=blob:none https://github.com/freqtrade/freqtrade.git freqtrade_src
+          git -C freqtrade_src checkout 77cabd291fa656ec6a1d237cfa524ee792133d89
+          python -m pip install -e ./freqtrade_src
+          python -m pip install pyarrow
+          python -m freqtrade --version | tee fqt_v25_freqtrade_version.log
+          test "$(git -C freqtrade_src rev-parse HEAD)" = "77cabd291fa656ec6a1d237cfa524ee792133d89"
+
+      - name: Execute autonomous training, stress, one-shot OOS and correctness pipeline
+        id: factory
+        shell: bash
+        run: |
+          set +e
+          python fqt_v25/run_v25_oos_factory.py 2>&1 | tee fqt_v25_console.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Package raw return evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_v25_return
+          cp -a fqt_v25_results/. fqt_v25_return/ 2>/dev/null || true
+          cp fqt_v25_console.log fqt_v25_freqtrade_version.log fqt_v25_return/ 2>/dev/null || true
+          mkdir -p fqt_v25_return/raw_results
+          cp fqt_v25_work/user_data/backtest_results/*.zip fqt_v25_return/raw_results/ 2>/dev/null || true
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('fqt_v25_return')
+          rows=[]
+          for p in sorted(x for x in root.rglob('*') if x.is_file()):
+              h=hashlib.sha256()
+              with p.open('rb') as f:
+                  for b in iter(lambda:f.read(1<<20),b''):h.update(b)
+              rows.append({'path':p.relative_to(root).as_posix(),'bytes':p.stat().st_size,'sha256':h.hexdigest()})
+          (root/'RETURN_MANIFEST.json').write_text(json.dumps({'contract':'FQT_V25_RETURN_V1','files':rows},indent=2)+'\n')
+          PY
+          tar -czf FQT_V25_ONE_SLOT_OOS_RETURN_20260826.tar.gz fqt_v25_return
+          sha256sum FQT_V25_ONE_SLOT_OOS_RETURN_20260826.tar.gz > FQT_V25_ONE_SLOT_OOS_RETURN_20260826.tar.gz.sha256
+
+      - name: Commit compact final release to temporary branch
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'FQT Pioneer Factory'
+          git config user.email 'actions@users.noreply.github.com'
+          git add fqt_v25_results/FINAL_SUMMARY.json fqt_v25_results/RELEASE_MANIFEST.json fqt_v25_results/final fqt_v25_results/tables fqt_v25_results/evidence fqt_v25_results/FQT_M4PioneerOOSV25_EvidencePack_20260826.zip 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m 'FQT V25: publish one-slot OOS research evidence'
+            git push origin HEAD:fqt-v25-oos-performance-20260826
+          fi
+
+      - name: Upload complete raw evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v25-one-slot-oos-return-20260826
+          path: |
+            FQT_V25_ONE_SLOT_OOS_RETURN_20260826.tar.gz
+            FQT_V25_ONE_SLOT_OOS_RETURN_20260826.tar.gz.sha256
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Enforce factory integrity
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.factory.outputs.rc }}" = "0"
+          test -f fqt_v25_results/FINAL_SUMMARY.json
+          test -f fqt_v25_results/final/M4PioneerOOSV25_FINAL.py
+          test -f fqt_v25_results/final/config_M4PioneerOOSV25_FINAL.json
