@@ -1,0 +1,162 @@
+{
+  "artifact": "iteration3b_input",
+  "contract": "FQT_V25_ITERATION3B_NORMALIZED_SUMMARY_V2",
+  "csv_record_count": 6,
+  "decision": "BLOCKED_LOOKAHEAD",
+  "double_signal_patch_observed": true,
+  "found_trade_mentions": [
+    4490,
+    664,
+    403,
+    4490,
+    664,
+    403,
+    4490,
+    664,
+    403,
+    4490,
+    664,
+    403
+  ],
+  "json_file_count": 42,
+  "json_nonobject_count": 0,
+  "json_object_record_count": 54,
+  "lookahead": {
+    "baseline_trades": 4490,
+    "has_bias": null,
+    "pass": false,
+    "row_count": 0,
+    "source": null,
+    "valid_verdict": false
+  },
+  "lookahead_candidates": [
+    {
+      "baseline_trades": null,
+      "contract": "FQT_V24_LOOKAHEAD_EXECUTION_AND_DOUBLE_SIGNAL_PATCH_V2",
+      "decision": null,
+      "has_bias": null,
+      "raw": {
+        "contract": "FQT_V24_LOOKAHEAD_EXECUTION_AND_DOUBLE_SIGNAL_PATCH_V2",
+        "helper_after_sha256": "20a59e10da830f7db63e87c341a4d5a9c8825d8bf295bc7bb0912c9ad3536688",
+        "helper_before_sha256": "b8deedaf42988912348e55664e080cb559616d98e9d104816b006f5229cd1e08",
+        "helper_path": "freqtrade_src/freqtrade/optimize/analysis/lookahead_helpers.py",
+        "lookahead_after_sha256": "594063a6a2e04b0f1b7b30c14f731fa74dfbdb5e6d2c4fe2deb68cc679f8b8bc",
+        "lookahead_before_sha256": "ec23a347e74f83b1f5a19b4bcbdfcdd473d02db92af4a50631b655bdf7d435ff",
+        "lookahead_path": "freqtrade_src/freqtrade/optimize/analysis/lookahead.py",
+        "root_cause": {
+          "normal_backtest": "advise indicators, then ft_advise_signals once inside backtest",
+          "observed_symptom": "native lookahead baseline found zero result trades while the identical normal portfolio run had 663 trades",
+          "old_lookahead": "ft_advise_signals in prepare_data, then ft_advise_signals again inside backtest",
+          "strategy_interaction": "populate_exit_trend compacts the frame, so the second pass lacks required indicator columns and emits zero entries"
+        },
+        "semantic_change": {
+          "generic_lane": "replace -1 max_open_trades sentinel with positive pair count; retain 1B wallet and 10k stake overrides",
+          "indicator_comparison": "retain independently signalled frames for full-vs-cut indicator/signal comparison",
+          "lookahead_baseline": "apply strategy signals exactly once, matching normal Backtesting.backtest semantics",
+          "production_lane": "optional config flag preserves max_open_trades=2, wallet=1000 and stake_amount=unlimited",
+          "strategy_alpha": "unchanged"
+        }
+      },
+      "row_count": 0,
+      "source": "iteration3b_work/expanded/FQT_V24_ITERATION3B_RAW_RETURN_20260814_tar/fqt_v24_i3b_return/evidence/LOOKAHEAD_CONTRACT_PATCH_RECEIPT.json",
+      "status": null,
+      "valid_verdict": null
+    },
+    {
+      "baseline_trades": null,
+      "contract": null,
+      "decision": "KEEP_CHAMPION",
+      "has_bias": null,
+      "raw": {
+        "blocker_or_next_action": "Proceed to funnel/WF only if lookahead and recursive PASS; OOS remains sealed.",
+        "command": "see native logs and command ledger",
+        "decision": "KEEP_CHAMPION",
+        "evidence": [
+          "I3B_FINAL_SUMMARY",
+          "LOOKAHEAD_CONTRACT_PATCH_RECEIPT",
+          "native logs"
+        ],
+        "exit_code": 0,
+        "id": "EVAL-I3B-001",
+        "inputs": [
+          {
+            "artifact_id": "ART-I3B-V10",
+            "sha256": "43ba541ca9aeae9be723bb53d57144b152c94274aa05ebe6beb20aa13e2d0fbd"
+          },
+          {
+            "artifact_id": "ART-I3B-V14",
+            "sha256": "c3e6d0c0b5aa10d6a27f1a9d14f9785b6b3ea0ba72bee655253e4b2706563de1"
+          }
+        ],
+        "primary_metrics": {
+          "lookahead_gate": "INVALID",
+          "recursive_status": "NOT_RUN",
+          "root_cause_supported": true,
+          "v10_v14_exact_parity": true
+        },
+        "status": "FAIL",
+        "uncertainty_or_tolerance": {
+          "analysis_patch_version_bound": true,
+          "limit_order_false_positive_risk": true,
+          "minimum_checked_signals": 10
+        },
+        "utc_finished": "2026-08-26T15:07:21.822365+00:00",
+        "utc_started": null
+      },
+      "row_count": 0,
+      "source": "iteration3b_work/expanded/FQT_V24_ITERATION3B_RAW_RETURN_20260814_tar/fqt_v24_i3b_return/receipts/I3B_EVALUATION_RECEIPT.json",
+      "status": "FAIL",
+      "valid_verdict": null
+    },
+    {
+      "baseline_trades": null,
+      "contract": "FQT_V24_REGISTERED_ANALYSIS_PLAN_ITERATION3B_V1",
+      "decision": null,
+      "has_bias": null,
+      "raw": {
+        "alternatives": [
+          "max_open_trades sentinel remains causal",
+          "portfolio callbacks alone suppress trades",
+          "genuine future-data leakage",
+          "memory patch interaction"
+        ],
+        "claim": "The invalid native lookahead baseline is caused by double application of ft_advise_signals to a strategy that compacts its dataframe in populate_exit_trend; applying signals exactly once restores native trade coverage without changing strategy alpha.",
+        "contract": "FQT_V24_REGISTERED_ANALYSIS_PLAN_ITERATION3B_V1",
+        "decision_rule": "PASS only if both native lanes have explicit has_bias=false and >=10 checked signals; otherwise fail closed",
+        "dry_run": "forbidden/not started",
+        "estimand": {
+          "primary": "native checked signals and bias verdict after version-bound analysis-only repair",
+          "target": "both pair-count and production lanes have explicit has_bias=false and at least 10 checked signals",
+          "unit": "checked completed trade signal"
+        },
+        "falsification": [
+          "normal V14 ledger changes",
+          "native baseline remains below 10 trades",
+          "any bias flag",
+          "recursive material drift"
+        ],
+        "fresh_oos": "forbidden/not opened",
+        "intervention_comparator": "analysis helper before versus after single-signal-pass repair; strategy source unchanged except appended diagnostic classes",
+        "live": "forbidden",
+      "population": "31 frozen Binance Spot USDC pairs, 1m, development [2026-01-01,2026-05-01)",
+        "primary_endpoint": "valid native no-bias verdict in both native lanes",
+        "rq_id": "RQ-I3B-LOOKAHEAD-DOUBLE-SIGNAL-001",
+        "secondary_endpoints": [
+          "V10\u2194V14 semantic ledger parity after analysis patch",
+          "signal-harness diagnostic verdict",
+          "31-pair recursive matrix if native predecessor passes"
+        ],
+        "utc_frozen": "2026-08-26T14:12:32.909629+00:00"
+      },
+      "row_count": 0,
+      "source": "iteration3b_work/expanded/FQT_V24_ITERATION3B_RAW_RETURN_20260814_tar_expanded/fqt_v24_i3b_return/receipts/REGISTERED_ANALYSIS_PLAN_I3B.json",
+      "status": null,
+      "valid_verdict": null
+    }
+  ],
+  "recursive": {
+    "pass": false,
+    "source": null,
+    "status": "NOT_FOUND"
+  }
+}

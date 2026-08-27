@@ -1,0 +1,114 @@
+name: FQT V26 OOS50 Data Contract Repair 20260827
+
+on:
+  push:
+    branches:
+      - fqt-v25-oos50-performance-20260826
+    paths:
+      - '.github/workflows/fqt-v26-oos50-repair-20260827.yml'
+      - 'fqt_v25/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: fqt-v26-oos50-repair-20260827
+  cancel-in-progress: true
+
+jobs:
+  v26:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-v25-oos50-performance-20260826
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Attempt bounded swap without blocking the pipeline
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          sudo fallocate -l 8G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          free -h
+          exit 0
+      - name: Verify immutable Iteration-3B predecessor receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '5dca84a194a394e402fc1867d60d538face0eb4309a4bafb2692e9ecf2371f00  fqt_v25/frozen_iteration3b_normalized_summary.json' | sha256sum -c -
+      - name: Execute fail-closed V26 market-order pipeline
+        id: execute
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_v25/run_v25.sh fqt_v25/run_v25_market.sh fqt_v25/patch_v26_timestamp_contract.py
+          bash fqt_v25/run_v25_market.sh 2>&1 | tee FQT_V26_CONSOLE.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package complete raw return
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_v26_results
+          cp FQT_V26_CONSOLE.log fqt_v26_results/ 2>/dev/null || true
+          cp -r evidence summaries results logs fqt_v26_results/ 2>/dev/null || true
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('fqt_v26_results')
+          files=[]
+          for p in sorted(x for x in root.rglob('*') if x.is_file()):
+              h=hashlib.sha256()
+              with p.open('rb') as f:
+                  for b in iter(lambda:f.read(1<<20),b''):h.update(b)
+              files.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':h.hexdigest()})
+          (root/'RETURN_MANIFEST.json').write_text(json.dumps({'contract':'FQT_V26_RETURN_MANIFEST_V1','files':files},indent=2)+'\n')
+          PY
+          cp -r fqt_v25_results/. fqt_v26_results/ 2>/dev/null || true
+          tar -czf FQT_V26_OOS50_RETURN_20260827.tar.gz fqt_v26_results
+          sha256sum FQT_V26_OOS50_RETURN_20260827.tar.gz > FQT_V26_OOS50_RETURN_20260827.tar.gz.sha256
+      - name: Upload V26 return
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v26-oos50-return-20260827
+          path: |
+            FQT_V26_OOS50_RETURN_20260827.tar.gz
+            FQT_V26_OOS50_RETURN_20260827.tar.gz.sha256
+          retention-days: 3
+          if-no-files-found: error
+      - name: Commit compact machine-readable result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_v26_results_committed
+          for f in summary.json M4PioneerOOS50V16_FINAL.py config_M4PioneerOOS50V16_FINAL.json M4PioneerValidationV14_V25_RESEARCH.py config_M4PioneerValidationV14_V25.json SHA256SUMS.txt; do
+            if [[ -f "fqt_v25_results/$f" ]]; then cp "fqt_v25_results/$f" "fqt_v26_results_committed/$f"; fi
+          done
+          for f in EXTENDED_DATA_MANIFEST.json CORRECTNESS_SUMMARY.json SELECTION_RECEIPT.json OOS_AUTHORIZATION.json; do
+            if [[ -f "evidence/$f" ]]; then cp "evidence/$f" "fqt_v26_results_committed/$f"; fi
+          done
+          git config user.name 'fqt-v26-bot'
+          git config user.email 'fqt-v26-bot@users.noreply.github.com'
+          git add fqt_v26_results_committed
+          if ! git diff --cached --quiet; then
+            git commit -m 'FQT V26: publish compact fail-closed data-contract result'
+            git push origin HEAD:fqt-v25-oos50-performance-20260826
+          fi
+      - name: Enforce execution integrity
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.execute.outputs.rc }}" = "0"
+          test -s fqt_v25_results/summary.json
