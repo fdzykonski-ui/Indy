@@ -49,6 +49,24 @@ def normalize_bool(value):
     return None
 
 
+def append_json_records(records: list[tuple[str, dict]], source: str, obj, depth: int = 0) -> None:
+    """Flatten only JSON objects; preserve provenance for array members.
+
+    Iteration returns contain inventories and other top-level arrays.  Treating
+    those arrays as objects caused AttributeError and blocked the fail-closed
+    correctness pipeline.  Scalars are ignored and recorded only via counts;
+    scientific verdicts are extracted from explicit dictionaries or CSVs.
+    """
+    if depth > 4:
+        return
+    if isinstance(obj, dict):
+        records.append((source, obj))
+        return
+    if isinstance(obj, list):
+        for index, item in enumerate(obj):
+            append_json_records(records, f"{source}#{index}", item, depth + 1)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--artifact", type=pathlib.Path, required=True)
@@ -61,7 +79,9 @@ def main() -> None:
     args.work.mkdir(parents=True)
     expand(args.artifact, args.work / "expanded")
 
-    json_records = []
+    json_records: list[tuple[str, dict]] = []
+    json_file_count = 0
+    json_nonobject_count = 0
     csv_records = []
     logs = []
     for path in sorted((args.work / "expanded").rglob("*")):
@@ -71,7 +91,11 @@ def main() -> None:
         if path.suffix.lower() == ".json":
             try:
                 obj = json.loads(path.read_text(encoding="utf-8"))
-                json_records.append((str(path), obj))
+                json_file_count += 1
+                before = len(json_records)
+                append_json_records(json_records, str(path), obj)
+                if len(json_records) == before:
+                    json_nonobject_count += 1
             except Exception:
                 pass
         elif path.suffix.lower() == ".csv" and ("lookahead" in low or "recursive" in low):
@@ -92,8 +116,9 @@ def main() -> None:
     recursive_candidates = []
     for source, obj in json_records:
         contract = str(obj.get("contract", "")).lower()
-        name = pathlib.Path(source).name.lower()
-        if "lookahead" in contract or "lookahead" in name or "lookahead" in json.dumps(obj).lower()[:1000]:
+        name = pathlib.Path(source.split("#", 1)[0]).name.lower()
+        serialized_prefix = json.dumps(obj, default=str).lower()[:1000]
+        if "lookahead" in contract or "lookahead" in name or "lookahead" in serialized_prefix:
             valid = normalize_bool(obj.get("valid_verdict"))
             has_bias = normalize_bool(obj.get("has_bias"))
             rows = obj.get("row_count", obj.get("rows", obj.get("csv_rows", 0)))
@@ -136,7 +161,6 @@ def main() -> None:
                 "raw": rows,
             })
 
-    # Prefer a valid explicit verdict with the largest coverage.
     valid = [item for item in lookahead_candidates if item.get("valid_verdict") is True and item.get("has_bias") is not None]
     valid.sort(key=lambda item: int(item.get("row_count") or 0), reverse=True)
     chosen_lookahead = valid[0] if valid else None
@@ -162,9 +186,11 @@ def main() -> None:
     double_signal_patch = "double signal" in combined_log.lower() or "indicator-only frames" in combined_log.lower()
 
     summary = {
-        "contract": "FQT_V25_ITERATION3B_NORMALIZED_SUMMARY_V1",
+        "contract": "FQT_V25_ITERATION3B_NORMALIZED_SUMMARY_V2",
         "artifact": str(args.artifact),
-        "json_record_count": len(json_records),
+        "json_file_count": json_file_count,
+        "json_object_record_count": len(json_records),
+        "json_nonobject_count": json_nonobject_count,
         "csv_record_count": len(csv_records),
         "lookahead_candidates": lookahead_candidates,
         "lookahead": {
@@ -187,6 +213,7 @@ def main() -> None:
         "lookahead": summary["lookahead"],
         "recursive": {key: summary["recursive"].get(key) for key in ["pass", "status", "max_indicator_deviation_pct", "source"]},
         "double_signal_patch_observed": summary["double_signal_patch_observed"],
+        "json_object_record_count": summary["json_object_record_count"],
     }, indent=2))
 
 
