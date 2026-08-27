@@ -21,7 +21,11 @@ def main() -> None:
     parser.add_argument("--baseline", type=pathlib.Path, required=True)
     parser.add_argument("--candidate", type=pathlib.Path, required=True)
     parser.add_argument("--fee20", type=pathlib.Path, required=True)
-    parser.add_argument("--data-manifest", type=pathlib.Path, required=True)
+    parser.add_argument(
+        "--data-manifest",
+        type=pathlib.Path,
+        default=pathlib.Path("evidence/EXTENDED_DATA_MANIFEST.json"),
+    )
     parser.add_argument("--out", type=pathlib.Path, required=True)
     args = parser.parse_args()
 
