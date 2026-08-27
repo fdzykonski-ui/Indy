@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# FQT V25 official market-order correctness wrapper.
+# FQT V26 official market-order correctness/data-contract wrapper.
 #
+# Extends the V25 market-order wrapper with a fail-closed timestamp-unit fix
+# for pandas/Binance archive interoperability and an official-data horizon
+# through 2026-08-14. Candidate definitions and selection rules are unchanged.
+python fqt_v25/patch_v26_timestamp_contract.py
+
 # Freqtrade's documented lookahead contract uses market orders, large wallet,
 # static stake and enough slots to minimize portfolio-capacity false positives.
 # The prior V25 script explicitly enabled limit orders and preserved the
-# production portfolio contract.  This wrapper removes both overrides and
+# production portfolio contract. This wrapper removes both overrides and
 # injects a native four-pair recursive predecessor without changing candidates,
 # known-data windows, stress tests or the one-shot OOS interlock.
-
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
 python - <<'PY' > "$tmp"
