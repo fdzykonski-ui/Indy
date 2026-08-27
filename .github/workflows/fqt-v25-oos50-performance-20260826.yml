@@ -10,6 +10,9 @@ on:
 permissions:
   contents: write
   actions: read
+concurrency:
+  group: fqt-v25-oos50-performance-20260826
+  cancel-in-progress: true
 jobs:
   v25:
     runs-on: ubuntu-latest
@@ -41,13 +44,13 @@ jobs:
           github-token: ${{ github.token }}
           repository: fdzykonski-ui/Indy
           run-id: 31812959072
-      - name: Execute preregistered fail-closed V25 pipeline
+      - name: Execute preregistered fail-closed V25 market-order pipeline
         id: execute
         shell: bash
         run: |
           set +e
-          chmod +x fqt_v25/run_v25.sh
-          bash fqt_v25/run_v25.sh 2>&1 | tee FQT_V25_CONSOLE.log
+          chmod +x fqt_v25/run_v25.sh fqt_v25/run_v25_market.sh
+          bash fqt_v25/run_v25_market.sh 2>&1 | tee FQT_V25_CONSOLE.log
           rc=${PIPESTATUS[0]}
           echo "rc=$rc" >> "$GITHUB_OUTPUT"
           exit 0
@@ -68,18 +71,18 @@ jobs:
               with p.open('rb') as f:
                   for b in iter(lambda:f.read(1<<20),b''):h.update(b)
               files.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':h.hexdigest()})
-          (root/'RETURN_MANIFEST.json').write_text(json.dumps({'contract':'FQT_V25_RETURN_MANIFEST_V1','files':files},indent=2)+'\n')
+          (root/'RETURN_MANIFEST.json').write_text(json.dumps({'contract':'FQT_V25_RETURN_MANIFEST_V2','files':files},indent=2)+'\n')
           PY
-          tar -czf FQT_V25_OOS50_RETURN_20260826.tar.gz fqt_v25_results
-          sha256sum FQT_V25_OOS50_RETURN_20260826.tar.gz > FQT_V25_OOS50_RETURN_20260826.tar.gz.sha256
+          tar -czf FQT_V25_OOS50_RETURN_20260827.tar.gz fqt_v25_results
+          sha256sum FQT_V25_OOS50_RETURN_20260827.tar.gz > FQT_V25_OOS50_RETURN_20260827.tar.gz.sha256
       - name: Upload V25 return
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: fqt-v25-oos50-return-20260826
+          name: fqt-v25-oos50-return-20260827
           path: |
-            FQT_V25_OOS50_RETURN_20260826.tar.gz
-            FQT_V25_OOS50_RETURN_20260826.tar.gz.sha256
+            FQT_V25_OOS50_RETURN_20260827.tar.gz
+            FQT_V25_OOS50_RETURN_20260827.tar.gz.sha256
           retention-days: 2
           if-no-files-found: error
       - name: Commit compact machine-readable result
@@ -91,6 +94,7 @@ jobs:
           for f in summary.json M4PioneerOOS50V16_FINAL.py config_M4PioneerOOS50V16_FINAL.json M4PioneerValidationV14_V25_RESEARCH.py config_M4PioneerValidationV14_V25.json SHA256SUMS.txt; do
             if [[ -f "fqt_v25_results/$f" ]]; then cp "fqt_v25_results/$f" "fqt_v25_results_committed/$f"; fi
           done
+          if [[ -f evidence/EXTENDED_DATA_MANIFEST.json ]]; then cp evidence/EXTENDED_DATA_MANIFEST.json fqt_v25_results_committed/; fi
           if [[ -f evidence/CORRECTNESS_SUMMARY.json ]]; then cp evidence/CORRECTNESS_SUMMARY.json fqt_v25_results_committed/; fi
           if [[ -f evidence/SELECTION_RECEIPT.json ]]; then cp evidence/SELECTION_RECEIPT.json fqt_v25_results_committed/; fi
           if [[ -f evidence/OOS_AUTHORIZATION.json ]]; then cp evidence/OOS_AUTHORIZATION.json fqt_v25_results_committed/; fi
@@ -98,7 +102,7 @@ jobs:
           git config user.email 'fqt-v25-bot@users.noreply.github.com'
           git add fqt_v25_results_committed
           if ! git diff --cached --quiet; then
-            git commit -m 'FQT V25: publish compact fail-closed execution result'
+            git commit -m 'FQT V25: publish compact fail-closed market-order result'
             git push origin HEAD:fqt-v25-oos50-performance-20260826
           fi
       - name: Enforce execution integrity
