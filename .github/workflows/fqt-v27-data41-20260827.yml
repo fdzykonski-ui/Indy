@@ -1,0 +1,180 @@
+name: FQT V27 41-Pair Data Completion 20260827
+on:
+  push:
+    branches:
+      - fqt-v27-data41-20260827
+    paths:
+      - '.github/workflows/fqt-v27-data41-20260827.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Acquire and verify official Binance daily 1m archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_v27_data41/raw fqt_v27_data41/evidence
+          cat > fqt_v27_data41/acquire.py <<'PY'
+          from __future__ import annotations
+          import concurrent.futures, csv, datetime as dt, hashlib, json, pathlib, re, shutil, time, urllib.error, urllib.request, zipfile
+          from decimal import Decimal, InvalidOperation
+
+          ROOT = pathlib.Path('fqt_v27_data41')
+          RAW = ROOT / 'raw'
+          EVIDENCE = ROOT / 'evidence'
+          SYMBOLS = 'BTCUSDC ETHUSDC SOLUSDC XRPUSDC BNBUSDC DOGEUSDC ENAUSDC HBARUSDC LTCUSDC AAVEUSDC XPLUSDC LINKUSDC BCHUSDC DOTUSDC PUMPUSDC TRXUSDC AVAXUSDC UNIUSDC ARBUSDC PENDLEUSDC SYRUPUSDC ALGOUSDC ZKUSDC WLFIUSDC FILUSDC ASTERUSDC SHIBUSDC SEIUSDC DASHUSDC 2ZUSDC ATOMUSDC BONKUSDC ERAUSDC SKYUSDC KMNOUSDC PROVEUSDC MINAUSDC STRKUSDC TIAUSDC AVNTUSDC BANANAS31USDC'.split()
+          START = dt.date(2026, 6, 23)
+          END = dt.date(2026, 8, 14)
+          CHECK_RE = re.compile(r'^([0-9a-fA-F]{64})\\s+\\*?(.+?)\\s*$')
+          COLS = ['open_time','open','high','low','close','volume','close_time','quote_volume','trades','taker_base','taker_quote','ignore']
+
+          def sha256(path: pathlib.Path) -> str:
+              h = hashlib.sha256()
+              with path.open('rb') as f:
+                  for chunk in iter(lambda: f.read(1 << 20), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          def download(url: str, path: pathlib.Path, retries: int = 6) -> None:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              if path.exists() and path.stat().st_size:
+                  return
+              last = None
+              for attempt in range(retries):
+                  tmp = path.with_suffix(path.suffix + '.part')
+                  try:
+                      req = urllib.request.Request(url, headers={'User-Agent':'FQT-V27-DATA41/1.0'})
+                      with urllib.request.urlopen(req, timeout=90) as response, tmp.open('wb') as out:
+                          if getattr(response, 'status', 200) != 200:
+                              raise RuntimeError(f'HTTP {response.status}')
+                          shutil.copyfileobj(response, out, 1 << 20)
+                      if not tmp.stat().st_size:
+                          raise RuntimeError('empty remote object')
+                      tmp.replace(path)
+                      return
+                  except Exception as exc:
+                      last = exc
+                      tmp.unlink(missing_ok=True)
+                      if attempt + 1 < retries:
+                          time.sleep(min(2 ** attempt, 16))
+              raise RuntimeError(f'download failed {url}: {last!r}')
+
+          def decimal(value: str, row: int, col: str) -> Decimal:
+              try:
+                  number = Decimal(value)
+              except InvalidOperation as exc:
+                  raise RuntimeError(f'non-numeric row={row} col={col}') from exc
+              if not number.is_finite():
+                  raise RuntimeError(f'non-finite row={row} col={col}')
+              return number
+
+          def validate(symbol: str, day: dt.date) -> dict:
+              day_text = day.isoformat()
+              name = f'{symbol}-1m-{day_text}.zip'
+              base = f'https://data.binance.vision/data/spot/daily/klines/{symbol}/1m/{name}'
+              directory = RAW / symbol / '1m'
+              archive = directory / name
+              check = directory / (name + '.CHECKSUM')
+              download(base + '.CHECKSUM', check)
+              lines = [line for line in check.read_text().splitlines() if line.strip()]
+              if len(lines) != 1 or not (match := CHECK_RE.match(lines[0])):
+                  raise RuntimeError(f'checksum schema {symbol} {day_text}')
+              if pathlib.Path(match.group(2)).name != name:
+                  raise RuntimeError(f'checksum filename mismatch {symbol} {day_text}')
+              official = match.group(1).lower()
+              download(base, archive)
+              actual = sha256(archive)
+              if actual != official:
+                  raise RuntimeError(f'sha256 mismatch {symbol} {day_text}')
+              with zipfile.ZipFile(archive) as zf:
+                  bad = zf.testzip()
+                  if bad is not None:
+                      raise RuntimeError(f'zip CRC {symbol} {day_text}: {bad}')
+                  members = [member for member in zf.namelist() if not member.endswith('/')]
+                  if len(members) != 1 or pathlib.PurePosixPath(members[0]).name != name[:-4] + '.csv':
+                      raise RuntimeError(f'zip member {symbol} {day_text}: {members}')
+                  rows = list(csv.reader(line.decode() for line in zf.open(members[0])))
+              header = False
+              if rows and not rows[0][0].strip().isdigit():
+                  header = True
+                  rows = rows[1:]
+              if len(rows) != 1440:
+                  raise RuntimeError(f'row count {symbol} {day_text}: {len(rows)}')
+              open_times = []
+              zero_volume = 0
+              quote_volumes = []
+              for index, row in enumerate(rows, 1):
+                  if len(row) != 12:
+                      raise RuntimeError(f'column count {symbol} {day_text} row={index}: {len(row)}')
+                  open_time = int(row[0]); close_time = int(row[6]); trades = int(row[8])
+                  open_, high, low, close, volume = [decimal(row[i], index, COLS[i]) for i in (1,2,3,4,5)]
+                  quote = decimal(row[7], index, 'quote_volume')
+                  taker_base = decimal(row[9], index, 'taker_base')
+                  taker_quote = decimal(row[10], index, 'taker_quote')
+                  if min(open_, high, low, close) <= 0 or high < max(open_, low, close) or low > min(open_, high, close):
+                      raise RuntimeError(f'impossible OHLC {symbol} {day_text} row={index}')
+                  if min(volume, quote, taker_base, taker_quote) < 0 or trades < 0:
+                      raise RuntimeError(f'negative field {symbol} {day_text} row={index}')
+                  if close_time != open_time + 59_999_999:
+                      raise RuntimeError(f'close time {symbol} {day_text} row={index}')
+                  open_times.append(open_time)
+                  zero_volume += int(volume == 0)
+                  quote_volumes.append(float(quote))
+              first = int(dt.datetime.combine(day, dt.time(), tzinfo=dt.timezone.utc).timestamp() * 1_000_000)
+              last = first + 1439 * 60_000_000
+              gaps = sum(b - a != 60_000_000 for a, b in zip(open_times, open_times[1:]))
+              duplicates = len(open_times) - len(set(open_times))
+              nonmono = sum(b <= a for a, b in zip(open_times, open_times[1:]))
+              if gaps or duplicates or nonmono or open_times[0] != first or open_times[-1] != last:
+                  raise RuntimeError(f'time invariant {symbol} {day_text}: gaps={gaps} dup={duplicates} nonmono={nonmono}')
+              quote_sorted = sorted(quote_volumes)
+              median_quote = quote_sorted[len(quote_sorted)//2]
+              return {'symbol':symbol,'date_utc':day_text,'status':'VERIFIED','sha256':actual,'archive_bytes':archive.stat().st_size,'rows':1440,'gaps':0,'duplicates':0,'header_present':header,'zero_volume_ratio':zero_volume/1440,'median_quote_volume':median_quote}
+
+          jobs = []
+          for symbol in SYMBOLS:
+              day = START
+              while day <= END:
+                  jobs.append((symbol, day))
+                  day += dt.timedelta(days=1)
+          results = []
+          errors = []
+          with concurrent.futures.ThreadPoolExecutor(max_workers=12) as pool:
+              future_map = {pool.submit(validate, symbol, day):(symbol, day) for symbol, day in jobs}
+              for future in concurrent.futures.as_completed(future_map):
+                  symbol, day = future_map[future]
+                  try:
+                      row = future.result(); results.append(row)
+                      print(json.dumps({'verified':f'{symbol}:{day}','sha256':row['sha256']}), flush=True)
+                  except Exception as exc:
+                      errors.append({'symbol':symbol,'date_utc':day.isoformat(),'error':repr(exc)})
+                      print(json.dumps({'hard_gate':f'{symbol}:{day}','error':repr(exc)}), flush=True)
+          results.sort(key=lambda row:(row['symbol'],row['date_utc']))
+          errors.sort(key=lambda row:(row['symbol'],row['date_utc']))
+          with (EVIDENCE / 'DATA41_RESULT_MATRIX.csv').open('w', newline='') as f:
+              fields=['symbol','date_utc','status','sha256','archive_bytes','rows','gaps','duplicates','header_present','zero_volume_ratio','median_quote_volume']
+              writer=csv.DictWriter(f, fieldnames=fields); writer.writeheader(); writer.writerows(results)
+          leaf=[{'symbol':row['symbol'],'date_utc':row['date_utc'],'sha256':row['sha256'],'rows':row['rows']} for row in results]
+          summary={'contract':'FQT_V27_DATA41_FREEZE_V1','source':'Binance public daily klines + CHECKSUM','range_inclusive':[START.isoformat(),END.isoformat()],'pair_count':len(SYMBOLS),'expected_archives':len(jobs),'verified_archives':len(results),'errors':errors,'status':'PASS' if len(results)==len(jobs) and not errors else 'FAIL','dataset_leaf_sha256':hashlib.sha256(json.dumps(leaf,sort_keys=True,separators=(',',':')).encode()).hexdigest() if results else None,'alpha_or_return_inspection':False}
+          (EVIDENCE / 'DATA41_FREEZE_RECEIPT.json').write_text(json.dumps(summary,indent=2)+'\n')
+          if summary['status'] != 'PASS':
+              raise SystemExit(2)
+          print(json.dumps(summary, indent=2))
+          PY
+          python fqt_v27_data41/acquire.py | tee fqt_v27_data41/evidence/acquisition.log
+          tar -C fqt_v27_data41 -czf FQT_V27_DATA41_RETURN_20260827.tar.gz raw evidence
+          sha256sum FQT_V27_DATA41_RETURN_20260827.tar.gz > FQT_V27_DATA41_RETURN_20260827.tar.gz.sha256
+      - name: Upload verified data return
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v27-data41-return-20260827
+          path: |
+            FQT_V27_DATA41_RETURN_20260827.tar.gz
+            FQT_V27_DATA41_RETURN_20260827.tar.gz.sha256
+          retention-days: 1
+          if-no-files-found: error
