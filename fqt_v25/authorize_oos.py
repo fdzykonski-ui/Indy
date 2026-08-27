@@ -21,6 +21,7 @@ def main() -> None:
     parser.add_argument("--baseline", type=pathlib.Path, required=True)
     parser.add_argument("--candidate", type=pathlib.Path, required=True)
     parser.add_argument("--fee20", type=pathlib.Path, required=True)
+    parser.add_argument("--data-manifest", type=pathlib.Path, required=True)
     parser.add_argument("--out", type=pathlib.Path, required=True)
     args = parser.parse_args()
 
@@ -28,11 +29,14 @@ def main() -> None:
     baseline = load(args.baseline)
     candidate = load(args.candidate)
     fee20 = load(args.fee20)
+    data_manifest = load(args.data_manifest)
     improvement = float(candidate["profit_usdc"]) - float(baseline["profit_usdc"])
     relative = improvement / max(abs(float(baseline["profit_usdc"])), 1e-12)
     checks = {
         "selection_pass": bool(selection.get("selection_pass")),
         "correctness_predecessors": bool(selection.get("oos_pre_authorized")),
+        "data_integrity": bool(data_manifest.get("integrity_pass")),
+        "execution_universe_complete": bool(data_manifest.get("all_execution_eligible")),
         "candidate_trades": int(candidate["trades"]) >= 350,
         "candidate_winrate": float(candidate["winrate_pct"]) >= 80.0,
         "candidate_profit": float(candidate["profit_usdc"]) > 0,
@@ -43,14 +47,21 @@ def main() -> None:
     }
     authorized = all(checks.values())
     receipt = {
-        "contract": "FQT_V25_ONE_SHOT_OOS_AUTHORIZATION_V1",
+        "contract": "FQT_V25_ONE_SHOT_OOS_AUTHORIZATION_V2",
         "selection_sha256": selection.get("selection_sha256"),
+        "dataset_root_sha256": data_manifest.get("dataset_root_sha256"),
         "chosen_system": selection.get("chosen_system"),
         "chosen_strategy": selection.get("chosen_strategy"),
         "known_range": candidate.get("timerange"),
         "fresh_oos_range": "20260623-20260811",
         "fresh_oos_opened": False,
         "checks": checks,
+        "data_quality": {
+            "integrity_pass": data_manifest.get("integrity_pass"),
+            "all_execution_eligible": data_manifest.get("all_execution_eligible"),
+            "execution_ineligible_pairs": data_manifest.get("execution_ineligible_pairs", []),
+            "total_official_gap_minutes": data_manifest.get("total_official_gap_minutes", 0),
+        },
         "baseline_known": baseline,
         "candidate_known": candidate,
         "candidate_fee20": fee20,
@@ -59,10 +70,19 @@ def main() -> None:
         "authorized": authorized,
         "decision": "OPEN_OOS_ONCE" if authorized else "BLOCK_OOS_KEEP_CHAMPION",
     }
-    receipt["authorization_sha256"] = hashlib.sha256(json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+    receipt["authorization_sha256"] = hashlib.sha256(
+        json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({"authorized": authorized, "checks": checks, "improvement_usdc": improvement, "improvement_relative": relative, "authorization_sha256": receipt["authorization_sha256"]}, indent=2))
+    print(json.dumps({
+        "authorized": authorized,
+        "checks": checks,
+        "data_quality": receipt["data_quality"],
+        "improvement_usdc": improvement,
+        "improvement_relative": relative,
+        "authorization_sha256": receipt["authorization_sha256"],
+    }, indent=2))
 
 
 if __name__ == "__main__":
