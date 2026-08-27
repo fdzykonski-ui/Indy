@@ -44,7 +44,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo '5dca84a194a394e402fc1867d60d538face0eb4309a4bafb2692e9ecf2371f00  fqt_v25/frozen_iteration3b_normalized_summary.json' | sha256sum -c -
+          echo '2106b23f7dcdf3a3976548bda806c526043024dfa15b4949bd046e846a16cc29  fqt_v25/frozen_iteration3b_normalized_summary.json' | sha256sum -c -
       - name: Execute fail-closed V26 market-order pipeline
         id: execute
         shell: bash

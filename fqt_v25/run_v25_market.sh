@@ -20,7 +20,7 @@ python - <<'PY' > "$tmp"
 from pathlib import Path
 text = Path('fqt_v25/run_v25.sh').read_text()
 parse_line = "python fqt_v25/parse_iteration3b.py --artifact iteration3b_input --work iteration3b_work --out evidence/ITERATION3B_NORMALIZED_SUMMARY.json | tee logs/iteration3b_parse.log"
-frozen_line = "cp fqt_v25/frozen_iteration3b_normalized_summary.json evidence/ITERATION3B_NORMALIZED_SUMMARY.json && printf '%s\\n' 'FQT_V26_FROZEN_ITERATION3B_RECEIPT: sha256=5dca84a194a394e402fc1867d60d538face0eb4309a4bafb2692e9ecf2371f00 source_run=31812959072 source_artifact=9612713371' | tee logs/iteration3b_parse.log"
+frozen_line = "cp fqt_v25/frozen_iteration3b_normalized_summary.json evidence/ITERATION3B_NORMALIZED_SUMMARY.json && printf '%s\\n' 'FQT_V26_FROZEN_ITERATION3B_RECEIPT: receipt_sha256=2106b23f7dcdf3a3976548bda806c526043024dfa15b4949bd046e846a16cc29 source_summary_sha256=5dca84a194a394e402fc1867d60d538face0eb4309a4bafb2692e9ecf2371f00 source_run=31812959072 source_artifact=9612713371' | tee logs/iteration3b_parse.log"
 if parse_line not in text:
     raise SystemExit('iteration3b parse anchor not found')
 text = text.replace(parse_line, frozen_line)
