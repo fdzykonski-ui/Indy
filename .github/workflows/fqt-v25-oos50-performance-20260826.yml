@@ -22,14 +22,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12.13'
-      - name: Add bounded swap for continuous 31-pair lanes
+      - name: Attempt bounded swap without blocking the pipeline
+        continue-on-error: true
         shell: bash
         run: |
-          sudo fallocate -l 16G /swapfile
+          set +e
+          sudo fallocate -l 8G /swapfile
           sudo chmod 600 /swapfile
           sudo mkswap /swapfile
           sudo swapon /swapfile
           free -h
+          exit 0
       - name: Download completed Iteration-3B correctness return
         uses: actions/download-artifact@v4
         with:
