@@ -1,0 +1,165 @@
+name: FQT V28 Pioneer Factory OOS50 20260828
+
+on:
+  push:
+    branches:
+      - fqt-v28-pioneer-oos50-20260828
+    paths:
+      - '.github/workflows/fqt-v28-pioneer-oos50-20260828.yml'
+      - 'fqt_v26/**'
+      - 'fqt_v28/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: fqt-v28-pioneer-oos50-20260828
+  cancel-in-progress: true
+
+jobs:
+  pioneer-factory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-v28-pioneer-oos50-20260828
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+
+      - name: Install system prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y build-essential git curl unzip patch jq libgomp1
+
+      - name: Freeze V28 governance and repair exact 41-pair contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fqt_v28/patch_universe_contract.py | tee FQT_V28_UNIVERSE_PATCH.log
+          python -m py_compile fqt_v26/select_universe_41.py
+          python - <<'PY'
+          import json, pathlib
+          contract=json.loads(pathlib.Path('fqt_v28/FACTORY_CONTRACT_V1.json').read_text())
+          ledger=json.loads(pathlib.Path('fqt_v28/FQTPX_SKILL_LEDGER_V1.json').read_text())
+          assert contract['status']=='FROZEN'
+          assert contract['universe']['selection']=='exactly_41_preregistered_pairs'
+          assert ledger['status']=='PASS_WITH_EXPLICIT_GAPS'
+          assert ledger['timestamp_replay'] is False
+          print(json.dumps({'contract':contract['contract'],'skill_status':ledger['status'],'timestamp_replay':False},indent=2))
+          PY
+          sha256sum fqt_v28/FACTORY_CONTRACT_V1.json fqt_v28/FQTPX_SKILL_LEDGER_V1.json fqt_v26/select_universe_41.py > FQT_V28_PREFLIGHT_SHA256SUMS.txt
+          git diff -- fqt_v26/select_universe_41.py > FQT_V28_UNIVERSE_PATCH.diff
+          test -s FQT_V28_UNIVERSE_PATCH.diff
+
+      - name: Execute repaired fail-closed pioneer factory
+        id: execute
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          chmod +x fqt_v26/run_v26.sh
+          fqt_v26/run_v26.sh "$PWD/fqt_v28_work" 2>&1 | tee FQT_V28_CONSOLE.log
+          rc=${PIPESTATUS[0]}
+          echo "driver_rc=$rc" >> "$GITHUB_OUTPUT"
+          echo "$rc" > FQT_V28_DRIVER_EXIT_CODE.txt
+          exit 0
+
+      - name: Attach V28 governance receipts
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$PWD/fqt_v28_work"
+          mkdir -p "$ROOT/evidence/v28_governance"
+          cp fqt_v28/FACTORY_CONTRACT_V1.json "$ROOT/evidence/v28_governance/"
+          cp fqt_v28/FQTPX_SKILL_LEDGER_V1.json "$ROOT/evidence/v28_governance/"
+          cp FQT_V28_PREFLIGHT_SHA256SUMS.txt "$ROOT/evidence/v28_governance/"
+          cp FQT_V28_UNIVERSE_PATCH.diff "$ROOT/evidence/v28_governance/"
+          cp FQT_V28_UNIVERSE_PATCH.log "$ROOT/evidence/v28_governance/"
+          cp FQT_V28_DRIVER_EXIT_CODE.txt "$ROOT/evidence/v28_governance/"
+
+      - name: Package complete or emergency evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$PWD/fqt_v28_work"
+          if [ ! -f "$ROOT/FQT_V26_PIONEER_FACTORY_RETURN.zip" ]; then
+            mkdir -p "$ROOT/emergency"
+            cp FQT_V28_CONSOLE.log FQT_V28_DRIVER_EXIT_CODE.txt "$ROOT/emergency/" 2>/dev/null || true
+            cp -r "$ROOT/evidence" "$ROOT/logs" "$ROOT/release" "$ROOT/summaries" "$ROOT/emergency/" 2>/dev/null || true
+            (cd "$ROOT/emergency" && zip -q -r ../FQT_V28_PIONEER_FACTORY_RETURN.zip .)
+          else
+            cp "$ROOT/FQT_V26_PIONEER_FACTORY_RETURN.zip" "$ROOT/FQT_V28_PIONEER_FACTORY_RETURN.zip"
+          fi
+          sha256sum "$ROOT/FQT_V28_PIONEER_FACTORY_RETURN.zip" > "$ROOT/FQT_V28_PIONEER_FACTORY_RETURN.zip.sha256"
+          python - <<'PY'
+          import hashlib,json,pathlib,zipfile
+          root=pathlib.Path('fqt_v28_work')
+          archive=root/'FQT_V28_PIONEER_FACTORY_RETURN.zip'
+          with zipfile.ZipFile(archive) as zf:
+              bad=zf.testzip(); names=zf.namelist()
+          assert bad is None
+          receipt={'contract':'FQT_V28_RETURN_VERIFICATION_V1','zip_crc':'PASS','file_count':len(names),'sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'driver_rc':pathlib.Path('FQT_V28_DRIVER_EXIT_CODE.txt').read_text().strip()}
+          (root/'FQT_V28_RETURN_VERIFICATION.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          print(json.dumps(receipt,indent=2))
+          PY
+
+      - name: Upload complete V28 return
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v28-pioneer-oos50-return-20260828
+          path: |
+            fqt_v28_work/FQT_V28_PIONEER_FACTORY_RETURN.zip
+            fqt_v28_work/FQT_V28_PIONEER_FACTORY_RETURN.zip.sha256
+            fqt_v28_work/FQT_V28_RETURN_VERIFICATION.json
+            fqt_v28_work/release/summary.json
+            fqt_v28_work/release/M4PioneerV26Final.py
+            fqt_v28_work/release/config_M4PioneerV26Final.json
+            fqt_v28_work/release/COMPARISON_5x8.csv
+            fqt_v28_work/release/GATE_MATRIX.csv
+            fqt_v28_work/release/CHAT_LOG_BLOCK.txt
+            FQT_V28_CONSOLE.log
+            FQT_V28_DRIVER_EXIT_CODE.txt
+          retention-days: 5
+          if-no-files-found: warn
+
+      - name: Commit compact V28 result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fqt_v28_results_committed
+          cp fqt_v28/FACTORY_CONTRACT_V1.json fqt_v28_results_committed/
+          cp fqt_v28/FQTPX_SKILL_LEDGER_V1.json fqt_v28_results_committed/
+          cp FQT_V28_DRIVER_EXIT_CODE.txt fqt_v28_results_committed/
+          cp fqt_v28_work/FQT_V28_RETURN_VERIFICATION.json fqt_v28_results_committed/ 2>/dev/null || true
+          for f in summary.json M4PioneerV26Final.py config_M4PioneerV26Final.json COMPARISON_5x8.csv GATE_MATRIX.csv CHAT_LOG_BLOCK.txt; do
+            if [[ -f "fqt_v28_work/release/$f" ]]; then cp "fqt_v28_work/release/$f" fqt_v28_results_committed/; fi
+          done
+          git config user.name 'fqt-v28-bot'
+          git config user.email 'fqt-v28-bot@users.noreply.github.com'
+          git add fqt_v28_results_committed
+          if ! git diff --cached --quiet; then
+            git commit -m 'FQT V28: publish compact fail-closed pioneer result'
+            git push origin HEAD:fqt-v28-pioneer-oos50-20260828
+          fi
+
+      - name: Enforce factory integrity
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.execute.outputs.driver_rc }}" = "0"
+          test -s fqt_v28_work/release/summary.json
+          test -s fqt_v28_work/FQT_V28_PIONEER_FACTORY_RETURN.zip
+          test -s fqt_v28_work/FQT_V28_RETURN_VERIFICATION.json
