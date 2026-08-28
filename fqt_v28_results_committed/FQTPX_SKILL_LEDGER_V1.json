@@ -1,0 +1,36 @@
+{
+  "contract": "FQT_V28_SKILL_COVERAGE_LEDGER_V1",
+  "requested_normalized": [
+    "fqtpx001", "fqtpx002", "fqtpx003", "fqtpx004", "fqtpx005", "fqtpx006", "fqtpx007", "fqtpx008", "fqtpx009",
+    "fqtpx011", "fqtpx012", "fqtpx013", "fqtpx014", "fqtpx015", "fqtpx016", "fqtpx017", "fqtpx018", "fqtpx019",
+    "fqtpx021", "fqtpx022", "fqtpx023", "fqtpx024", "fqtpx025", "fqtpx026", "fqtpx027", "fqtpx028", "fqtpx029"
+  ],
+  "duplicates_in_request": ["fqtpx002", "fqtpx029"],
+  "physically_present": {
+    "fqtpx001": "contract_governance_freeze",
+    "fqtpx002": "data_integrity_pit_survivorship",
+    "fqtpx003": "causality_correctness",
+    "fqtpx004": "deterministic_backtesting_controls",
+    "fqtpx005": "training_only_optimization_walk_forward",
+    "fqtpx006": "ablation_pair_holdout_concentration",
+    "fqtpx007": "execution_risk_stress",
+    "fqtpx008": "statistics_one_shot_oos",
+    "fqtpx009": "forward_canary_release",
+    "fqtpx011": "bias_leakage_forensics",
+    "fqtpx012": "exchange_data_gap_reconciliation",
+    "fqtpx013": "execution_microstructure_cost_margin",
+    "fqtpx014": "controlled_candidate_factory",
+    "fqtpx015": "purged_walk_forward_plateau_validation",
+    "fqtpx016": "champion_challenger_promotion_authority",
+    "fqtpx017": "multiple_testing_pbo_deflated_performance",
+    "fqtpx018": "oos_vault_dryrun_canary_drift",
+    "fqtpx019": "evidence_supply_chain_independent_release_qa"
+  },
+  "missing_contracts_not_fabricated": [
+    "fqtpx010", "fqtpx020", "fqtpx021", "fqtpx022", "fqtpx023", "fqtpx024", "fqtpx025", "fqtpx026", "fqtpx027", "fqtpx028", "fqtpx029"
+  ],
+  "application_rule": "Present skills are executed through native factory gates and receipts. Missing IDs are not claimed installed; equivalent existing pipeline capabilities are cited separately and cannot masquerade as those IDs.",
+  "timestamp_replay": false,
+  "live_capital": false,
+  "status": "PASS_WITH_EXPLICIT_GAPS"
+}
