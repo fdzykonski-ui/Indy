@@ -1,0 +1,80 @@
+name: FQT M6R36 Native V11 Validation 20260828
+on:
+  push:
+    branches:
+      - fqt-m6r36-native-v11-20260828
+    paths:
+      - '.github/workflows/fqt-m6r36-native-v11-20260828.yml'
+      - 'fqt_m6r36/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  native-v11:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-m6r36-native-v11-20260828
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+      - name: Attempt bounded swap without blocking validation
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          sudo fallocate -l 8G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          free -h
+          exit 0
+      - name: Execute native V11 validation and one-shot OOS
+        id: execute
+        shell: bash
+        run: |
+          set +e
+          chmod +x fqt_m6r36/run_m6r36.sh
+          bash fqt_m6r36/run_m6r36.sh 2>&1 | tee FQT_M6R36_CONSOLE.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Package complete fail-closed return
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p m6r36_return
+          cp FQT_M6R36_CONSOLE.log m6r36_return/ 2>/dev/null || true
+          cp -r m6r36_results/* m6r36_return/ 2>/dev/null || true
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('m6r36_return');files=[]
+          for p in sorted(x for x in root.rglob('*') if x.is_file()):
+              files.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          (root/'ARTIFACT_MANIFEST.json').write_text(json.dumps({'contract':'FQT_M6R36_ACTIONS_ARTIFACT_V1','files':files},indent=2)+'\n')
+          PY
+          tar -czf FQT_M6R36_NATIVE_V11_RETURN_20260828.tar.gz m6r36_return
+          sha256sum FQT_M6R36_NATIVE_V11_RETURN_20260828.tar.gz > FQT_M6R36_NATIVE_V11_RETURN_20260828.tar.gz.sha256
+      - name: Upload M6R36 native return
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-m6r36-native-v11-return-20260828
+          path: |
+            FQT_M6R36_NATIVE_V11_RETURN_20260828.tar.gz
+            FQT_M6R36_NATIVE_V11_RETURN_20260828.tar.gz.sha256
+          retention-days: 5
+          if-no-files-found: error
+      - name: Enforce execution integrity
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.execute.outputs.rc }}" = "0"
+          test -s m6r36_results/DECISION.json
+          test -s m6r36_results/final/M4PioneerRiskAllocatorV11Balanced75.py
+          test -s m6r36_results/final/config.json
