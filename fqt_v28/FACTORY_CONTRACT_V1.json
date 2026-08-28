@@ -1,0 +1,79 @@
+{
+  "contract": "FQT_V28_PIONEER_FACTORY_CONTRACT_V1",
+  "source_of_truth": {
+    "repository": "fdzykonski-ui/Indy",
+    "base_branch": "fqt-v26-pioneer-factory-20260827",
+    "frozen_champion": "M4PioneerStableExposureV10",
+    "known_champion_metrics": {
+      "timerange": "20260101-20260501",
+      "trades": 663,
+      "wins": 555,
+      "losses": 108,
+      "winrate_pct": 83.7104,
+      "profit_usdc": 195.125898,
+      "profit_pct": 19.5126,
+      "profit_factor": 4.237836,
+      "wallet_drawdown_pct": 2.89
+    }
+  },
+  "universe": {
+    "selection": "exactly_41_preregistered_pairs",
+    "base_count": 31,
+    "addition_count": 10,
+    "oos_outcome_peek": false,
+    "timestamp_replay": false,
+    "pair_reselection_after_oos": false
+  },
+  "run_contract": {
+    "market": "Binance Spot",
+    "quote": "USDC",
+    "direction": "long_only",
+    "timeframe": "1m",
+    "informative_timeframe": "1h",
+    "wallet_usdc": 1000,
+    "stake_amount": "unlimited",
+    "max_open_trades": 1,
+    "fee_stress_per_side": [0.001, 0.0015, 0.002, 0.003],
+    "entry_delay_candles": [0, 1, 2],
+    "dry_run": true,
+    "initial_state": "stopped",
+    "live_capital": false
+  },
+  "research_order": [
+    "contract_and_hash_freeze",
+    "data_integrity_survivorship_and_gap_audit",
+    "native_market_order_lookahead_and_callback_audit",
+    "recursive_and_informative_same_candle_audit",
+    "deterministic_controls_and_negative_baselines",
+    "training_only_candidate_factory",
+    "multi_seed_plateau_and_purged_walk_forward",
+    "ablation_lopo_and_concentration",
+    "fees_spread_slippage_delay_fault_stress",
+    "bootstrap_monte_carlo_multiple_testing",
+    "single_oos_authorization_and_open",
+    "keyless_stopped_dryrun_canary_contract",
+    "independent_release_review"
+  ],
+  "promotion_hard_gates": {
+    "lookahead_valid_nonempty_no_bias": true,
+    "recursive_material_drift": false,
+    "deterministic_ledger_match": true,
+    "training_profit_not_below_champion": true,
+    "validation_profit_not_below_champion": true,
+    "mandatory_fee15_pf_gt_1": true,
+    "mandatory_delay1_pf_gt_1": true,
+    "no_drawdown_or_concentration_regression": true,
+    "oos_open_once": true,
+    "oos_profit_target_pct": 50,
+    "oos_target_is_aspirational_not_threshold_mutable": true
+  },
+  "success_targets": {
+    "trades_gt": 500,
+    "winrate_pct_gt": 80,
+    "profit_pct_gt": 80,
+    "profit_factor_gt": 5,
+    "primary_oos_profit_pct_gt": 50
+  },
+  "decision_rule": "No candidate is promoted solely because a workflow completed. Native evidence and all hard gates must pass. No threshold is revised after OOS opening.",
+  "status": "FROZEN"
+}
