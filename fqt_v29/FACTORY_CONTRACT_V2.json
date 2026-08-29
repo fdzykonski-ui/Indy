@@ -1,0 +1,102 @@
+{
+  "contract": "FQT_V29_AGGRESSIVE_CAUSAL_PERFORMANCE_FACTORY_V2",
+  "status": "FROZEN",
+  "parent_branch": "fqt-v28-pioneer-oos50-20260828",
+  "parent_commit": "b770779310c9df61bd48b951cf0b1a091b9a8bfd",
+  "primary_capa": {
+    "failure": "mixed millisecond and microsecond timestamps in full data merger",
+    "observed_first": 1764547200000,
+    "observed_last": 1786751940000000,
+    "repair": "per-value seconds/milliseconds/microseconds/nanoseconds normalization to microseconds",
+    "monthly_gap_policy": "repair only from official checksummed daily archives; never synthesize candles",
+    "oos_opened_during_repair": false
+  },
+  "market_contract": {
+    "exchange": "Binance Spot",
+    "quote": "USDC",
+    "direction": "long_only",
+    "timeframe": "1m",
+    "wallet_usdc": 1000,
+    "stake_amount": "unlimited",
+    "max_open_trades": 1,
+    "leverage": 1,
+    "fee_per_side_base": 0.001,
+    "fee_per_side_stress": [0.0015, 0.002, 0.003],
+    "entry_delay_candles": [0, 1, 2],
+    "universe": "exactly_41_preregistered_pairs",
+    "timerange_available_target": "[2025-12-01,2026-08-15)",
+    "development_range": "[2026-01-01,2026-06-23)",
+    "sealed_oos_range": "[2026-06-23,2026-08-15)"
+  },
+  "performance_patch": {
+    "size": "medium_to_large_candidate_family",
+    "candidate_count_added": 5,
+    "mechanisms": [
+      "full_MOT1_spot_exposure_without_leverage",
+      "faster_profit_velocity_ROI",
+      "staged_time_under_water_tail_containment",
+      "pair_agnostic_regime_quality_score",
+      "path_specific_weak_VWAP_rejection",
+      "shallower_hard_stop_tail"
+    ],
+    "forbidden": [
+      "timestamp_replay",
+      "date_specific_rules",
+      "pair_specific_signal_rules",
+      "OOS_guided_pair_selection",
+      "post_OOS_threshold_revision",
+      "DCA",
+      "grid",
+      "shorts",
+      "futures",
+      "leverage"
+    ]
+  },
+  "selection_order": [
+    "source_and_runtime_freeze",
+    "41_pair_checksum_data_integrity",
+    "training_and_known_validation_candidate_screen",
+    "fee_15_20_30_stress",
+    "delay_plus_1_plus_2_stress",
+    "pair_order_and_protection_stress",
+    "native_market_order_lookahead",
+    "recursive_and_metamorphic_analysis",
+    "deterministic_reproduction",
+    "same_candle_fault_injection_and_LOPO",
+    "multi_seed_training_only_hyperopt_diagnostic",
+    "single_final_OOS_authorization",
+    "one_shot_OOS_or_fail_closed_block",
+    "keyless_stopped_dryrun_preflight_only"
+  ],
+  "promotion_hard_gates": {
+    "data_integrity_pass": true,
+    "all_pairs_execution_eligible": true,
+    "lookahead_valid_nonempty_no_bias": true,
+    "recursive_pass": true,
+    "metamorphic_pass": true,
+    "deterministic_trade_ledger": true,
+    "validation_profit_positive": true,
+    "validation_profit_factor_min": 1.5,
+    "validation_winrate_pct_min": 80,
+    "validation_max_drawdown_pct_max": 5,
+    "fee15_profit_factor_min": 1,
+    "delay1_profit_factor_min": 1,
+    "representative_LOPO_pass": true,
+    "same_candle_pass": true,
+    "fault_injection_pass": true,
+    "oos_open_once": true
+  },
+  "success_targets": {
+    "full_period_trades_gt": 500,
+    "full_period_winrate_pct_gt": 80,
+    "full_period_profit_pct_gt": 80,
+    "full_period_profit_factor_gt": 5,
+    "primary_oos_profit_pct_gt": 50,
+    "max_drawdown_pct_lt": 5
+  },
+  "risk_policy": "Aggressive within spot-only exposure; risk is contained by shallower tails, cost/delay gates, OOS vaulting and no live authorization.",
+  "timestamp_replay": false,
+  "sealed_oos_opened_for_construction": false,
+  "dry_run_started": false,
+  "live_capital_allowed": false
+}
