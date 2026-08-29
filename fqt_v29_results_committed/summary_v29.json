@@ -1,0 +1,148 @@
+{
+  "contract": "FQT_V29_FORENSIC_SUMMARY_V1",
+  "created_at_utc": "2026-08-29T12:35:05.046914+00:00",
+  "decision": "BLOCK_OOS_KEEP_CHAMPION",
+  "selected_candidate": null,
+  "oos_opened": false,
+  "persistent_dry_run_started": false,
+  "live_allowed": false,
+  "timestamp_replay": false,
+  "data": {
+    "pair_count": null,
+    "integrity_pass": null,
+    "all_execution_eligible": null,
+    "dataset_root_sha256": null
+  },
+  "matrix": [
+    {
+      "Version/Test": "V28/V14 Baseline",
+      "Zeitraum": "20260101–20260401",
+      "Start→Ende": "N/V",
+      "Trades": "N/V",
+      "W/L/D": "N/V",
+      "WR": "N/V",
+      "Profit": "N/V",
+      "PF/DD": "N/V"
+    },
+    {
+      "Version/Test": "V29 BLOCKED Train",
+      "Zeitraum": "20260101–20260401",
+      "Start→Ende": "N/V",
+      "Trades": "N/V",
+      "W/L/D": "N/V",
+      "WR": "N/V",
+      "Profit": "N/V",
+      "PF/DD": "N/V"
+    },
+    {
+      "Version/Test": "V29 BLOCKED Validation",
+      "Zeitraum": "20260401–20260623",
+      "Start→Ende": "N/V",
+      "Trades": "N/V",
+      "W/L/D": "N/V",
+      "WR": "N/V",
+      "Profit": "N/V",
+      "PF/DD": "N/V"
+    },
+    {
+      "Version/Test": "V29 Fee 0.20%",
+      "Zeitraum": "20260401–20260623",
+      "Start→Ende": "N/V",
+      "Trades": "N/V",
+      "W/L/D": "N/V",
+      "WR": "N/V",
+      "Profit": "N/V",
+      "PF/DD": "N/V"
+    },
+    {
+      "Version/Test": "V29 OOS/Full",
+      "Zeitraum": "20260623–20260815",
+      "Start→Ende": "N/V",
+      "Trades": "N/V",
+      "W/L/D": "N/V",
+      "WR": "N/V",
+      "Profit": "N/V",
+      "PF/DD": "N/V"
+    }
+  ],
+  "gates": [
+    {
+      "gate": "data_integrity",
+      "status": "FAIL/BLOCKED",
+      "evidence": null
+    },
+    {
+      "gate": "41_pair_execution_eligibility",
+      "status": "FAIL/BLOCKED",
+      "evidence": []
+    },
+    {
+      "gate": "known_candidate_selection",
+      "status": "FAIL/BLOCKED",
+      "evidence": null
+    },
+    {
+      "gate": "lookahead_recursive_metamorphic",
+      "status": "PARTIAL/FAIL",
+      "evidence": {}
+    },
+    {
+      "gate": "fee20",
+      "status": "FAIL/NOT_RUN",
+      "evidence": null
+    },
+    {
+      "gate": "delay1",
+      "status": "FAIL/NOT_RUN",
+      "evidence": null
+    },
+    {
+      "gate": "delay2",
+      "status": "FAIL/NOT_RUN",
+      "evidence": null
+    },
+    {
+      "gate": "one_shot_oos",
+      "status": "SEALED/BLOCKED",
+      "evidence": {}
+    },
+    {
+      "gate": "persistent_dry_run",
+      "status": "NOT_STARTED",
+      "evidence": "keyless stopped preflight only"
+    },
+    {
+      "gate": "live_capital",
+      "status": "FORBIDDEN",
+      "evidence": "requires new explicit authorization"
+    }
+  ],
+  "results": {},
+  "repairs": [
+    "Mixed epoch-unit handling repaired with per-value normalization.",
+    "Monthly Binance omissions cross-checked against checksummed daily archives.",
+    "Exchange-native gaps disclosed and made execution-ineligible instead of synthesized.",
+    "V29 candidate construction isolated from the sealed OOS interval.",
+    "Plus-two-candle controls added without pair/date exceptions.",
+    "Result collection made fail-closed even when the main driver stops early."
+  ],
+  "improvements": [
+    "Five pair-agnostic causal challengers evaluated beside the frozen champion.",
+    "Aggressive MOT=1 spot exposure paired with shallower hard-tail controls.",
+    "Fee 0.30% and delay +2 added to the existing stress lattice.",
+    "Data integrity now requires manifest-level completeness and execution eligibility.",
+    "FQTPX 001–009, 011–019 and 021–029 mapped into a hashed governance ledger.",
+    "Final strategy/config are forced keyless, stopped and non-live."
+  ],
+  "developments": [
+    "M4PioneerV29ProfitVelocity",
+    "M4PioneerV29TailShield",
+    "M4PioneerV29RegimeScore",
+    "M4PioneerV29AdaptiveBalanced",
+    "M4PioneerV29HighMargin",
+    "Universal causal Delay2 control family"
+  ],
+  "receipt_inventory": [],
+  "final_strategy": null,
+  "final_config": null
+}

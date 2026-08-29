@@ -1,0 +1,42 @@
+{
+  "contract": "FQT_V29_FINAL_MANIFEST_V1",
+  "decision": "BLOCK_OOS_KEEP_CHAMPION",
+  "selected_candidate": null,
+  "files": [
+    {
+      "path": "COMPARISON_5X8.csv",
+      "bytes": 375,
+      "sha256": "c48c72a2733d110d5c82001e10ecfe3c83c6a285c5e9acac5531d1608a891dda"
+    },
+    {
+      "path": "FACTORY_CONTRACT_V2.json",
+      "bytes": 3599,
+      "sha256": "90cc4b0e84c1c9ce28ef8ed889afd841332318a3470377a0ad7cb756af34e43d"
+    },
+    {
+      "path": "FQTPX_SKILL_LEDGER_V2.json",
+      "bytes": 4237,
+      "sha256": "d9d710896d7f59ce34c2beb6731bf49ba82a628b474eca04700c6f3bed02dd31"
+    },
+    {
+      "path": "GATE_MATRIX.json",
+      "bytes": 974,
+      "sha256": "fa5171eb22bb2bab4d345e7a47cfaa0763cb40552b0929ed270e22ac4f8de7c5"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1868,
+      "sha256": "31eea07549517adc878f50fb6c1e3a3f9f92852fb664b5aecffd742a3813bd21"
+    },
+    {
+      "path": "raw/evidence/HOST_PREFLIGHT.txt",
+      "bytes": 1449,
+      "sha256": "43625d1df5da6827a1d03451b465b84f72c71392e3da9b17fff44d7a2ebcb441"
+    },
+    {
+      "path": "summary_v29.json",
+      "bytes": 4016,
+      "sha256": "9e176a2fc624d5d5a6eb6c7075ae96ab59254917a2120c046dc38f5a61347586"
+    }
+  ]
+}

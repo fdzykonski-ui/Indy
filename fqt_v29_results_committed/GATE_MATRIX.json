@@ -1,0 +1,52 @@
+[
+  {
+    "gate": "data_integrity",
+    "status": "FAIL/BLOCKED",
+    "evidence": null
+  },
+  {
+    "gate": "41_pair_execution_eligibility",
+    "status": "FAIL/BLOCKED",
+    "evidence": []
+  },
+  {
+    "gate": "known_candidate_selection",
+    "status": "FAIL/BLOCKED",
+    "evidence": null
+  },
+  {
+    "gate": "lookahead_recursive_metamorphic",
+    "status": "PARTIAL/FAIL",
+    "evidence": {}
+  },
+  {
+    "gate": "fee20",
+    "status": "FAIL/NOT_RUN",
+    "evidence": null
+  },
+  {
+    "gate": "delay1",
+    "status": "FAIL/NOT_RUN",
+    "evidence": null
+  },
+  {
+    "gate": "delay2",
+    "status": "FAIL/NOT_RUN",
+    "evidence": null
+  },
+  {
+    "gate": "one_shot_oos",
+    "status": "SEALED/BLOCKED",
+    "evidence": {}
+  },
+  {
+    "gate": "persistent_dry_run",
+    "status": "NOT_STARTED",
+    "evidence": "keyless stopped preflight only"
+  },
+  {
+    "gate": "live_capital",
+    "status": "FORBIDDEN",
+    "evidence": "requires new explicit authorization"
+  }
+]
