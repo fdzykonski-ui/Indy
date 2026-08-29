@@ -1,0 +1,184 @@
+name: FQT V29 Pioneer Performance Factory 20260829
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - fqt-v29-performance-factory-20260829
+    paths:
+      - 'fqt_v29/**'
+      - 'fqt_v26/**'
+      - '.github/workflows/fqt-v29-performance-factory-20260829.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  v29:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fqt-v29-performance-factory-20260829
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.13'
+
+      - name: Capture host and bounded resources
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          {
+            uname -a
+            python --version
+            df -h .
+            free -h
+            ulimit -a
+          } | tee evidence/HOST_PREFLIGHT.txt
+          set +e
+          sudo fallocate -l 8G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          free -h | tee -a evidence/HOST_PREFLIGHT.txt
+          exit 0
+
+      - name: Download completed Iteration-3B correctness return
+        uses: actions/download-artifact@v4
+        with:
+          name: fqt-v24-iteration3b-raw-return-20260814
+          path: iteration3b_input
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: fdzykonski-ui/Indy
+          run-id: 31812959072
+
+      - name: Verify V29 source, contracts and generate runtime
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import ast, hashlib, json, pathlib
+          required = [
+              pathlib.Path('fqt_v29/FACTORY_CONTRACT_V2.json'),
+              pathlib.Path('fqt_v29/FQTPX_SKILL_LEDGER_V2.json'),
+              pathlib.Path('fqt_v29/append_v29_candidates.py'),
+              pathlib.Path('fqt_v29/append_v29_delay2_controls.py'),
+              pathlib.Path('fqt_v29/patch_v29_runtime.py'),
+              pathlib.Path('fqt_v29/collect_v29.py'),
+              pathlib.Path('fqt_v26/prepare_full_data_20260814.py'),
+          ]
+          for path in required:
+              if not path.exists() or not path.stat().st_size:
+                  raise SystemExit(f'missing {path}')
+              if path.suffix == '.py':
+                  ast.parse(path.read_text(encoding='utf-8'))
+          contract=json.loads(required[0].read_text())
+          skills=json.loads(required[1].read_text())
+          if contract.get('timestamp_replay') is not False:
+              raise SystemExit('timestamp replay contract violation')
+          if skills.get('runtime_plugin_installation_claimed') is not False:
+              raise SystemExit('invalid plugin installation claim')
+          data_text=required[-1].read_text(encoding='utf-8')
+          for token in ['normalize_epoch_to_us', 'mixed_ms_us_transition', 'REPAIRED_FROM_OFFICIAL_DAILY']:
+              if token not in data_text:
+                  raise SystemExit(f'missing data CAPA token {token}')
+          pathlib.Path('evidence/V29_SOURCE_PREFLIGHT.json').write_text(json.dumps({
+              'contract':'FQT_V29_SOURCE_PREFLIGHT_V1',
+              'status':'PASS',
+              'files':[{ 'path':str(p), 'bytes':p.stat().st_size,
+                         'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in required],
+              'timestamp_replay':False,
+          },indent=2)+'\n')
+          PY
+          python fqt_v29/patch_v29_runtime.py
+          bash -n fqt_v29/run_v29.generated.sh
+          chmod +x fqt_v29/run_v29.generated.sh
+
+      - name: Install and lock official Freqtrade 2026.7 compatibility lane
+        run: |
+          set -euo pipefail
+          rm -rf freqtrade_2026_7_compat .venv-ft2026.7
+          git clone --depth 1 --branch 2026.7 https://github.com/freqtrade/freqtrade.git freqtrade_2026_7_compat
+          python -m venv .venv-ft2026.7
+          .venv-ft2026.7/bin/python -m pip install --upgrade pip setuptools wheel
+          .venv-ft2026.7/bin/python -m pip install -e ./freqtrade_2026_7_compat
+          {
+            echo 'contract=FQT_V29_FREQTRADE_2026_7_COMPATIBILITY_INSTALL_V1'
+            echo -n 'git_commit='; git -C freqtrade_2026_7_compat rev-parse HEAD
+            .venv-ft2026.7/bin/freqtrade --version
+            .venv-ft2026.7/bin/python --version
+          } | tee evidence/FREQTRADE_2026_7_COMPATIBILITY.txt
+          .venv-ft2026.7/bin/python -m pip freeze --all > evidence/FREQTRADE_2026_7_REQUIREMENTS_LOCK.txt
+          sha256sum evidence/FREQTRADE_2026_7_COMPATIBILITY.txt evidence/FREQTRADE_2026_7_REQUIREMENTS_LOCK.txt > evidence/FREQTRADE_2026_7_SHA256SUMS.txt
+          rm -rf .venv-ft2026.7 freqtrade_2026_7_compat
+          df -h . | tee -a evidence/HOST_PREFLIGHT.txt
+
+      - name: Execute extended fail-closed V29 factory
+        id: execute
+        run: |
+          set +e
+          bash fqt_v29/run_v29.generated.sh 2>&1 | tee FQT_V29_CONSOLE.log
+          rc=${PIPESTATUS[0]}
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Collect forensic results and build final bundle
+        if: always()
+        run: |
+          set -euo pipefail
+          python fqt_v29/collect_v29.py 2>&1 | tee FQT_V29_COLLECT.log
+          cp FQT_V29_COLLECT.log fqt_v29_results/
+          sha256sum FQT_V29_PioneerPerformanceFactory_FULL_BUNDLE_20260829.zip > FQT_V29_PioneerPerformanceFactory_FULL_BUNDLE_20260829.zip.sha256
+          if [[ -f fqt_v29_results/M4PioneerPerformanceFactoryV29.py ]]; then
+            sha256sum fqt_v29_results/M4PioneerPerformanceFactoryV29.py > fqt_v29_results/M4PioneerPerformanceFactoryV29.py.sha256
+          fi
+          if [[ -f fqt_v29_results/config_M4PioneerPerformanceFactoryV29.json ]]; then
+            sha256sum fqt_v29_results/config_M4PioneerPerformanceFactoryV29.json > fqt_v29_results/config_M4PioneerPerformanceFactoryV29.json.sha256
+          fi
+
+      - name: Upload complete V29 return
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v29-pioneer-performance-factory-20260829
+          path: |
+            FQT_V29_PioneerPerformanceFactory_FULL_BUNDLE_20260829.zip
+            FQT_V29_PioneerPerformanceFactory_FULL_BUNDLE_20260829.zip.sha256
+            fqt_v29_results/M4PioneerPerformanceFactoryV29.py
+            fqt_v29_results/M4PioneerPerformanceFactoryV29.py.sha256
+            fqt_v29_results/config_M4PioneerPerformanceFactoryV29.json
+            fqt_v29_results/config_M4PioneerPerformanceFactoryV29.json.sha256
+            fqt_v29_results/summary_v29.json
+            fqt_v29_results/COMPARISON_5X8.csv
+            fqt_v29_results/GATE_MATRIX.json
+            FQT_V29_CONSOLE.log
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Commit compact machine-readable V29 result
+        if: always()
+        run: |
+          set -euo pipefail
+          rm -rf fqt_v29_results_committed
+          mkdir -p fqt_v29_results_committed
+          for f in summary_v29.json COMPARISON_5X8.csv GATE_MATRIX.json REPORT.md MANIFEST.json SHA256SUMS.txt M4PioneerPerformanceFactoryV29.py config_M4PioneerPerformanceFactoryV29.json; do
+            if [[ -f "fqt_v29_results/$f" ]]; then cp "fqt_v29_results/$f" fqt_v29_results_committed/; fi
+          done
+          git config user.name 'fqt-v29-bot'
+          git config user.email 'fqt-v29-bot@users.noreply.github.com'
+          git add fqt_v29_results_committed
+          if ! git diff --cached --quiet; then
+            git commit -m 'FQT V29: publish compact fail-closed performance result'
+            git push origin HEAD:fqt-v29-performance-factory-20260829
+          fi
+
+      - name: Enforce execution integrity
+        if: always()
+        run: |
+          set -euo pipefail
+          test -s fqt_v29_results/summary_v29.json
+          test -s FQT_V29_PioneerPerformanceFactory_FULL_BUNDLE_20260829.zip
+          test "${{ steps.execute.outputs.rc }}" = "0"
