@@ -1,0 +1,95 @@
+name: FQT V37 Forward Data All41 20260829
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fqt-v37-forward-data-all41-20260829.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export-data:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Download and convert official Binance BTC plus 40 data
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p work/raw artifact/data
+          cat > work/build.py <<'PY'
+          from __future__ import annotations
+          import concurrent.futures as cf
+          import csv, datetime as dt, gzip, hashlib, io, json, pathlib, urllib.error, urllib.request, zipfile
+          ROOT=pathlib.Path('work/raw'); OUT=pathlib.Path('artifact/data')
+          ROOT.mkdir(parents=True,exist_ok=True); OUT.mkdir(parents=True,exist_ok=True)
+          PAIRS=['HBARUSDC','DOGEUSDC','SOLUSDC','BTCUSDC','AAVEUSDC','ETHUSDC','BANANAS31USDC','FOGOUSDC','ORCAUSDC','ORDIUSDC','ACHUSDC','INITUSDC','SHIBUSDC','PENDLEUSDC','DOTUSDC','ARBUSDC','MITOUSDC','SOPHUSDC','SAPIENUSDC','PLUMEUSDC','ZKUSDC','FORMUSDC','CATIUSDC','1INCHUSDC','COTIUSDC','STXUSDC','DYMUSDC','PHAUSDC','CGPTUSDC','1MBABYDOGEUSDC','ZKPUSDC','XRPUSDC','BNBUSDC','LINKUSDC','LTCUSDC','BCHUSDC','AVAXUSDC','TRXUSDC','UNIUSDC','ATOMUSDC','APEUSDC']
+          BASE='https://data.binance.vision/data/spot'
+          START_MS=int(dt.datetime(2026,6,22,19,48,tzinfo=dt.timezone.utc).timestamp()*1000)
+          END_MS=int(dt.datetime(2026,8,15,tzinfo=dt.timezone.utc).timestamp()*1000)-1
+          jobs=[]
+          for s in PAIRS:
+              for month in ('2026-06','2026-07'):
+                  n=f'{s}-1m-{month}.zip'; jobs.append((s,f'{BASE}/monthly/klines/{s}/1m/{n}',n))
+              for day in range(1,15):
+                  ds=f'2026-08-{day:02d}'; n=f'{s}-1m-{ds}.zip'; jobs.append((s,f'{BASE}/daily/klines/{s}/1m/{n}',n))
+          HEAD={'User-Agent':'FQT-V37/1.0'}
+          def get(url):
+              with urllib.request.urlopen(urllib.request.Request(url,headers=HEAD),timeout=60) as r: return r.read()
+          def fetch(job):
+              sym,url,name=job
+              try:
+                  b=get(url); actual=hashlib.sha256(b).hexdigest(); expected=''
+                  try: expected=get(url+'.CHECKSUM').decode().strip().split()[0].lower()
+                  except Exception: pass
+                  if expected and expected!=actual: raise RuntimeError('checksum mismatch')
+                  (ROOT/name).write_bytes(b)
+                  with zipfile.ZipFile(io.BytesIO(b)) as z:
+                      bad=z.testzip()
+                      if bad: raise RuntimeError('bad zip '+bad)
+                  return [sym,url,'OK',len(b),actual,expected]
+              except urllib.error.HTTPError as e: return [sym,url,f'HTTP_{e.code}',0,'','']
+              except Exception as e: return [sym,url,'ERROR:'+type(e).__name__+':'+str(e)[:120],0,'','']
+          with cf.ThreadPoolExecutor(max_workers=24) as ex: status=list(ex.map(fetch,jobs))
+          with open('artifact/download_status.csv','w',newline='') as f:
+              w=csv.writer(f); w.writerow(['symbol','url','status','bytes','sha256','official_sha256']); w.writerows(status)
+          manifest=[]
+          for sym in PAIRS:
+              rows={}
+              for p in sorted(ROOT.glob(f'{sym}-1m-*.zip')):
+                  with zipfile.ZipFile(p) as z:
+                      for m in z.namelist():
+                          if not m.endswith('.csv'): continue
+                          for r in csv.reader(io.TextIOWrapper(z.open(m),encoding='utf-8',newline='')):
+                              if len(r)<6: continue
+                              try: t=int(r[0])
+                              except ValueError: continue
+                              if t>100_000_000_000_000: t//=1000
+                              if not START_MS<=t<=END_MS: continue
+                              rows[t]=[t,float(r[1]),float(r[2]),float(r[3]),float(r[4]),float(r[5])]
+              ordered=[rows[t] for t in sorted(rows)]
+              out=OUT/f'{sym[:-4]}_USDC-1m.json.gz'
+              with gzip.open(out,'wt',encoding='utf-8',compresslevel=9) as g: json.dump(ordered,g,separators=(',',':'))
+              ts=sorted(rows); gaps=sum(max(0,(b-a)//60000-1) for a,b in zip(ts,ts[1:]))
+              manifest.append([sym,len(ordered),ts[0] if ts else '',ts[-1] if ts else '',dt.datetime.fromtimestamp(ts[0]/1000,dt.timezone.utc).isoformat() if ts else '',dt.datetime.fromtimestamp(ts[-1]/1000,dt.timezone.utc).isoformat() if ts else '',gaps,0,sum(r[5]==0 for r in ordered),hashlib.sha256(out.read_bytes()).hexdigest()])
+          with open('artifact/data_manifest.csv','w',newline='') as f:
+              w=csv.writer(f); w.writerow(['symbol','rows','first_ms','last_ms','first_utc','last_utc','gaps','duplicates','zero_volume_rows','output_sha256']); w.writerows(manifest)
+          pathlib.Path('artifact/PROVENANCE.json').write_text(json.dumps({'provider':'data.binance.vision','market':'spot','timeframe':'1m','start':'2026-06-22T19:48:00Z','end':'2026-08-14T23:59:59.999Z','pair_count':len(PAIRS),'synthetic':False},indent=2))
+          print('download_ok',sum(x[2]=='OK' for x in status),'of',len(status))
+          print('pairs_with_rows',sum(x[1]>0 for x in manifest),'of',len(manifest))
+          for x in manifest: print(*x[:9])
+          PY
+          python3 work/build.py | tee artifact/build.log
+          (cd artifact && sha256sum data/*.json.gz > SHA256SUMS.txt)
+
+      - name: Upload full data artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fqt-v37-all41-forward-data
+          path: artifact/
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
